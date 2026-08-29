@@ -1,0 +1,619 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; background: oklch(98.75% 0 0); }
+    * { box-sizing: border-box; }
+    .k-node { transition: border-color .13s ease, box-shadow .13s ease, opacity .18s ease; }
+    .k-node:hover { border-color: oklch(70.8% 0 0) !important; }
+    .k-btn:hover { background: oklch(96.5% 0 0) !important; }
+    .k-brand:hover { background: oklch(48.8% .243 264.376) !important; }
+    .k-row { transition: background-color .12s ease; }
+    .k-row:hover { background: oklch(96.5% 0 0) !important; }
+    .shot { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; height: 900px; background: oklch(98.75% 0 0); color: oklch(20.5% 0 0); font-family: Inter, ui-sans-serif, system-ui, sans-serif; letter-spacing: -0.16px; display: flex; flex-direction: column; overflow: hidden;">
+
+  <!-- ── header ─────────────────────────────────────────────── -->
+  <div style="height: 56px; flex-shrink: 0; border-bottom: 1px solid oklch(93.5% 0 0); background: #fff; display: flex; align-items: center; gap: 18px; padding: 0 16px;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="oklch(55.6% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="4.5" r="2.3"></circle><circle cx="5" cy="19.5" r="2.3"></circle>
+        <circle cx="19" cy="19.5" r="2.3"></circle>
+        <path d="M12 6.8v4.4M12 11.2H5v6M12 11.2h7v6"></path>
+      </svg>
+      <span style="font-size: 14px; font-weight: 600; color: oklch(14.5% 0 0);">Branchpoint</span>
+    </div>
+
+    <div style="width: 1px; height: 20px; background: oklch(93.5% 0 0);"></div>
+
+    <div style="display: flex; align-items: center; gap: 4px; padding: 3px; border-radius: 8px; background: oklch(96.5% 0 0); border: 1px solid oklch(93.5% 0 0);">
+      <div style="padding: 5px 12px; border-radius: 6px; font-size: 13px; color: oklch(70.8% 0 0);">Build</div>
+      <div style="padding: 5px 12px; border-radius: 6px; background: #fff; box-shadow: 0 1px 2px oklch(0% 0 0/.07); font-size: 13px; font-weight: 500; color: oklch(14.5% 0 0);">Run</div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 7px; font-size: 13px;">
+      <span style="color: oklch(70.8% 0 0);">nimbus-labs/nimbus</span>
+      <span style="color: oklch(87% 0 0);">/</span>
+      <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; letter-spacing: 0; color: oklch(20.5% 0 0);">def456</span>
+      <span style="color: oklch(87% 0 0);">&middot;</span>
+      <span style="color: oklch(55.6% 0 0);">{{ run.stamp }}</span>
+    </div>
+
+    <div style="flex-grow: 1;"></div>
+
+    <div style="display: flex; align-items: center; gap: 6px;">
+      <sc-for list="{{ tallies }}" as="t" hint-placeholder-count="4">
+        <div style="{{ t.badgeStyle }}">
+          <span style="width: 6px; height: 6px; border-radius: 9999px; background: {{ t.dot }};"></span>
+          <span>{{ t.n }} {{ t.label }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <button class="k-btn" onClick="{{ rerun }}" style="height: 36px; padding: 0 14px; border-radius: 8px; border: 1px solid oklch(14.5% 0 0/.1); background: #fff; color: oklch(20.5% 0 0); font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: -0.16px; cursor: pointer; display: flex; align-items: center; gap: 6px; flex-shrink: 0; box-shadow: 0 1px 2px oklch(0% 0 0/.06);">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12a9 9 0 1 1-3.2-6.9"></path><path d="M21 3.5v5h-5"></path>
+      </svg>
+      {{ run.btnLabel }}
+    </button>
+  </div>
+
+  <div style="flex-grow: 1; display: flex; min-height: 0;">
+
+    <!-- ── left rail ────────────────────────────────────────── -->
+    <div style="width: 216px; flex-shrink: 0; border-right: 1px solid oklch(93.5% 0 0); background: #fff; display: flex; flex-direction: column;">
+      <div style="padding: 16px 14px 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: oklch(70.8% 0 0);">Runs</div>
+      <div style="display: flex; flex-direction: column; gap: 2px; padding: 0 8px;">
+        <sc-for list="{{ runs }}" as="r" hint-placeholder-count="4">
+          <div class="k-row" style="{{ r.rowStyle }}">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="width: 6px; height: 6px; border-radius: 9999px; background: {{ r.dot }}; flex-shrink: 0;"></span>
+              <span style="font-size: 13px; font-weight: 500; color: {{ r.nameColor }};">{{ r.name }}</span>
+            </div>
+            <div style="padding-left: 14px; margin-top: 2px; font-size: 12px; color: oklch(70.8% 0 0);">{{ r.sub }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="flex-grow: 1;"></div>
+
+      <div style="margin: 0 10px 12px; padding: 10px; border: 1px solid oklch(93.5% 0 0); border-radius: 8px; background: oklch(96.5% 0 0);">
+        <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: oklch(70.8% 0 0); margin-bottom: 8px;">Fixture</div>
+        <div style="border-radius: 6px; overflow: hidden; border: 1px solid oklch(93.5% 0 0); height: 68px;">
+          <img src="root.png" class="shot" alt="signed-in starting screen">
+        </div>
+        <div style="margin-top: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: oklch(55.6% 0 0); letter-spacing: 0;">snp_34Fj0JG…</div>
+        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid oklch(93.5% 0 0); font-size: 12px; color: oklch(55.6% 0 0); line-height: 1.5;">Every branch forks from here instead of signing in again.</div>
+      </div>
+    </div>
+
+    <!-- ── centre: tree ─────────────────────────────────────── -->
+    <div style="flex-grow: 1; position: relative; min-width: 0; background: oklch(96.5% 0 0);">
+
+      <div style="position: absolute; top: 16px; left: 22px; display: flex; align-items: center; gap: 16px;">
+        <sc-for list="{{ legend }}" as="g" hint-placeholder-count="4">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="width: 8px; height: 8px; border-radius: 4px; background: {{ g.color }};"></span>
+            <span style="font-size: 12px; color: oklch(55.6% 0 0);">{{ g.text }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="position: absolute; top: 52px; left: 50%; transform: translateX(-50%); width: 780px; height: 520px;">
+
+        <svg width="780" height="520" style="position: absolute; inset: 0; overflow: visible;">
+          <sc-for list="{{ edges }}" as="e" hint-placeholder-count="8">
+            <path d="{{ e.d }}" fill="none" stroke="{{ e.stroke }}" stroke-width="{{ e.width }}" stroke-dasharray="{{ e.dash }}" stroke-linecap="round"></path>
+          </sc-for>
+        </svg>
+
+        <!-- 노드는 파일명이 리터럴로 남아야 이미지가 붙으므로 펼쳐서 작성한다 -->
+        <div class="k-node" onClick="{{ n.root.pick }}" style="{{ n.root.cardStyle }}">
+          <div style="{{ n.root.thumbStyle }}"><img src="root.png" class="shot" alt="Email verified"></div>
+          <div style="padding: 8px 10px 9px;">
+            <div style="font-size: 13px; font-weight: 500; color: {{ n.root.labelColor }}; line-height: 1.25;">{{ n.root.label }}</div>
+            <div style="margin-top: 5px; display: flex; align-items: center; gap: 5px;">
+              <span style="width: 6px; height: 6px; border-radius: 9999px; background: {{ n.root.dot }}; flex-shrink: 0;"></span>
+              <span style="font-size: 12px; color: {{ n.root.metaColor }};">{{ n.root.meta }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="k-node" onClick="{{ n.team.pick }}" style="{{ n.team.cardStyle }}">
+          <div style="{{ n.team.thumbStyle }}"><img src="team.png" class="shot" alt="Bring your team in"></div>
+          <div style="padding: 8px 10px 9px;">
+            <div style="font-size: 13px; font-weight: 500; color: {{ n.team.labelColor }}; line-height: 1.25;">{{ n.team.label }}</div>
+            <div style="margin-top: 5px; display: flex; align-items: center; gap: 5px;">
+              <span style="width: 6px; height: 6px; border-radius: 9999px; background: {{ n.team.dot }}; flex-shrink: 0;"></span>
+              <span style="font-size: 12px; color: {{ n.team.metaColor }};">{{ n.team.meta }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="k-node" onClick="{{ n.solo.pick }}" style="{{ n.solo.cardStyle }}">
+          <div style="{{ n.solo.thumbStyle }}"><img src="solo.png" class="shot" alt="Pick a starting point"></div>
+          <div style="padding: 8px 10px 9px;">
+            <div style="font-size: 13px; font-weight: 500; color: {{ n.solo.labelColor }}; line-height: 1.25;">{{ n.solo.label }}</div>
+            <div style="margin-top: 5px; display: flex; align-items: center; gap: 5px;">
+              <span style="width: 6px; height: 6px; border-radius: 9999px; background: {{ n.solo.dot }}; flex-shrink: 0;"></span>
+              <span style="font-size: 12px; color: {{ n.solo.metaColor }};">{{ n.solo.meta }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="k-node" onClick="{{ n.later.pick }}" style="{{ n.later.cardStyle }}">
+          <div style="{{ n.later.thumbStyle }}"><img src="later.png" class="shot" alt="Something went wrong"></div>
+          <div style="padding: 8px 10px 9px;">
+            <div style="font-size: 13px; font-weight: 500; color: {{ n.later.labelColor }}; line-height: 1.25;">{{ n.later.label }}</div>
+            <div style="margin-top: 5px; display: flex; align-items: center; gap: 5px;">
+              <span style="width: 6px; height: 6px; border-radius: 9999px; background: {{ n.later.dot }}; flex-shrink: 0;"></span>
+              <span style="font-size: 12px; color: {{ n.later.metaColor }};">{{ n.later.meta }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="k-node" onClick="{{ n.invite.pick }}" style="{{ n.invite.cardStyle }}">
+          <div style="{{ n.invite.thumbStyle }}"><img src="invite.png" class="shot" alt="Invitations sent"></div>
+          <div style="padding: 8px 10px 9px;">
+            <div style="font-size: 13px; font-weight: 500; color: {{ n.invite.labelColor }}; line-height: 1.25;">{{ n.invite.label }}</div>
+            <div style="margin-top: 5px; display: flex; align-items: center; gap: 5px;">
+              <span style="width: 6px; height: 6px; border-radius: 9999px; background: {{ n.invite.dot }}; flex-shrink: 0;"></span>
+              <span style="font-size: 12px; color: {{ n.invite.metaColor }};">{{ n.invite.meta }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="k-node" onClick="{{ n.skipinv.pick }}" style="{{ n.skipinv.cardStyle }}">
+          <div style="{{ n.skipinv.thumbStyle }}"><img src="skipinv.png" class="shot" alt="Workspace ready"></div>
+          <div style="padding: 8px 10px 9px;">
+            <div style="font-size: 13px; font-weight: 500; color: {{ n.skipinv.labelColor }}; line-height: 1.25;">{{ n.skipinv.label }}</div>
+            <div style="margin-top: 5px; display: flex; align-items: center; gap: 5px;">
+              <span style="width: 6px; height: 6px; border-radius: 9999px; background: {{ n.skipinv.dot }}; flex-shrink: 0;"></span>
+              <span style="font-size: 12px; color: {{ n.skipinv.metaColor }};">{{ n.skipinv.meta }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="k-node" onClick="{{ n.starter.pick }}" style="{{ n.starter.cardStyle }}">
+          <div style="{{ n.starter.thumbStyle }}"><img src="starter.png" class="shot" alt="Starter project created"></div>
+          <div style="padding: 8px 10px 9px;">
+            <div style="font-size: 13px; font-weight: 500; color: {{ n.starter.labelColor }}; line-height: 1.25;">{{ n.starter.label }}</div>
+            <div style="margin-top: 5px; display: flex; align-items: center; gap: 5px;">
+              <span style="width: 6px; height: 6px; border-radius: 9999px; background: {{ n.starter.dot }}; flex-shrink: 0;"></span>
+              <span style="font-size: 12px; color: {{ n.starter.metaColor }};">{{ n.starter.meta }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="k-node" onClick="{{ n.blank.pick }}" style="{{ n.blank.cardStyle }}">
+          <div style="{{ n.blank.thumbStyle }}"><img src="blank.png" class="shot" alt="Something went wrong"></div>
+          <div style="padding: 8px 10px 9px;">
+            <div style="font-size: 13px; font-weight: 500; color: {{ n.blank.labelColor }}; line-height: 1.25;">{{ n.blank.label }}</div>
+            <div style="margin-top: 5px; display: flex; align-items: center; gap: 5px;">
+              <span style="width: 6px; height: 6px; border-radius: 9999px; background: {{ n.blank.dot }}; flex-shrink: 0;"></span>
+              <span style="font-size: 12px; color: {{ n.blank.metaColor }};">{{ n.blank.meta }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="k-node" onClick="{{ n.import.pick }}" style="{{ n.import.cardStyle }}">
+          <div style="{{ n.import.thumbStyle }}"><img src="import.png" class="shot" alt="Records imported"></div>
+          <div style="padding: 8px 10px 9px;">
+            <div style="font-size: 13px; font-weight: 500; color: {{ n.import.labelColor }}; line-height: 1.25;">{{ n.import.label }}</div>
+            <div style="margin-top: 5px; display: flex; align-items: center; gap: 5px;">
+              <span style="width: 6px; height: 6px; border-radius: 9999px; background: {{ n.import.dot }}; flex-shrink: 0;"></span>
+              <span style="font-size: 12px; color: {{ n.import.metaColor }};">{{ n.import.meta }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="position: absolute; bottom: 16px; left: 22px; right: 22px; padding: 13px 15px; border-radius: 8px; background: #fff; border: 1px solid oklch(93.5% 0 0);">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 11px;">
+          <span style="font-size: 13px; font-weight: 600; color: oklch(14.5% 0 0);">Wall clock</span>
+          <span style="font-size: 12px; color: oklch(70.8% 0 0);">{{ run.clockNote }}</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <sc-for list="{{ compare }}" as="c" hint-placeholder-count="2">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 176px; font-size: 12.5px; color: {{ c.labelColor }}; flex-shrink: 0;">{{ c.label }}</div>
+              <div style="flex-grow: 1; height: 18px; border-radius: 5px; background: oklch(96.5% 0 0); overflow: hidden;">
+                <div style="height: 100%; width: {{ c.pct }}%; border-radius: 5px; background: {{ c.fill }};"></div>
+              </div>
+              <div style="width: 62px; text-align: right; font-size: 13px; font-weight: 600; letter-spacing: -0.16px; color: {{ c.valueColor }}; flex-shrink: 0;">{{ c.value }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── right: detail ────────────────────────────────────── -->
+    <div style="width: 384px; flex-shrink: 0; border-left: 1px solid oklch(93.5% 0 0); background: #fff; display: flex; flex-direction: column; overflow: hidden;">
+
+      <div style="padding: 16px; border-bottom: 1px solid oklch(93.5% 0 0);">
+        <div style="{{ sel.badgeStyle }}">
+          <span style="width: 6px; height: 6px; border-radius: 9999px; background: {{ sel.dot }};"></span>
+          <span>{{ sel.statusText }}</span>
+        </div>
+        <div style="margin-top: 10px; font-size: 20px; font-weight: 600; letter-spacing: -0.4px; color: oklch(14.5% 0 0);">{{ sel.label }}</div>
+        <div style="margin-top: 4px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: 0; color: oklch(70.8% 0 0);">{{ sel.path }}</div>
+      </div>
+
+      <div style="padding: 16px; border-bottom: 1px solid oklch(93.5% 0 0);">
+        <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: oklch(70.8% 0 0); margin-bottom: 8px;">Stored intent</div>
+        <div style="padding: 10px 12px; border-radius: 6px; background: oklch(96.5% 0 0); border: 1px solid oklch(93.5% 0 0); font-size: 13px; color: oklch(20.5% 0 0); line-height: 1.5;">{{ sel.intent }}</div>
+        <div style="margin-top: 8px; display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 12px; color: oklch(70.8% 0 0);">resolved to</span>
+          <span style="{{ sel.resolvedStyle }}">{{ sel.resolved }}</span>
+        </div>
+      </div>
+
+      <div style="padding: 16px; border-bottom: 1px solid oklch(93.5% 0 0);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+          <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: oklch(70.8% 0 0);">{{ sel.shotTitle }}</div>
+          <div style="font-size: 12px; color: oklch(70.8% 0 0);">{{ sel.shotMeta }}</div>
+        </div>
+
+        <sc-if value="{{ sel.isStarter }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; gap: 10px;">
+            <div style="flex-grow: 1; width: 0;">
+              <div style="height: 106px; border-radius: 6px; overflow: hidden; border: 1px solid oklch(93.5% 0 0);"><img src="v1-step2solo.png" class="shot" alt="previous run"></div>
+              <div style="margin-top: 6px; font-size: 12px; color: oklch(70.8% 0 0);">run 41 &middot; &ldquo;Starter template&rdquo;</div>
+            </div>
+            <div style="flex-grow: 1; width: 0;">
+              <div style="height: 106px; border-radius: 6px; overflow: hidden; border: 1px solid oklch(73.9% .177 58.2); box-shadow: 0 0 0 3px oklch(93.1% .107 94.6/.2);"><img src="solo.png" class="shot" alt="current run"></div>
+              <div style="margin-top: 6px; font-size: 12px; color: oklch(59.7% .144 57.5);">run 42 &middot; &ldquo;Use a starter&rdquo;</div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ sel.isBlank }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; gap: 10px;">
+            <div style="flex-grow: 1; width: 0;">
+              <div style="height: 106px; border-radius: 6px; overflow: hidden; border: 1px solid oklch(93.5% 0 0);"><img src="v1-blank.png" class="shot" alt="previous run"></div>
+              <div style="margin-top: 6px; font-size: 12px; color: oklch(70.8% 0 0);">run 41 &middot; completed</div>
+            </div>
+            <div style="flex-grow: 1; width: 0;">
+              <div style="height: 106px; border-radius: 6px; overflow: hidden; border: 1px solid oklch(63.7% .237 25.331); box-shadow: 0 0 0 3px oklch(93.6% .032 17.7/.42);"><img src="blank.png" class="shot" alt="current run"></div>
+              <div style="margin-top: 6px; font-size: 12px; color: oklch(50.5% .213 27.518);">run 42 &middot; error screen</div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ sel.isLater }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; gap: 10px;">
+            <div style="flex-grow: 1; width: 0;">
+              <div style="height: 106px; border-radius: 6px; overflow: hidden; border: 1px solid oklch(93.5% 0 0);"><img src="v1-later.png" class="shot" alt="previous run"></div>
+              <div style="margin-top: 6px; font-size: 12px; color: oklch(70.8% 0 0);">run 41 &middot; completed</div>
+            </div>
+            <div style="flex-grow: 1; width: 0;">
+              <div style="height: 106px; border-radius: 6px; overflow: hidden; border: 1px solid oklch(63.7% .237 25.331); box-shadow: 0 0 0 3px oklch(93.6% .032 17.7/.42);"><img src="later.png" class="shot" alt="current run"></div>
+              <div style="margin-top: 6px; font-size: 12px; color: oklch(50.5% .213 27.518);">run 42 &middot; error screen</div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ sel.isImport }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; gap: 10px;">
+            <div style="flex-grow: 1; width: 0;">
+              <div style="height: 106px; border-radius: 6px; overflow: hidden; border: 1px solid oklch(62.3% .214 259.815); box-shadow: 0 0 0 3px oklch(93.2% .032 255.6/.45);"><img src="solo.png" class="shot" alt="the new option"></div>
+              <div style="margin-top: 6px; font-size: 12px; color: oklch(42.4% .199 265.638);">the card that appeared</div>
+            </div>
+            <div style="flex-grow: 1; width: 0;">
+              <div style="height: 106px; border-radius: 6px; overflow: hidden; border: 1px solid oklch(93.5% 0 0);"><img src="import.png" class="shot" alt="where it led"></div>
+              <div style="margin-top: 6px; font-size: 12px; color: oklch(70.8% 0 0);">where it led</div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ sel.isPlain }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; align-items: center; gap: 10px; padding: 14px; border-radius: 6px; background: oklch(96.5% 0 0); border: 1px solid oklch(93.5% 0 0);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="oklch(59.6% .145 163.225)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+              <path d="M5 12.5l4.5 4.5L19 7"></path>
+            </svg>
+            <span style="font-size: 13px; color: oklch(55.6% 0 0); line-height: 1.45;">Pixel-identical to run 41. Nothing to review here.</span>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="padding: 16px; flex-grow: 1; overflow: hidden;">
+        <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: oklch(70.8% 0 0); margin-bottom: 11px;">Agent log</div>
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <sc-for list="{{ sel.log }}" as="l" hint-placeholder-count="5">
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
+              <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: 0; color: oklch(80% 0 0); flex-shrink: 0; width: 36px; padding-top: 1px;">{{ l.t }}</span>
+              <span style="font-size: 13px; color: {{ l.color }}; line-height: 1.45;">{{ l.text }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="padding: 12px 16px; border-top: 1px solid oklch(93.5% 0 0);">
+        <sc-if value="{{ sel.needsVerdict }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; gap: 8px;">
+            <button class="k-brand" style="flex-grow: 1; height: 36px; border-radius: 8px; border: 0; background: oklch(57.72% .2324 260); color: #fff; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: -0.16px; cursor: pointer;">{{ sel.acceptLabel }}</button>
+            <button class="k-btn" style="flex-grow: 1; height: 36px; border-radius: 8px; border: 1px solid oklch(14.5% 0 0/.1); background: #fff; color: oklch(20.5% 0 0); font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: -0.16px; cursor: pointer; box-shadow: 0 1px 2px oklch(0% 0 0/.06);">Report as bug</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ sel.noVerdict }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; gap: 8px;">
+            <button class="k-btn" style="flex-grow: 1; height: 36px; border-radius: 8px; border: 1px solid oklch(14.5% 0 0/.1); background: #fff; color: oklch(20.5% 0 0); font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: -0.16px; cursor: pointer; box-shadow: 0 1px 2px oklch(0% 0 0/.06);">Fork from here</button>
+            <button class="k-btn" style="flex-grow: 1; height: 36px; border-radius: 8px; border: 1px solid oklch(14.5% 0 0/.1); background: #fff; color: oklch(20.5% 0 0); font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: -0.16px; cursor: pointer; box-shadow: 0 1px 2px oklch(0% 0 0/.06);">Prune branch</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+// Kumo light-mode tokens, lifted from kumo-ui.com
+const K = {
+  canvas:'oklch(98.75% 0 0)', recessed:'oklch(96.5% 0 0)', base:'#fff',
+  fill:'oklch(92.2% 0 0)', hairline:'oklch(93.5% 0 0)', line:'oklch(14.5% 0 0/.1)',
+  strong:'oklch(14.5% 0 0)', text:'oklch(20.5% 0 0)', subtle:'oklch(55.6% 0 0)',
+  placeholder:'oklch(70.8% 0 0)', inactive:'oklch(87% 0 0)',
+  brand:'oklch(57.72% .2324 260)',
+  success:'oklch(59.6% .145 163.225)', warning:'oklch(73.9% .177 58.2)',
+  danger:'oklch(63.7% .237 25.331)',   info:'oklch(62.3% .214 259.815)',
+  successText:'oklch(43.2% .095 166.913)', warningText:'oklch(59.7% .144 57.5)',
+  dangerText:'oklch(50.5% .213 27.518)',   infoText:'oklch(42.4% .199 265.638)',
+  successTint:'oklch(96.2% .043 156.7/.57)', warningTint:'oklch(93.1% .107 94.6/.2)',
+  dangerTint:'oklch(93.6% .032 17.7/.42)',   infoTint:'oklch(93.2% .032 255.6/.45)'
+};
+
+const S = {
+  pass: { dot:K.success, text:K.successText, tint:K.successTint, label:'Passed' },
+  fail: { dot:K.danger,  text:K.dangerText,  tint:K.dangerTint,  label:'Failed' },
+  base: { dot:K.placeholder, text:K.subtle,   tint:K.recessed, label:'Fixture' },
+  idle: { dot:K.inactive,    text:K.inactive, tint:K.recessed, label:'Running' }
+};
+
+const badge = (st) => 'display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;'
+  + 'border-radius:9999px;font-size:12px;font-weight:500;letter-spacing:-0.16px;'
+  + 'background:' + S[st].tint + ';color:' + S[st].text + ';';
+
+// x = centre, y = top. Cards are 132 wide; 82 thumb + 54 label = 136 tall.
+const CARD_H = 136;
+const TREE = [
+  { id:'root', label:'Email verified', x:390, y:0, parent:null, status:'base',
+    meta:'fixture snapshot', intent:'Start from the signed-in snapshot',
+    resolved:'snp_34Fj0JG…', path:'/verify (fixture)' },
+
+  { id:'team',  label:'Team plan',    x:150, y:190, parent:'root', status:'pass',
+    meta:'passed', intent:'Choose the team option', resolved:'"Team plan" card',
+    path:'/step1 → team' },
+  { id:'solo',  label:'Solo plan',    x:430, y:190, parent:'root', status:'pass',
+    meta:'passed', intent:'Choose the solo option', resolved:'"Solo plan" card',
+    path:'/step1 → solo' },
+  { id:'later', label:'Decide later', x:692, y:190, parent:'root', status:'fail',
+    meta:'failed · dead end', intent:'Defer the choice', resolved:'"Decide later" card', path:'/step1 → later' },
+
+  { id:'invite',  label:'Invite teammates', x:78,  y:380, parent:'team', status:'pass',
+    meta:'passed', intent:'Send invitations', resolved:'"Invite teammates" card',
+    path:'…team → invite' },
+  { id:'skipinv', label:'Skip invites',     x:222, y:380, parent:'team', status:'pass',
+    meta:'passed', intent:'Skip this step', resolved:'"Skip invites" card',
+    path:'…team → skip' },
+  { id:'starter', label:'Starter template', x:366, y:380, parent:'solo', status:'pass',
+    meta:'passed · UI changed', intent:'Pick the starter template', resolved:'"Use a starter" card',
+    path:'…solo → starter' },
+  { id:'blank',   label:'Blank workspace',  x:510, y:380, parent:'solo', status:'fail',
+    meta:'failed · dead end', intent:'Start from an empty workspace', resolved:'"Blank workspace" card',
+    path:'…solo → blank' },
+  { id:'import',  label:'Import from CSV',  x:654, y:380, parent:'solo', status:'pass',
+    meta:'passed · new path', intent:'Bring in existing data', resolved:'"Import from CSV" card',
+    path:'…solo → import' }
+];
+
+const LOGS = {
+  starter: [
+    { t:'+0.0s', text:'Forked from the fixture · booted in 2.7s', c:K.subtle },
+    { t:'+2.9s', text:'Looked for a control meaning "starter template"', c:K.subtle },
+    { t:'+3.4s', text:'The card seen in run 41 is gone', c:K.warningText },
+    { t:'+4.1s', text:'Matched the intent to "Use a starter" instead', c:K.warningText },
+    { t:'+6.2s', text:'Reached the done screen · path intact', c:K.successText }
+  ],
+  blank: [
+    { t:'+0.0s', text:'Forked from the fixture · booted in 2.6s', c:K.subtle },
+    { t:'+3.1s', text:'Selected the blank workspace option', c:K.subtle },
+    { t:'+5.8s', text:'Landed on an error screen, not the workspace', c:K.dangerText },
+    { t:'+8.0s', text:'Re-read after 3s · still an error', c:K.dangerText },
+    { t:'+8.1s', text:'Dead end · this path completed in run 41', c:K.dangerText }
+  ],
+  later: [
+    { t:'+0.0s', text:'Forked from the fixture · booted in 2.8s', c:K.subtle },
+    { t:'+3.3s', text:'Chose "Decide later" as before', c:K.subtle },
+    { t:'+6.5s', text:'Error screen · this path completed in run 41', c:K.dangerText }
+  ],
+  import: [
+    { t:'+0.0s', text:'Forked from the fixture · booted in 2.7s', c:K.subtle },
+    { t:'+3.0s', text:'Found a third card the tree had never seen', c:K.infoText },
+    { t:'+3.0s', text:'Explored it rather than skipping past', c:K.infoText },
+    { t:'+7.4s', text:'Reached the done screen · added to the tree', c:K.successText }
+  ],
+  _default: [
+    { t:'+0.0s', text:'Forked from the fixture · booted in 2.7s', c:K.subtle },
+    { t:'+3.2s', text:'Resolved the intent on the first try', c:K.subtle },
+    { t:'+6.0s', text:'Reached the expected screen · nothing changed', c:K.successText }
+  ]
+};
+
+const SHOT_META = {
+  starter: { title:'Screenshot diff', meta:'passed, but the UI moved' },
+  blank:   { title:'Screenshot diff', meta:'where it broke' },
+  later:   { title:'Screenshot diff', meta:'where it broke' },
+  import:  { title:'First capture',   meta:'this path is new' },
+  _default:{ title:'Screenshot',      meta:'unchanged' }
+};
+
+const CHILDREN = TREE.filter((x) => x.parent);
+const REVIEWABLE = ['starter', 'blank', 'later', 'import'];
+
+class Component extends DCLogic {
+  constructor(...a) {
+    super(...a);
+    this.state = { picked: 'starter', phase: 'done', revealed: CHILDREN.length };
+    this.timers = [];
+  }
+
+  componentWillUnmount() { this.timers.forEach(clearTimeout); }
+
+  rerun() {
+    this.timers.forEach(clearTimeout);
+    this.timers = [];
+    this.setState({ phase: 'running', revealed: 0 });
+    CHILDREN.forEach((c, i) => {
+      this.timers.push(setTimeout(
+        () => this.setState((s) => ({ revealed: (s.revealed || 0) + 1 })),
+        320 + i * 230));
+    });
+    this.timers.push(setTimeout(
+      () => this.setState({ phase: 'done' }), 320 + CHILDREN.length * 230));
+  }
+
+  statusOf(node) {
+    if (!node.parent) return 'base';
+    if (this.state.phase !== 'running') return node.status;
+    return CHILDREN.indexOf(node) < this.state.revealed ? node.status : 'idle';
+  }
+
+  renderVals() {
+    const running = this.state.phase === 'running';
+    const pos = {};
+    TREE.forEach((x) => { pos[x.id] = x; });
+
+    const n = {};
+    TREE.forEach((node) => {
+      const st = this.statusOf(node);
+      const s = S[st];
+      const on = this.state.picked === node.id;
+      const dull = st === 'idle';
+      n[node.id] = {
+        label: node.label,
+        meta: dull ? 'running…' : node.meta,
+        dot: s.dot,
+        labelColor: dull ? K.placeholder : K.strong,
+        metaColor: dull ? K.placeholder : s.text,
+        cardStyle: 'position:absolute;left:' + node.x + 'px;top:' + node.y + 'px;'
+          + 'transform:translateX(-50%);width:132px;border-radius:8px;cursor:pointer;'
+          + 'background:' + K.base + ';overflow:hidden;'
+          + 'border:1px solid ' + (on ? s.dot : K.hairline) + ';'
+          + (on ? 'box-shadow:0 0 0 3px ' + s.tint + ',0 4px 12px oklch(0% 0 0/.1);'
+                : 'box-shadow:0 1px 2px oklch(0% 0 0/.08);')
+          + (dull ? 'opacity:.5;' : ''),
+        thumbStyle: 'height:82px;overflow:hidden;background:' + K.recessed + ';'
+          + 'border-bottom:1px solid ' + K.hairline + ';'
+          + 'border-left:3px solid ' + s.dot + ';'
+          + (dull ? 'filter:grayscale(1);' : ''),
+        pick: () => this.setState({ picked: node.id })
+      };
+    });
+
+    const edges = CHILDREN.map((c) => {
+      const p = pos[c.parent];
+      const x1 = p.x, y1 = p.y + CARD_H, x2 = c.x, y2 = c.y, my = (y1 + y2) / 2;
+      const st = this.statusOf(c);
+      return {
+        d: 'M' + x1 + ' ' + y1 + ' C' + x1 + ' ' + my + ' ' + x2 + ' ' + my + ' ' + x2 + ' ' + y2,
+        stroke: st === 'idle' ? K.hairline : (st === 'fail' ? K.danger : K.inactive),
+        width: '1.5',
+        dash: 'none'
+      };
+    });
+
+    const counts = { pass:0, fail:0 };
+    CHILDREN.forEach((c) => {
+      const st = this.statusOf(c);
+      if (counts[st] !== undefined) counts[st] += 1;
+    });
+
+    const sel = TREE.find((x) => x.id === this.state.picked) || TREE[0];
+    const selSt = this.statusOf(sel);
+    const sm = SHOT_META[sel.id] || SHOT_META._default;
+    const REVIEW = { starter:'Accept as baseline', import:'Keep in suite',
+                     blank:'Accept as baseline', later:'Accept as baseline' };
+    const needsVerdict = REVIEW[sel.id] !== undefined;
+
+    return {
+      n: n,
+      edges: edges,
+      rerun: () => this.rerun(),
+
+      run: {
+        stamp: running ? 'run 42 · running now' : 'run 42 · 3 min ago',
+        btnLabel: running ? 'Running…' : 'Re-run suite',
+        clockNote: running ? 'eight branches running at the same time'
+                           : '8 paths · tree depth 3'
+      },
+
+      compare: [
+        { label:'Eight runs, one at a time', pct:100, fill:K.fill, value:'3m 30s',
+          labelColor:K.subtle, valueColor:K.subtle },
+        { label:'Forked from one snapshot', pct:7.4, fill:K.brand,
+          value: running ? '…' : '15.6s',
+          labelColor:K.strong, valueColor:K.strong }
+      ],
+
+      tallies: [
+        { dot:K.success, n:counts.pass, label:'passed', badgeStyle: badge('pass') },
+        { dot:K.danger,  n:counts.fail, label:'failed', badgeStyle: badge('fail') }
+      ],
+
+      legend: [
+        { color:K.success, text:'the path still works' },
+        { color:K.danger,  text:'the path failed' }
+      ],
+
+      runs: [
+        { name:'run 42', sub: running ? 'def456 · running now' : 'def456 · 3 min ago · 4 of 8 clean',
+          dot:K.warning, nameColor:K.strong,
+          rowStyle:'padding:9px 10px;border-radius:6px;background:' + K.recessed
+            + ';border:1px solid ' + K.hairline + ';cursor:pointer;' },
+        { name:'run 41', sub:'abc123 · yesterday · 7 of 7 clean', dot:K.success, nameColor:K.subtle,
+          rowStyle:'padding:9px 10px;border-radius:6px;border:1px solid transparent;cursor:pointer;' },
+        { name:'run 40', sub:'9f21ab · 2 days ago · 7 of 7 clean', dot:K.success, nameColor:K.subtle,
+          rowStyle:'padding:9px 10px;border-radius:6px;border:1px solid transparent;cursor:pointer;' },
+        { name:'run 39', sub:'41c0de · 4 days ago · 6 of 7 clean', dot:K.warning, nameColor:K.subtle,
+          rowStyle:'padding:9px 10px;border-radius:6px;border:1px solid transparent;cursor:pointer;' }
+      ],
+
+      sel: {
+        label: sel.label,
+        path: sel.path,
+        intent: sel.intent,
+        resolved: sel.resolved,
+        statusText: S[selSt].label,
+        dot: S[selSt].dot,
+        badgeStyle: badge(selSt),
+        resolvedStyle: 'font-size:12px;padding:3px 8px;border-radius:4px;background:'
+          + S[selSt].tint + ';color:' + S[selSt].text + ';',
+        shotTitle: sm.title,
+        shotMeta: sm.meta,
+        isStarter: sel.id === 'starter',
+        isBlank:   sel.id === 'blank',
+        isLater:   sel.id === 'later',
+        isImport:  sel.id === 'import',
+        isPlain:   REVIEWABLE.indexOf(sel.id) === -1,
+        needsVerdict: needsVerdict,
+        noVerdict: !needsVerdict,
+        acceptLabel: REVIEW[sel.id] || 'Accept as baseline',
+        log: (LOGS[sel.id] || LOGS._default).map((l) => ({ t: l.t, text: l.text, color: l.c }))
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; background: oklch(98.75% 0 0); }
+    * { box-sizing: border-box; }
+    .k-btn:hover { background: oklch(96.5% 0 0) !important; }
+    .k-brand:hover { background: oklch(48.8% .243 264.376) !important; }
+    .k-chip:hover { background: oklch(93.2% .032 255.6/.45) !important; border-color: oklch(62.3% .214 259.815) !important; color: oklch(42.4% .199 265.638) !important; }
+    .k-card { transition: border-color .13s ease, box-shadow .13s ease; }
+    .k-card:hover { border-color: oklch(70.8% 0 0) !important; }
+    @keyframes blink { 0%, 100% { opacity: 1 } 50% { opacity: .25 } }
+    .caret { animation: blink 1.1s steps(1) infinite; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; height: 900px; background: oklch(98.75% 0 0); color: oklch(20.5% 0 0); font-family: Inter, ui-sans-serif, system-ui, sans-serif; letter-spacing: -0.16px; display: flex; flex-direction: column; overflow: hidden;">
+
+  <!-- header -->
+  <div style="height: 56px; flex-shrink: 0; border-bottom: 1px solid oklch(93.5% 0 0); background: #fff; display: flex; align-items: center; gap: 18px; padding: 0 16px;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="oklch(55.6% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="4.5" r="2.3"></circle><circle cx="5" cy="19.5" r="2.3"></circle>
+        <circle cx="19" cy="19.5" r="2.3"></circle>
+        <path d="M12 6.8v4.4M12 11.2H5v6M12 11.2h7v6"></path>
+      </svg>
+      <span style="font-size: 14px; font-weight: 600; color: oklch(14.5% 0 0);">Branchpoint</span>
+    </div>
+    <div style="width: 1px; height: 20px; background: oklch(93.5% 0 0);"></div>
+
+    <div style="display: flex; align-items: center; gap: 4px; padding: 3px; border-radius: 8px; background: oklch(96.5% 0 0); border: 1px solid oklch(93.5% 0 0);">
+      <div style="padding: 5px 12px; border-radius: 6px; background: #fff; box-shadow: 0 1px 2px oklch(0% 0 0/.07); font-size: 13px; font-weight: 500; color: oklch(14.5% 0 0);">Build</div>
+      <div style="padding: 5px 12px; border-radius: 6px; font-size: 13px; color: oklch(70.8% 0 0);">Run</div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 7px; font-size: 13px;">
+      <span style="color: oklch(70.8% 0 0);">nimbus-labs/nimbus</span>
+      <span style="color: oklch(87% 0 0);">/</span>
+      <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; letter-spacing: 0; color: oklch(20.5% 0 0);">def456</span>
+    </div>
+
+    <div style="flex-grow: 1;"></div>
+
+    <div style="display: flex; align-items: center; gap: 6px;">
+      <sc-for list="{{ tallies }}" as="t" hint-placeholder-count="3">
+        <div style="{{ t.style }}">
+          <span style="width: 6px; height: 6px; border-radius: 9999px; background: {{ t.dot }};"></span>
+          <span>{{ t.n }} {{ t.label }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <button class="k-brand" style="height: 36px; padding: 0 14px; border-radius: 8px; border: 0; background: oklch(57.72% .2324 260); color: #fff; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: -0.16px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+      Save &amp; run
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h13M12.5 6l6 6-6 6"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div style="flex-grow: 1; display: flex; min-height: 0;">
+
+    <!-- ── left: the conversation ──────────────────────────── -->
+    <div style="width: 428px; flex-shrink: 0; border-right: 1px solid oklch(93.5% 0 0); background: #fff; display: flex; flex-direction: column;">
+
+      <div style="padding: 16px 18px 12px; border-bottom: 1px solid oklch(93.5% 0 0);">
+        <div style="font-size: 14px; font-weight: 600; color: oklch(14.5% 0 0);">Describe the flows to cover</div>
+        <div style="margin-top: 4px; font-size: 13px; color: oklch(55.6% 0 0); line-height: 1.5;">Nothing executes here. Each card stores an intent in plain words &mdash; runs are what turn those into verified paths.</div>
+      </div>
+
+      <div style="flex-grow: 1; overflow: hidden; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px;">
+        <sc-for list="{{ feed }}" as="m" hint-placeholder-count="5">
+          <div style="{{ m.wrapStyle }}">
+            <div style="{{ m.bubbleStyle }}">{{ m.text }}</div>
+          </div>
+        </sc-for>
+        <div style="display: flex; align-items: center; gap: 8px; color: oklch(70.8% 0 0); font-size: 13px;">
+          <span>{{ status.line }}</span><span class="caret">&#9615;</span>
+        </div>
+      </div>
+
+      <div style="padding: 12px 18px 16px; border-top: 1px solid oklch(93.5% 0 0);">
+        <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: oklch(70.8% 0 0); margin-bottom: 8px;">Suggested from run 42</div>
+        <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px;">
+          <sc-for list="{{ chips }}" as="c" hint-placeholder-count="3">
+            <div class="k-chip" onClick="{{ c.tap }}" style="{{ c.style }}">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+                <path d="{{ c.icon }}"></path>
+              </svg>
+              <span>{{ c.text }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; padding: 0 4px 0 12px; height: 40px; border-radius: 8px; border: 1px solid oklch(14.5% 0 0/.1); background: #fff; box-shadow: 0 1px 2px oklch(0% 0 0/.06);">
+          <span style="flex-grow: 1; font-size: 13px; color: oklch(70.8% 0 0);">Describe another flow&hellip;</span>
+          <button class="k-btn" style="height: 32px; width: 32px; border-radius: 6px; border: 1px solid oklch(93.5% 0 0); background: oklch(96.5% 0 0); color: oklch(20.5% 0 0); cursor: pointer; display: flex; align-items: center; justify-content: center;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h13M12.5 6l6 6-6 6"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── right: the intent tree ──────────────────────────── -->
+    <div style="flex-grow: 1; position: relative; min-width: 0; background: oklch(96.5% 0 0);">
+
+      <div style="position: absolute; top: 16px; left: 24px; right: 24px; display: flex; align-items: center; gap: 16px;">
+        <sc-for list="{{ legend }}" as="g" hint-placeholder-count="3">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="{{ g.swatch }}"></span>
+            <span style="font-size: 12px; color: oklch(55.6% 0 0);">{{ g.text }}</span>
+          </div>
+        </sc-for>
+        <div style="flex-grow: 1;"></div>
+        <span style="font-size: 12px; color: oklch(70.8% 0 0);">every card stores an intent, never a selector</span>
+      </div>
+
+      <div style="position: absolute; top: 62px; left: 50%; transform: translateX(-50%); width: 880px; height: 420px;">
+        <svg width="880" height="420" style="position: absolute; inset: 0; overflow: visible;">
+          <sc-for list="{{ edges }}" as="e" hint-placeholder-count="8">
+            <path d="{{ e.d }}" fill="none" stroke="{{ e.stroke }}" stroke-width="1.5" stroke-dasharray="{{ e.dash }}" stroke-linecap="round"></path>
+          </sc-for>
+        </svg>
+
+        <sc-for list="{{ nodes }}" as="nd" hint-placeholder-count="9">
+          <div class="k-card" style="{{ nd.cardStyle }}">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="{{ nd.kickerColor }}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+                <path d="{{ nd.icon }}"></path>
+              </svg>
+              <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: {{ nd.kickerColor }};">{{ nd.kicker }}</span>
+            </div>
+            <div style="margin-top: 7px; font-size: 13px; font-weight: 500; color: oklch(14.5% 0 0); line-height: 1.25;">{{ nd.label }}</div>
+            <div style="margin-top: 4px; font-size: 12px; color: {{ nd.intentColor }}; line-height: 1.4;">{{ nd.intent }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="position: absolute; bottom: 16px; left: 24px; right: 24px; padding: 11px 13px; border-radius: 8px; background: {{ status.noteBg }}; border: 1px solid {{ status.noteBorder }}; display: flex; align-items: center; gap: 9px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="{{ status.noteIcon }}" stroke-width="2" stroke-linecap="round" style="flex-shrink: 0;">
+          <circle cx="12" cy="12" r="9"></circle><path d="M12 16.5v-5.2M12 8.1v.1"></path>
+        </svg>
+        <span style="font-size: 13px; color: {{ status.noteText }};">{{ status.footnote }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+// Kumo light-mode tokens, lifted from kumo-ui.com
+const K = {
+  canvas:'oklch(98.75% 0 0)', recessed:'oklch(96.5% 0 0)', base:'#fff',
+  fill:'oklch(92.2% 0 0)', hairline:'oklch(93.5% 0 0)', line:'oklch(14.5% 0 0/.1)',
+  strong:'oklch(14.5% 0 0)', text:'oklch(20.5% 0 0)', subtle:'oklch(55.6% 0 0)',
+  placeholder:'oklch(70.8% 0 0)', inactive:'oklch(87% 0 0)',
+  brand:'oklch(57.72% .2324 260)',
+  success:'oklch(59.6% .145 163.225)', successText:'oklch(43.2% .095 166.913)',
+  successTint:'oklch(96.2% .043 156.7/.57)',
+  danger:'oklch(63.7% .237 25.331)', dangerText:'oklch(50.5% .213 27.518)',
+  dangerTint:'oklch(93.6% .032 17.7/.42)',
+  info:'oklch(62.3% .214 259.815)', infoText:'oklch(42.4% .199 265.638)',
+  infoTint:'oklch(93.2% .032 255.6/.45)'
+};
+
+const CARD_W = 150, CARD_H = 104;
+const PIN  = 'M12 3.5c-3 0-5.5 2.4-5.5 5.4 0 4 5.5 11.6 5.5 11.6s5.5-7.6 5.5-11.6c0-3-2.5-5.4-5.5-5.4z';
+const CURS = 'M6 3.5l12.5 8.2-5.4 1.3 3 6-2.7 1.3-2.9-6-4.5 3.2z';
+const FLAG = 'M6 21V4.5h11l-1.6 3.4L17 11.3H6';
+
+// state: verified | unresolved | unverified
+const TREE = [
+  { id:'root', label:'Signed-in workspace', x:470, y:0, parent:null, kicker:'fixture',
+    kind:'fixture', state:'verified', intent:'Start every branch from the verified account' },
+
+  { id:'team',  label:'Team plan',    x:175, y:150, parent:'root', kicker:'step 1',
+    kind:'step', state:'verified', intent:'Choose the team option' },
+  { id:'solo',  label:'Solo plan',    x:535, y:150, parent:'root', kicker:'step 1',
+    kind:'step', state:'verified', intent:'Choose the solo option' },
+  { id:'later', label:'Decide later', x:805, y:150, parent:'root', kicker:'step 1',
+    kind:'step', state:'verified', intent:'Defer the choice for now' },
+
+  { id:'invite',  label:'Invite teammates', x:85,  y:300, parent:'team', kicker:'goal',
+    kind:'goal', state:'verified', intent:'Send invitations, then reach the finished screen' },
+  { id:'skipinv', label:'Skip invites',     x:265, y:300, parent:'team', kicker:'goal',
+    kind:'goal', state:'verified', intent:'Skip inviting and still finish setup' },
+  { id:'starter', label:'Starter template', x:445, y:300, parent:'solo', kicker:'goal',
+    kind:'goal', state:'verified', intent:'Pick the prepared template and finish' },
+  { id:'blank',   label:'Blank workspace',  x:625, y:300, parent:'solo', kicker:'goal',
+    kind:'goal', state:'verified', intent:'Start from nothing and still finish' },
+
+  { id:'skipall', label:'Skip onboarding',  x:805, y:300, parent:'later', kicker:'unresolved',
+    kind:'goal', state:'unresolved',
+    intent:'Run 42 found nothing on the page that skips the whole flow' },
+
+  // 실행에서 발견되어 아직 계획에 안 들어온 노드
+  { id:'import',  label:'Import from CSV',  x:625, y:150, parent:'solo', kicker:'new',
+    kind:'goal', state:'unverified', intent:'Bring records in from a spreadsheet' }
+];
+
+const SEED = ['root', 'team', 'solo', 'later', 'invite', 'skipinv', 'starter', 'blank', 'skipall'];
+
+const SEED_FEED = [
+  { kind:'user',  text:'Cover our signup and onboarding. Skip anything that charges a card.' },
+  { kind:'agent', text:'Every branch starts from the signed-in fixture, so none of them re-register. Billing is excluded.' },
+  { kind:'agent', text:'Run 42 verified 8 of 9 steps. One intent matched nothing on the page — it is marked below.' }
+];
+
+const ACTIONS = {
+  adopt: { icon:'M12 5.5v13M5.5 12h13', text:'Adopt the CSV import path run 42 discovered',
+           user:'Yes, keep the CSV import path.',
+           agent:'Added it under Solo plan. It is unverified until the next run confirms it.' },
+  drop:  { icon:'M6 6l12 12M18 6L6 18', text:'Drop the step that matched nothing',
+           user:'There is no skip-everything button. Drop it.',
+           agent:'Removed. The tree no longer claims a flow the app does not have.' },
+  reword:{ icon:'M4 20h4L19 9l-4-4L4 16z', text:'Reword it instead of dropping',
+           user:'Actually, reword it — I meant the "Decide later" shortcut.',
+           agent:'Rewrote the intent. The next run will check the new wording.' }
+};
+
+class Component extends DCLogic {
+  constructor(...a) {
+    super(...a);
+    this.state = { live: SEED.slice(), feed: SEED_FEED.slice(), used: [], reworded: false };
+  }
+
+  act(key) {
+    if (this.state.used.indexOf(key) !== -1) return;
+    const spec = ACTIONS[key];
+    this.setState((s) => {
+      let live = s.live.slice();
+      let reworded = s.reworded;
+      if (key === 'adopt' && live.indexOf('import') === -1) live = live.concat(['import']);
+      if (key === 'drop') live = live.filter((id) => id !== 'skipall');
+      if (key === 'reword') reworded = true;
+      return {
+        live: live,
+        reworded: reworded,
+        used: s.used.concat([key]),
+        feed: s.feed.concat([{ kind:'user', text: spec.user }, { kind:'agent', text: spec.agent }])
+      };
+    });
+  }
+
+  renderVals() {
+    const live = this.state.live;
+    const used = this.state.used;
+    const has = (id) => live.indexOf(id) !== -1;
+    const shown = TREE.filter((x) => has(x.id));
+    const pos = {};
+    shown.forEach((x) => { pos[x.id] = x; });
+
+    const iconOf = (k) => (k === 'fixture' ? PIN : (k === 'goal' ? FLAG : CURS));
+
+    const nodes = shown.map((node) => {
+      let st = node.state;
+      if (node.id === 'skipall' && this.state.reworded) st = 'unverified';
+      const border = st === 'unresolved' ? K.danger
+                   : (st === 'unverified' ? K.info
+                   : (node.kind === 'fixture' ? K.info : K.hairline));
+      const kickerColor = st === 'unresolved' ? K.dangerText
+                        : (st === 'unverified' ? K.infoText : K.placeholder);
+      const kicker = st === 'unresolved' ? 'unresolved'
+                   : (st === 'unverified' ? 'unverified' : node.kicker);
+      const intent = (node.id === 'skipall' && this.state.reworded)
+        ? 'Use the "Decide later" shortcut to leave setup'
+        : node.intent;
+      return {
+        label: node.label,
+        intent: intent,
+        intentColor: st === 'unresolved' ? K.dangerText : K.subtle,
+        kicker: kicker,
+        icon: iconOf(node.kind),
+        kickerColor: kickerColor,
+        cardStyle: 'position:absolute;left:' + node.x + 'px;top:' + node.y + 'px;'
+          + 'transform:translateX(-50%);width:' + CARD_W + 'px;height:' + CARD_H + 'px;'
+          + 'padding:11px 12px;border-radius:8px;'
+          + 'background:' + (st === 'unresolved' ? K.dangerTint : K.base) + ';'
+          + 'border:1px ' + (st === 'unverified' ? 'dashed ' : 'solid ') + border + ';'
+          + 'box-shadow:0 1px 2px oklch(0% 0 0/.08);'
+      };
+    });
+
+    const edges = shown.filter((x) => x.parent && has(x.parent)).map((c) => {
+      const p = pos[c.parent];
+      const x1 = p.x, y1 = p.y + CARD_H, x2 = c.x, y2 = c.y, my = (y1 + y2) / 2;
+      const st = (c.id === 'skipall' && this.state.reworded) ? 'unverified' : c.state;
+      return {
+        d: 'M' + x1 + ' ' + y1 + ' C' + x1 + ' ' + my + ' ' + x2 + ' ' + my + ' ' + x2 + ' ' + y2,
+        stroke: st === 'unresolved' ? K.danger : (st === 'unverified' ? K.info : K.inactive),
+        dash: st === 'unverified' ? '5 4' : 'none'
+      };
+    });
+
+    const bubble = (kind) => (kind === 'user'
+      ? 'max-width:300px;padding:9px 12px;border-radius:10px;font-size:13px;line-height:1.5;'
+        + 'background:' + K.brand + ';color:#fff;'
+      : 'max-width:340px;padding:9px 12px;border-radius:10px;font-size:13px;line-height:1.5;'
+        + 'background:' + K.recessed + ';border:1px solid ' + K.hairline + ';color:' + K.text + ';');
+
+    const chipStyle = (done) => 'display:flex;align-items:center;gap:7px;padding:7px 11px;'
+      + 'border-radius:8px;font-size:12.5px;cursor:' + (done ? 'default' : 'pointer') + ';'
+      + 'border:1px solid ' + K.hairline + ';'
+      + 'background:' + (done ? K.recessed : K.base) + ';'
+      + 'color:' + (done ? K.inactive : K.subtle) + ';';
+
+    const counts = { verified:0, unresolved:0, unverified:0 };
+    shown.forEach((x) => {
+      let st = x.state;
+      if (x.id === 'skipall' && this.state.reworded) st = 'unverified';
+      counts[st] += 1;
+    });
+    const clean = counts.unresolved === 0;
+
+    const pill = (bg, color) => 'display:inline-flex;align-items:center;gap:6px;height:22px;'
+      + 'padding:0 8px;border-radius:9999px;font-size:12px;font-weight:500;'
+      + 'letter-spacing:-0.16px;background:' + bg + ';color:' + color + ';';
+
+    return {
+      nodes: nodes,
+      edges: edges,
+      feed: this.state.feed.map((m) => ({
+        text: m.text,
+        wrapStyle: 'display:flex;justify-content:' + (m.kind === 'user' ? 'flex-end' : 'flex-start') + ';',
+        bubbleStyle: bubble(m.kind)
+      })),
+      chips: [
+        { text: ACTIONS.adopt.text,  icon: ACTIONS.adopt.icon,
+          style: chipStyle(used.indexOf('adopt') !== -1),  tap: () => this.act('adopt') },
+        { text: ACTIONS.reword.text, icon: ACTIONS.reword.icon,
+          style: chipStyle(used.indexOf('reword') !== -1 || used.indexOf('drop') !== -1),
+          tap: () => this.act('reword') },
+        { text: ACTIONS.drop.text,   icon: ACTIONS.drop.icon,
+          style: chipStyle(used.indexOf('drop') !== -1 || used.indexOf('reword') !== -1),
+          tap: () => this.act('drop') }
+      ],
+      tallies: [
+        { n: counts.verified,   label:'verified',   dot: K.success,
+          style: pill(K.successTint, K.successText) },
+        { n: counts.unresolved, label:'unresolved', dot: K.danger,
+          style: pill(K.dangerTint, K.dangerText) },
+        { n: counts.unverified, label:'unverified', dot: K.info,
+          style: pill(K.infoTint, K.infoText) }
+      ],
+      legend: [
+        { text:'verified by run 42',
+          swatch:'width:9px;height:9px;border-radius:3px;background:' + K.inactive + ';' },
+        { text:'intent matched nothing — fix or drop it',
+          swatch:'width:9px;height:9px;border-radius:3px;background:' + K.danger + ';' },
+        { text:'added since the last run',
+          swatch:'width:9px;height:9px;border-radius:3px;border:1px dashed ' + K.info + ';' }
+      ],
+      status: {
+        line: clean ? 'Ready to save and run' : 'One intent still needs a decision',
+        footnote: clean
+          ? 'Nothing unresolved left. Save and run — the next run verifies whatever is still dashed.'
+          : 'A red card is a bug in the tree, not in the app: run 42 could not find anything on the page that matches those words.',
+        noteBg: clean ? K.base : K.dangerTint,
+        noteBorder: clean ? K.hairline : K.danger,
+        noteIcon: clean ? K.placeholder : K.danger,
+        noteText: clean ? K.subtle : K.dangerText
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

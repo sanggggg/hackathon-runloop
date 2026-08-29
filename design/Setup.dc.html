@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; background: oklch(96.5% 0 0); }
+    * { box-sizing: border-box; }
+    .k-btn:hover { background: oklch(96.5% 0 0) !important; }
+    .k-brand:hover { background: oklch(48.8% .243 264.376) !important; }
+    .shot { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+    @keyframes spin { to { transform: rotate(360deg) } }
+    .spin { animation: spin .9s linear infinite; transform-origin: 50% 50%; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; height: 900px; background: oklch(96.5% 0 0); color: oklch(20.5% 0 0); font-family: Inter, ui-sans-serif, system-ui, sans-serif; letter-spacing: -0.16px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+
+  <div style="width: 660px; border-radius: 12px; background: #fff; border: 1px solid oklch(93.5% 0 0); box-shadow: 0 12px 40px oklch(0% 0 0/.10), 0 2px 6px oklch(0% 0 0/.06); overflow: hidden;">
+
+    <!-- head -->
+    <div style="padding: 24px 28px 20px; border-bottom: 1px solid oklch(93.5% 0 0);">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="oklch(55.6% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="4.5" r="2.3"></circle><circle cx="5" cy="19.5" r="2.3"></circle>
+          <circle cx="19" cy="19.5" r="2.3"></circle>
+          <path d="M12 6.8v4.4M12 11.2H5v6M12 11.2h7v6"></path>
+        </svg>
+        <span style="font-size: 13px; font-weight: 600; color: oklch(55.6% 0 0);">Branchpoint</span>
+      </div>
+      <div style="margin-top: 14px; font-size: 24px; font-weight: 600; letter-spacing: -0.6px; color: oklch(14.5% 0 0);">Point it at a repository</div>
+      <div style="margin-top: 6px; font-size: 14px; color: oklch(55.6% 0 0); line-height: 1.5;">The app runs inside the devbox, not on your servers. That is what lets a run target a specific commit &mdash; and what makes every branch cheap to fork.</div>
+    </div>
+
+    <!-- body -->
+    <div style="padding: 22px 28px;">
+
+      <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: oklch(70.8% 0 0); margin-bottom: 8px;">Repository</div>
+      <div style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px; border-radius: 8px; border: 1px solid oklch(57.72% .2324 260); background: #fff; box-shadow: 0 0 0 3px oklch(93.2% .032 255.6/.45);">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="oklch(55.6% 0 0)" style="flex-shrink: 0;">
+          <path d="M12 2.2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03a9.5 9.5 0 0 1 5 0c1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .26.18.58.69.48A10 10 0 0 0 12 2.2z"></path>
+        </svg>
+        <span style="flex-grow: 1; font-size: 14px; color: oklch(14.5% 0 0);">github.com/nimbus-labs/nimbus</span>
+        <span style="font-size: 12px; color: oklch(70.8% 0 0);">main</span>
+      </div>
+
+      <!-- auto-detected build settings -->
+      <div style="margin-top: 12px; border-radius: 8px; border: 1px solid oklch(93.5% 0 0); background: oklch(96.5% 0 0); overflow: hidden;">
+        <div style="display: flex; align-items: center; gap: 8px; padding: 10px 14px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="oklch(59.6% .145 163.225)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+            <path d="M5 12.5l4.5 4.5L19 7"></path>
+          </svg>
+          <span style="font-size: 13px; color: oklch(20.5% 0 0);">Detected a Node app &mdash; these were filled in for you</span>
+          <div style="flex-grow: 1;"></div>
+          <span style="font-size: 12px; color: oklch(70.8% 0 0);">edit</span>
+        </div>
+        <div style="border-top: 1px solid oklch(93.5% 0 0); padding: 4px 14px 10px;">
+          <sc-for list="{{ detected }}" as="d" hint-placeholder-count="3">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 6px 0;">
+              <span style="width: 54px; font-size: 12px; color: oklch(70.8% 0 0); flex-shrink: 0;">{{ d.key }}</span>
+              <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; letter-spacing: 0; color: oklch(20.5% 0 0);">{{ d.value }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- progress -->
+      <div style="margin-top: 18px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: oklch(70.8% 0 0); margin-bottom: 10px;">{{ head.progressTitle }}</div>
+      <div style="display: flex; flex-direction: column; gap: 2px;">
+        <sc-for list="{{ steps }}" as="s" hint-placeholder-count="5">
+          <div style="display: flex; align-items: center; gap: 11px; padding: 7px 0;">
+            <div style="{{ s.iconWrap }}">
+              <sc-if value="{{ s.done }}" hint-placeholder-val="{{ true }}">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"></path></svg>
+              </sc-if>
+              <sc-if value="{{ s.busy }}" hint-placeholder-val="{{ false }}">
+                <svg class="spin" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="oklch(57.72% .2324 260)" stroke-width="2.6" stroke-linecap="round"><path d="M12 3a9 9 0 0 1 9 9"></path></svg>
+              </sc-if>
+            </div>
+            <span style="font-size: 13.5px; color: {{ s.color }};">{{ s.label }}</span>
+            <div style="flex-grow: 1;"></div>
+            <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; letter-spacing: 0; color: oklch(70.8% 0 0);">{{ s.time }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- fixture result -->
+      <sc-if value="{{ head.finished }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top: 18px; padding: 14px; border-radius: 8px; border: 1px solid oklch(59.6% .145 163.225); background: oklch(96.2% .043 156.7/.57); display: flex; gap: 14px;">
+          <div style="width: 168px; height: 105px; border-radius: 6px; overflow: hidden; border: 1px solid oklch(93.5% 0 0); flex-shrink: 0; background: #fff;">
+            <img src="root.png" class="shot" alt="captured first screen">
+          </div>
+          <div style="min-width: 0;">
+            <div style="font-size: 13px; font-weight: 600; color: oklch(43.2% .095 166.913);">Fixture captured</div>
+            <div style="margin-top: 5px; font-size: 12.5px; color: oklch(43.2% .095 166.913); line-height: 1.5;">Signed in as demo@example.com, parked on the first screen. Every branch forks from here in ~2.7s instead of signing in again.</div>
+            <div style="margin-top: 9px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: 0; color: oklch(43.2% .095 166.913);">snp_34Fj0JG… &middot; def456</div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+
+    <!-- foot -->
+    <div style="padding: 16px 28px; border-top: 1px solid oklch(93.5% 0 0); background: oklch(98.75% 0 0); display: flex; align-items: center; gap: 12px;">
+      <span style="font-size: 12.5px; color: oklch(70.8% 0 0);">{{ head.hint }}</span>
+      <div style="flex-grow: 1;"></div>
+      <button class="k-brand" onClick="{{ go }}" style="height: 40px; padding: 0 18px; border-radius: 8px; border: 0; background: oklch(57.72% .2324 260); color: #fff; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: -0.16px; cursor: pointer; display: flex; align-items: center; gap: 7px;">
+        {{ head.cta }}
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h13M12.5 6l6 6-6 6"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+const K = {
+  recessed:'oklch(96.5% 0 0)', base:'#fff', hairline:'oklch(93.5% 0 0)',
+  strong:'oklch(14.5% 0 0)', text:'oklch(20.5% 0 0)', subtle:'oklch(55.6% 0 0)',
+  placeholder:'oklch(70.8% 0 0)', inactive:'oklch(87% 0 0)',
+  brand:'oklch(57.72% .2324 260)', success:'oklch(59.6% .145 163.225)'
+};
+
+const STEPS = [
+  { label:'Cloned the repository at def456', ms: 900,  t:'0.9s' },
+  { label:'Installed dependencies',          ms: 2600, t:'2.6s' },
+  { label:'Built and booted the app',        ms: 1800, t:'1.8s' },
+  { label:'Signed in with the test account', ms: 1400, t:'1.4s' },
+  { label:'Captured the fixture snapshot',   ms: 1200, t:'1.2s' }
+];
+
+class Component extends DCLogic {
+  constructor(...a) {
+    super(...a);
+    this.state = { at: STEPS.length, running: false };
+    this.timers = [];
+  }
+
+  componentWillUnmount() { this.timers.forEach(clearTimeout); }
+
+  go() {
+    this.timers.forEach(clearTimeout);
+    this.timers = [];
+    this.setState({ at: 0, running: true });
+    let acc = 0;
+    STEPS.forEach((s, i) => {
+      acc += s.ms;
+      this.timers.push(setTimeout(() => this.setState({ at: i + 1 }), acc));
+    });
+    this.timers.push(setTimeout(() => this.setState({ running: false }), acc));
+  }
+
+  renderVals() {
+    const at = this.state.at;
+    const running = this.state.running;
+    const finished = at >= STEPS.length;
+
+    const steps = STEPS.map((s, i) => {
+      const done = i < at;
+      const busy = running && i === at;
+      return {
+        label: s.label,
+        time: done ? s.t : (busy ? 'running…' : ''),
+        done: done,
+        busy: busy,
+        color: done ? K.text : (busy ? K.strong : K.inactive),
+        iconWrap: 'width:18px;height:18px;border-radius:9999px;flex-shrink:0;'
+          + 'display:flex;align-items:center;justify-content:center;'
+          + (done ? 'background:' + K.success + ';'
+                  : (busy ? '' : 'border:1.5px solid ' + K.inactive + ';'))
+      };
+    });
+
+    return {
+      steps: steps,
+      go: () => this.go(),
+      detected: [
+        { key:'build',  value:'npm install' },
+        { key:'start',  value:'npm run dev' },
+        { key:'port',   value:'3000' }
+      ],
+      head: {
+        progressTitle: running ? 'Preparing the environment' : (finished ? 'Environment ready' : 'Ready to prepare'),
+        finished: finished && !running,
+        cta: running ? 'Preparing…' : (finished ? 'Continue to Build' : 'Prepare environment'),
+        hint: finished && !running
+          ? 'This becomes a Blueprint, so later runs skip the install and build.'
+          : 'Nothing leaves the devbox. The repo is cloned into it and served on localhost.'
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; background: oklch(98.75% 0 0); }
+    * { box-sizing: border-box; }
+    .k-btn:hover { background: oklch(96.5% 0 0) !important; }
+    .k-brand:hover { background: oklch(48.8% .243 264.376) !important; }
+    .k-trig { transition: border-color .13s ease, background-color .13s ease; cursor: pointer; }
+    .k-trig:hover { border-color: oklch(70.8% 0 0) !important; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; height: 900px; background: oklch(98.75% 0 0); color: oklch(20.5% 0 0); font-family: Inter, ui-sans-serif, system-ui, sans-serif; letter-spacing: -0.16px; display: flex; flex-direction: column; overflow: hidden;">
+
+  <!-- header -->
+  <div style="height: 56px; flex-shrink: 0; border-bottom: 1px solid oklch(93.5% 0 0); background: #fff; display: flex; align-items: center; gap: 18px; padding: 0 16px;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="oklch(55.6% 0 0)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="4.5" r="2.3"></circle><circle cx="5" cy="19.5" r="2.3"></circle>
+        <circle cx="19" cy="19.5" r="2.3"></circle>
+        <path d="M12 6.8v4.4M12 11.2H5v6M12 11.2h7v6"></path>
+      </svg>
+      <span style="font-size: 14px; font-weight: 600; color: oklch(14.5% 0 0);">Branchpoint</span>
+    </div>
+    <div style="width: 1px; height: 20px; background: oklch(93.5% 0 0);"></div>
+
+    <div style="display: flex; align-items: center; gap: 4px; padding: 3px; border-radius: 8px; background: oklch(96.5% 0 0); border: 1px solid oklch(93.5% 0 0);">
+      <div style="padding: 5px 12px; border-radius: 6px; font-size: 13px; color: oklch(70.8% 0 0);">Build</div>
+      <div style="padding: 5px 12px; border-radius: 6px; background: #fff; box-shadow: 0 1px 2px oklch(0% 0 0/.07); font-size: 13px; font-weight: 500; color: oklch(14.5% 0 0);">Run</div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 7px; font-size: 13px;">
+      <span style="color: oklch(70.8% 0 0);">nimbus-labs/nimbus</span>
+      <span style="color: oklch(87% 0 0);">/</span>
+      <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; letter-spacing: 0; color: oklch(20.5% 0 0);">def456</span>
+      <span style="color: oklch(87% 0 0);">&middot;</span>
+      <span style="color: oklch(55.6% 0 0);">never run</span>
+    </div>
+
+    <div style="flex-grow: 1;"></div>
+
+    <span style="display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 9px; border-radius: 9999px; background: oklch(96.5% 0 0); border: 1px solid oklch(93.5% 0 0); font-size: 12px; color: oklch(55.6% 0 0);">
+      <span style="width: 6px; height: 6px; border-radius: 9999px; background: oklch(87% 0 0);"></span>
+      8 paths unverified
+    </span>
+  </div>
+
+  <div style="flex-grow: 1; display: flex; min-height: 0;">
+
+    <!-- ── left: triggers ──────────────────────────────────── -->
+    <div style="width: 268px; flex-shrink: 0; border-right: 1px solid oklch(93.5% 0 0); background: #fff; display: flex; flex-direction: column;">
+      <div style="padding: 16px 16px 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: oklch(70.8% 0 0);">When to run</div>
+
+      <div style="padding: 0 12px; display: flex; flex-direction: column; gap: 8px;">
+        <sc-for list="{{ triggers }}" as="t" hint-placeholder-count="3">
+          <div class="k-trig" onClick="{{ t.tap }}" style="{{ t.rowStyle }}">
+            <div style="display: flex; align-items: flex-start; gap: 10px;">
+              <div style="{{ t.dotStyle }}">
+                <sc-if value="{{ t.on }}" hint-placeholder-val="{{ true }}">
+                  <div style="width: 7px; height: 7px; border-radius: 9999px; background: #fff;"></div>
+                </sc-if>
+              </div>
+              <div style="flex-grow: 1;">
+                <div style="font-size: 13px; font-weight: 500; color: {{ t.titleColor }};">{{ t.title }}</div>
+                <div style="margin-top: 3px; font-size: 12px; color: oklch(70.8% 0 0); line-height: 1.45;">{{ t.desc }}</div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="flex-grow: 1;"></div>
+
+      <div style="margin: 0 12px 14px; padding: 12px; border-radius: 8px; background: oklch(96.5% 0 0); border: 1px solid oklch(93.5% 0 0);">
+        <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: oklch(70.8% 0 0); margin-bottom: 9px;">Fixture</div>
+        <div style="display: flex; align-items: center; gap: 9px;">
+          <div style="width: 30px; height: 30px; border-radius: 7px; background: #fff; border: 1px solid oklch(93.5% 0 0); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="oklch(55.6% 0 0)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3.5" y="4.5" width="17" height="12" rx="2"></rect><path d="M8 20h8"></path>
+            </svg>
+          </div>
+          <div style="min-width: 0;">
+            <div style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: 0; color: oklch(20.5% 0 0);">snp_34Fj0JG…</div>
+            <div style="margin-top: 2px; font-size: 12px; color: oklch(70.8% 0 0);">signed in &middot; 2.7s to fork</div>
+          </div>
+        </div>
+        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid oklch(93.5% 0 0); font-size: 12px; color: oklch(55.6% 0 0); line-height: 1.5;">Captured once. Every branch starts here instead of signing in again.</div>
+      </div>
+    </div>
+
+    <!-- ── centre: the unverified tree ─────────────────────── -->
+    <div style="flex-grow: 1; position: relative; min-width: 0; background: oklch(96.5% 0 0);">
+
+      <div style="position: absolute; top: 16px; left: 24px; font-size: 12px; color: oklch(70.8% 0 0);">The suite as written. Nothing has been checked against the real app yet.</div>
+
+      <div style="position: absolute; top: 58px; left: 50%; transform: translateX(-50%); width: 760px; height: 420px;">
+        <svg width="760" height="420" style="position: absolute; inset: 0; overflow: visible;">
+          <sc-for list="{{ edges }}" as="e" hint-placeholder-count="8">
+            <path d="{{ e.d }}" fill="none" stroke="oklch(87% 0 0)" stroke-width="1.5" stroke-linecap="round"></path>
+          </sc-for>
+        </svg>
+
+        <sc-for list="{{ nodes }}" as="nd" hint-placeholder-count="9">
+          <div style="{{ nd.cardStyle }}">
+            <div style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: oklch(70.8% 0 0);">{{ nd.kicker }}</div>
+            <div style="margin-top: 6px; font-size: 13px; font-weight: 500; color: oklch(14.5% 0 0); line-height: 1.25;">{{ nd.label }}</div>
+            <div style="margin-top: 5px; font-size: 12px; color: oklch(55.6% 0 0); line-height: 1.4;">{{ nd.intent }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- ── right: run configuration ────────────────────────── -->
+    <div style="width: 340px; flex-shrink: 0; border-left: 1px solid oklch(93.5% 0 0); background: #fff; display: flex; flex-direction: column;">
+
+      <div style="padding: 16px; border-bottom: 1px solid oklch(93.5% 0 0);">
+        <div style="font-size: 14px; font-weight: 600; color: oklch(14.5% 0 0);">Run configuration</div>
+        <div style="margin-top: 4px; font-size: 13px; color: oklch(55.6% 0 0); line-height: 1.5;">Every branch gets its own devbox, forked from the fixture.</div>
+      </div>
+
+      <div style="padding: 4px 16px;">
+        <sc-for list="{{ config }}" as="c" hint-placeholder-count="5">
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid oklch(93.5% 0 0);">
+            <div>
+              <div style="font-size: 13px; color: oklch(20.5% 0 0);">{{ c.label }}</div>
+              <div style="margin-top: 2px; font-size: 12px; color: oklch(70.8% 0 0);">{{ c.hint }}</div>
+            </div>
+            <div style="font-size: 13px; font-weight: 500; color: oklch(14.5% 0 0); text-align: right; flex-shrink: 0; padding-left: 12px;">{{ c.value }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="flex-grow: 1;"></div>
+
+      <div style="margin: 0 16px 12px; padding: 12px 14px; border-radius: 8px; background: oklch(93.2% .032 255.6/.45); border: 1px solid oklch(62.3% .214 259.815);">
+        <div style="display: flex; align-items: baseline; justify-content: space-between;">
+          <span style="font-size: 13px; color: oklch(42.4% .199 265.638);">Estimated wall clock</span>
+          <span style="font-size: 20px; font-weight: 600; letter-spacing: -0.4px; color: oklch(42.4% .199 265.638);">~16s</span>
+        </div>
+        <div style="margin-top: 6px; font-size: 12px; color: oklch(42.4% .199 265.638); line-height: 1.45;">Tree depth is 3, so that is what the clock tracks &mdash; not 8 sign-ins one after another.</div>
+      </div>
+
+      <div style="padding: 0 16px 16px;">
+        <button class="k-brand" style="width: 100%; height: 44px; border-radius: 8px; border: 0; background: oklch(57.72% .2324 260); color: #fff; font-family: inherit; font-size: 15px; font-weight: 500; letter-spacing: -0.16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+            <path d="M7 4.5l12 7.5-12 7.5z"></path>
+          </svg>
+          Run now
+        </button>
+        <div style="margin-top: 9px; text-align: center; font-size: 12px; color: oklch(70.8% 0 0);">First run doubles as the suite&rsquo;s own check</div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+const K = {
+  canvas:'oklch(98.75% 0 0)', recessed:'oklch(96.5% 0 0)', base:'#fff',
+  hairline:'oklch(93.5% 0 0)', line:'oklch(14.5% 0 0/.1)',
+  strong:'oklch(14.5% 0 0)', text:'oklch(20.5% 0 0)', subtle:'oklch(55.6% 0 0)',
+  placeholder:'oklch(70.8% 0 0)', inactive:'oklch(87% 0 0)',
+  brand:'oklch(57.72% .2324 260)',
+  info:'oklch(62.3% .214 259.815)', infoText:'oklch(42.4% .199 265.638)',
+  infoTint:'oklch(93.2% .032 255.6/.45)'
+};
+
+const CARD_W = 138, CARD_H = 96;
+const TREE = [
+  { id:'root', label:'Signed-in workspace', x:380, y:0, parent:null, kicker:'fixture',
+    intent:'Start every branch here' },
+  { id:'team',  label:'Team plan',    x:150, y:150, parent:'root', kicker:'step 1',
+    intent:'Choose the team option' },
+  { id:'solo',  label:'Solo plan',    x:420, y:150, parent:'root', kicker:'step 1',
+    intent:'Choose the solo option' },
+  { id:'later', label:'Decide later', x:680, y:150, parent:'root', kicker:'step 1',
+    intent:'Defer the choice' },
+  { id:'invite',  label:'Invite teammates', x:78,  y:300, parent:'team', kicker:'goal',
+    intent:'Send invites, then finish' },
+  { id:'skipinv', label:'Skip invites',     x:230, y:300, parent:'team', kicker:'goal',
+    intent:'Skip inviting, still finish' },
+  { id:'starter', label:'Starter template', x:382, y:300, parent:'solo', kicker:'goal',
+    intent:'Pick the template, finish' },
+  { id:'blank',   label:'Blank workspace',  x:534, y:300, parent:'solo', kicker:'goal',
+    intent:'Start blank, still finish' },
+  { id:'import',  label:'Import from CSV',  x:686, y:300, parent:'solo', kicker:'goal',
+    intent:'Bring records in, finish' }
+];
+
+const TRIGGERS = [
+  { id:'manual', title:'Manually',   desc:'You press Run now.' },
+  { id:'deploy', title:'On deploy',  desc:'A GitHub push webhook starts a run against the new commit.' },
+  { id:'sched',  title:'On a schedule', desc:'Every weekday at 09:00.' }
+];
+
+class Component extends DCLogic {
+  constructor(...a) { super(...a); this.state = { trigger: 'deploy' }; }
+
+  renderVals() {
+    const pos = {};
+    TREE.forEach((x) => { pos[x.id] = x; });
+
+    const nodes = TREE.map((node) => ({
+      label: node.label,
+      intent: node.intent,
+      kicker: node.kicker,
+      cardStyle: 'position:absolute;left:' + node.x + 'px;top:' + node.y + 'px;'
+        + 'transform:translateX(-50%);width:' + CARD_W + 'px;height:' + CARD_H + 'px;'
+        + 'padding:10px 11px;border-radius:8px;background:' + K.base + ';'
+        + 'border:1px solid ' + (node.kicker === 'fixture' ? K.info : K.hairline) + ';'
+        + 'box-shadow:0 1px 2px oklch(0% 0 0/.08);'
+    }));
+
+    const edges = TREE.filter((x) => x.parent).map((c) => {
+      const p = pos[c.parent];
+      const x1 = p.x, y1 = p.y + CARD_H, x2 = c.x, y2 = c.y, my = (y1 + y2) / 2;
+      return { d: 'M' + x1 + ' ' + y1 + ' C' + x1 + ' ' + my + ' ' + x2 + ' ' + my
+                  + ' ' + x2 + ' ' + y2 };
+    });
+
+    const triggers = TRIGGERS.map((t) => {
+      const on = this.state.trigger === t.id;
+      return {
+        title: t.title,
+        desc: t.desc,
+        on: on,
+        titleColor: on ? K.strong : K.text,
+        rowStyle: 'padding:11px 12px;border-radius:8px;'
+          + 'border:1px solid ' + (on ? K.brand : K.hairline) + ';'
+          + 'background:' + (on ? K.infoTint : K.base) + ';',
+        dotStyle: 'width:16px;height:16px;border-radius:9999px;flex-shrink:0;margin-top:1px;'
+          + 'display:flex;align-items:center;justify-content:center;'
+          + (on ? 'background:' + K.brand + ';' : 'border:1.5px solid ' + K.inactive + ';'),
+        tap: () => this.setState({ trigger: t.id })
+      };
+    });
+
+    return {
+      nodes: nodes,
+      edges: edges,
+      triggers: triggers,
+      config: [
+        { label:'Commit',          hint:'the run is always suite x ref',        value:'def456' },
+        { label:'Branches',        hint:'one devbox each, forked in parallel', value:'8' },
+        { label:'Fork points',     hint:'snapshots taken only where paths split', value:'2' },
+        { label:'Element picking', hint:'resolves each stored intent on the page', value:'Haiku 4.5' },
+        { label:'Screen judging',  hint:'decides whether a screen looks wrong',    value:'Sonnet 5' },
+        { label:'Spend cap',       hint:'run aborts if it goes over',              value:'$0.50' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

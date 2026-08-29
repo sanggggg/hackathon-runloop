@@ -1,0 +1,21 @@
+{
+  "artboards": [
+    { "file": "Setup.dc.html",      "x": 0,    "y": 0, "w": 1440, "h": 900, "title": "0 · Point at a repo",  "is_interactive": true },
+    { "file": "Builder.dc.html",    "x": 1560, "y": 0, "w": 1440, "h": 900, "title": "1 · Build the tree",   "is_interactive": true },
+    { "file": "RunnerIdle.dc.html", "x": 3120, "y": 0, "w": 1440, "h": 900, "title": "2 · Run · idle",       "is_interactive": true },
+    { "file": "Main.dc.html",       "x": 4680, "y": 0, "w": 1440, "h": 900, "title": "3 · Run · results",    "is_interactive": true }
+  ],
+  "annotations": [
+    { "id": "note-setup", "x": 0, "y": -200, "w": 640,
+      "text": "0 — Point at a repo\n\nOne GitHub URL. The app is cloned and served inside the devbox, which is what lets a run target a specific commit — and makes every branch cheap to fork.\n\nPress the button to watch it clone, build, sign in and capture the fixture." },
+    { "id": "note-build", "x": 1560, "y": -200, "w": 640,
+      "text": "1 — Build the tree\n\nChat only. No browser, no screenshots, nothing executed. Every card stores an intent in plain words.\n\nShown here AFTER run 42, which is the interesting state: eight steps verified, one red because its wording matched nothing on the page. Use the suggestions to adopt, reword or drop." },
+    { "id": "note-idle", "x": 3120, "y": -200, "w": 640,
+      "text": "2 — Run, idle\n\nPick the trigger, check the fixture, press Run. The estimate tracks tree DEPTH, not path count — that is the whole bet." },
+    { "id": "note-results", "x": 4680, "y": -200, "w": 700,
+      "text": "3 — Run, results\n\nGreen means the path still works, red means it failed. That is the whole legend.\n\nWhere it matters, a green node says why it nearly did not: \"passed · UI changed\" is the agent following a renamed control instead of failing on it. Click any node for the screenshot diff and log; press Re-run to watch the tree repaint." },
+    { "id": "note-loop", "x": 5440, "y": -200, "w": 400,
+      "text": "…and back to Build\n\nA red card in Build is a bug in the TREE. A red node here is a bug in the APP. Keeping those apart is why the two routes are separate." }
+  ],
+  "launch": { "view": "canvas" }
+}

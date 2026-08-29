@@ -1,0 +1,756 @@
+<title>Branchpoint Build Spec</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+  :root {
+    --paper:      #fbfaf8;
+    --surface:    #ffffff;
+    --sunk:       #f3f1ec;
+    --ink:        #16181d;
+    --ink-soft:   #3d4048;
+    --muted:      #6e6f74;
+    --rule:       #dcdad5;
+    --rule-soft:  #e9e6e0;
+    --accent:     #1f5f8b;
+    --accent-dim: #dbe6ee;
+    --ok:         #2f6b4f;
+    --ok-dim:     #dfeae3;
+    --warn:       #8a6212;
+    --warn-dim:   #f0e8d6;
+    --bad:        #9c3a35;
+    --bad-dim:    #f2e0de;
+
+    --serif: "Source Serif 4", ui-serif, Georgia, "Times New Roman", serif;
+    --mono:  "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --measure: 68ch;
+    --gutter: clamp(20px, 5vw, 64px);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #131417;
+      --surface:    #1a1c20;
+      --sunk:       #101114;
+      --ink:        #eceae6;
+      --ink-soft:   #c3c2be;
+      --muted:      #8e8f94;
+      --rule:       #2e3036;
+      --rule-soft:  #24262b;
+      --accent:     #6ba8d0;
+      --accent-dim: #1c2c38;
+      --ok:         #6fbb92;
+      --ok-dim:     #17281f;
+      --warn:       #cfa451;
+      --warn-dim:   #2b2416;
+      --bad:        #dd8a84;
+      --bad-dim:    #2e1c1b;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:      #131417;
+    --surface:    #1a1c20;
+    --sunk:       #101114;
+    --ink:        #eceae6;
+    --ink-soft:   #c3c2be;
+    --muted:      #8e8f94;
+    --rule:       #2e3036;
+    --rule-soft:  #24262b;
+    --accent:     #6ba8d0;
+    --accent-dim: #1c2c38;
+    --ok:         #6fbb92;
+    --ok-dim:     #17281f;
+    --warn:       #cfa451;
+    --warn-dim:   #2b2416;
+    --bad:        #dd8a84;
+    --bad-dim:    #2e1c1b;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 var(--gutter) 120px; }
+  .col  { max-width: var(--measure); }
+
+  /* ── masthead ─────────────────────────────────────────── */
+  header.mast {
+    border-bottom: 2px solid var(--ink);
+    padding: 56px 0 22px;
+    margin-bottom: 44px;
+  }
+  .kicker {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  h1 {
+    font-size: clamp(38px, 6vw, 58px);
+    line-height: 1.02;
+    font-weight: 700;
+    letter-spacing: -.022em;
+    margin: 14px 0 0;
+    text-wrap: balance;
+  }
+  .standfirst {
+    margin: 16px 0 0;
+    max-width: 62ch;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .meta {
+    margin-top: 26px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 26px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .meta b { color: var(--ink-soft); font-weight: 500; }
+
+  /* ── sections ─────────────────────────────────────────── */
+  section { margin-top: 68px; scroll-margin-top: 24px; }
+  h2 {
+    font-size: 13px;
+    font-family: var(--mono);
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 20px;
+    padding-bottom: 9px;
+    border-bottom: 1px solid var(--rule);
+  }
+  h3 {
+    font-size: 25px;
+    font-weight: 600;
+    letter-spacing: -.014em;
+    margin: 38px 0 10px;
+    text-wrap: balance;
+  }
+  h3:first-of-type { margin-top: 0; }
+  h4 {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 26px 0 6px;
+  }
+  p { margin: 0 0 15px; }
+  .col > p:last-child { margin-bottom: 0; }
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--ink-soft); }
+
+  code {
+    font-family: var(--mono);
+    font-size: .855em;
+    background: var(--sunk);
+    border: 1px solid var(--rule-soft);
+    border-radius: 3px;
+    padding: .08em .34em;
+    white-space: nowrap;
+  }
+
+  a { color: var(--accent); text-underline-offset: 3px; }
+  a:focus-visible, .jump a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* ── jump nav ─────────────────────────────────────────── */
+  .jump {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-top: 30px; padding-top: 22px;
+    border-top: 1px solid var(--rule-soft);
+  }
+  .jump a {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .04em;
+    text-decoration: none;
+    color: var(--ink-soft);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 5px 11px;
+    background: var(--surface);
+  }
+  .jump a:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── data table ───────────────────────────────────────── */
+  .scroll { overflow-x: auto; margin: 22px 0; }
+  table {
+    width: 100%; border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    font-variant-numeric: tabular-nums;
+    min-width: 520px;
+  }
+  th {
+    text-align: left;
+    font-weight: 700;
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 16px 8px 0;
+    border-bottom: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+  td {
+    padding: 9px 16px 9px 0;
+    border-bottom: 1px solid var(--rule-soft);
+    vertical-align: top;
+    color: var(--ink-soft);
+  }
+  td:first-child { color: var(--ink); }
+  td.num { text-align: right; padding-right: 22px; white-space: nowrap; }
+  .note-cell { font-family: var(--serif); font-size: 14.5px; line-height: 1.45; }
+
+  /* ── code block ───────────────────────────────────────── */
+  pre {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.62;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+    padding: 16px 18px;
+    margin: 18px 0;
+    overflow-x: auto;
+    color: var(--ink-soft);
+    tab-size: 2;
+  }
+  pre b { color: var(--ink); font-weight: 500; }
+  pre i { color: var(--muted); font-style: normal; }
+
+  /* ── trap list ────────────────────────────────────────── */
+  .traps { display: flex; flex-direction: column; gap: 2px; margin: 22px 0 0; }
+  .trap {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    gap: 16px;
+    padding: 17px 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .trap:first-child { border-top: 1px solid var(--rule); }
+  .trap-n {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--bad);
+    padding-top: 3px;
+  }
+  .trap h4 { margin: 0 0 5px; font-size: 16.5px; }
+  .trap p { margin: 0; font-size: 15px; color: var(--ink-soft); max-width: 62ch; }
+  .fix {
+    margin-top: 9px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ok);
+    background: var(--ok-dim);
+    border-radius: 3px;
+    padding: 6px 10px;
+    display: inline-block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  /* ── workstreams ──────────────────────────────────────── */
+  .streams { display: grid; gap: 14px; margin-top: 24px; }
+  @media (min-width: 860px) { .streams { grid-template-columns: 1fr 1fr; } }
+  .stream {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 5px;
+    padding: 18px 20px 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  .stream-head { display: flex; align-items: baseline; gap: 11px; }
+  .stream-id {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--paper);
+    background: var(--ink);
+    border-radius: 3px;
+    padding: 2px 8px;
+    flex-shrink: 0;
+  }
+  .stream h4 { margin: 0; font-size: 18px; font-weight: 600; }
+  .stream p { font-size: 14.5px; color: var(--ink-soft); margin: 10px 0 0; }
+  .stream dl {
+    margin: 14px 0 0;
+    padding-top: 13px;
+    border-top: 1px solid var(--rule-soft);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 5px 14px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+  }
+  .stream dt { color: var(--muted); letter-spacing: .04em; }
+  .stream dd { margin: 0; color: var(--ink-soft); }
+  .free { color: var(--ok); }
+
+  /* ── callout ──────────────────────────────────────────── */
+  .callout {
+    border: 1px solid var(--accent);
+    background: var(--accent-dim);
+    border-radius: 5px;
+    padding: 18px 22px;
+    margin: 26px 0;
+  }
+  .callout p { margin: 0; color: var(--ink); }
+  .callout p + p { margin-top: 10px; }
+  .callout .lede {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  /* ── ordered steps ────────────────────────────────────── */
+  ol.steps { margin: 22px 0 0; padding: 0; list-style: none; counter-reset: s; }
+  ol.steps li {
+    counter-increment: s;
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  ol.steps li:first-child { border-top: 1px solid var(--rule); }
+  ol.steps li::before {
+    content: counter(s);
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    padding-top: 4px;
+  }
+  ol.steps b { display: block; font-weight: 600; font-size: 16.5px; }
+  ol.steps span { display: block; font-size: 15px; color: var(--ink-soft); margin-top: 3px; }
+
+  ul.plain { margin: 14px 0; padding-left: 20px; }
+  ul.plain li { margin-bottom: 7px; }
+
+  .pill {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+  .pill.ok  { background: var(--ok-dim);   color: var(--ok); }
+  .pill.warn{ background: var(--warn-dim); color: var(--warn); }
+  .pill.bad { background: var(--bad-dim);  color: var(--bad); }
+
+  footer.end {
+    margin-top: 80px;
+    padding-top: 22px;
+    border-top: 2px solid var(--ink);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div class="kicker">Implementation spec · v1</div>
+    <h1>Branchpoint Build Spec</h1>
+    <p class="standfirst">Agent-driven QA scenario trees on Runloop. Write the flow in plain words, fork one snapshot into every branch, and re-run it against each commit.</p>
+    <div class="meta">
+      <span><b>Target</b> hackathon demo</span>
+      <span><b>Platform</b> Runloop devboxes + snapshots</span>
+      <span><b>Agent</b> OpenRouter</span>
+      <span><b>Design system</b> Kumo (light)</span>
+    </div>
+    <nav class="jump">
+      <a href="#verified">Verified</a>
+      <a href="#traps">Traps</a>
+      <a href="#engine">Engine</a>
+      <a href="#contracts">Contracts</a>
+      <a href="#streams">Workstreams</a>
+      <a href="#order">Order</a>
+      <a href="#demo">Demo script</a>
+    </nav>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section id="verified">
+    <h2>Already verified — do not re-derive</h2>
+    <div class="col">
+      <p>Every number below came off a real devbox during the design session. The scripts that produced them are in the scratchpad: <code>fork_test.py</code>, <code>branch_race.py</code>, <code>flowmap_test.py</code>, <code>shot_test.py</code>, <code>capture_shots.py</code>.</p>
+    </div>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Operation</th><th class="num">Measured</th><th>What it means for us</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Devbox create → running</td><td class="num">2.0 s</td><td class="note-cell">Cheap enough to spawn per branch.</td></tr>
+          <tr><td>Snapshot, light state</td><td class="num">3.4 s</td><td class="note-cell">Text-only working dir.</td></tr>
+          <tr><td>Snapshot, Chromium installed</td><td class="num">18.6 s</td><td class="note-cell">Scales with disk. Snapshot only at real fork points.</td></tr>
+          <tr><td>Fork boot from snapshot</td><td class="num">2.6–2.7 s</td><td class="note-cell">Three in parallel cost the same as one.</td></tr>
+          <tr><td>Chromium + Playwright install</td><td class="num">41 s</td><td class="note-cell">Must be baked into the Blueprint, not paid per run.</td></tr>
+          <tr><td>Branch &amp; Race, end to end</td><td class="num">65 s</td><td class="note-cell">Agent loop + snapshot + 3 forks, ~$0.15.</td></tr>
+          <tr><td>Screenshot at 264&nbsp;px</td><td class="num">~10 KB</td><td class="note-cell">A hundred of them is 1&nbsp;MB. Storage is a non-issue.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col">
+      <p>Also proven working end to end: fork inherits disk state; a browser login session survives a fork; screenshots capture inside the box and download to the host.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section id="traps">
+    <h2>Five traps we already stepped in</h2>
+    <div class="col">
+      <p>Each of these cost real time to diagnose. Read them before writing the engine.</p>
+    </div>
+
+    <div class="traps">
+      <div class="trap">
+        <div class="trap-n">01</div>
+        <div>
+          <h4>Session cookies do not live in the browser profile</h4>
+          <p>A cookie with no expiry is held in memory only. Fork a devbox, relaunch the browser from its profile directory, and every branch is logged out. This killed the first working version.</p>
+          <div class="fix">ctx.storage_state(path=…) before the snapshot · new_context(storage_state=…) after the fork</div>
+        </div>
+      </div>
+
+      <div class="trap">
+        <div class="trap-n">02</div>
+        <div>
+          <h4>A disk snapshot does not carry processes</h4>
+          <p>Files come across; the running app does not. Every forked box starts with nothing listening on the port.</p>
+          <div class="fix">restart the app in each fork before driving the browser</div>
+        </div>
+      </div>
+
+      <div class="trap">
+        <div class="trap-n">03</div>
+        <div>
+          <h4><code>execute_sync</code> is deprecated, and backgrounding hangs it</h4>
+          <p>Launching a long-running process with <code>&amp;</code> leaves the output pipe open, so the API call itself never returns. The process is fine; your client is stuck.</p>
+          <div class="fix">POST /devboxes/{id}/execute_async for anything long-lived</div>
+        </div>
+      </div>
+
+      <div class="trap">
+        <div class="trap-n">04</div>
+        <div>
+          <h4><code>download_file</code> takes <code>path</code>, relative to home</h4>
+          <p>Not <code>file_path</code>, and not absolute. An absolute path returns 400 with no useful message.</p>
+          <div class="fix">{"path": "work/shots/step2.png"}</div>
+        </div>
+      </div>
+
+      <div class="trap">
+        <div class="trap-n">05</div>
+        <div>
+          <h4>pip needs sudo; the browser binary must not have it</h4>
+          <p><code>pip install</code> writes to <code>/usr/local</code> and fails as the devbox user. But installing Chromium as root puts it in <code>/root/.cache</code>, where the user cannot find it — Playwright then insists you run <code>playwright install</code>, which you just did.</p>
+          <div class="fix">sudo pip install · sudo playwright install-deps · playwright install (as user)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section id="engine">
+    <h2>Engine — how a run walks the tree</h2>
+    <div class="col">
+      <p>The orchestrator does a depth-first walk. The rule that keeps it fast is simple: <strong>snapshot only at nodes with two or more children.</strong> A straight run of single-child steps stays on the same devbox, so a deep-but-narrow tree costs one snapshot, not one per step.</p>
+    </div>
+
+<pre><b>walk</b>(node, box):
+  kids = tree.childrenOf(node)
+
+  <i>// leaf — judge and stop</i>
+  if kids.length == 0:
+     verdict = judgeScreen(box, node.intent)
+     record(node, verdict); shutdown(box); return
+
+  <i>// single child — stay on this box, no snapshot</i>
+  if kids.length == 1:
+     step(box, kids[0]); walk(kids[0], box); return
+
+  <i>// real fork point — this is the only place we snapshot</i>
+  snap = snapshotDisk(box)
+  parallel for kid in kids:
+     child = createDevbox({ snapshot_id: snap })
+     restartApp(child)                  <i>// trap 02</i>
+     restoreStorageState(child)          <i>// trap 01</i>
+     step(child, kid)
+     walk(kid, child)
+  shutdown(box)</pre>
+
+    <div class="col">
+      <p><code>step()</code> is where the agent lives. It never replays a stored selector — it re-resolves the intent against the page every time. That is the whole reason a renamed control reads as <em>passed · UI changed</em> instead of a false failure.</p>
+    </div>
+
+    <div class="callout">
+      <p class="lede">The rule that makes agent QA affordable</p>
+      <p>Wall clock tracks tree <strong>depth</strong>, not path count. Eight paths at depth three finish in the time of the slowest single branch — about 16 seconds — instead of eight sign-ins back to back. Every design decision downstream protects this property.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section id="contracts">
+    <h2>Pinned contracts</h2>
+    <div class="col">
+      <p>These are the interfaces that let the work split. Pin them first, then nobody blocks on anybody. Changing one of these mid-build is the only thing that can stall the whole team.</p>
+      <h3>Suite &amp; tree</h3>
+      <p>What the Build route produces and the Run route consumes.</p>
+    </div>
+
+<pre><b>Suite</b> {
+  id, name
+  repo:     { url, ref, buildCmd, startCmd, port }
+  blueprintId                <i>// image with deps + browser baked in</i>
+  fixture:  { snapshotId, ref, description }
+  tree:     Node[]
+}
+
+<b>Node</b> {
+  id
+  parentId    <i>// null = the fixture root</i>
+  label       <i>// short human name on the card</i>
+  intent      <i>// the sentence the agent resolves — never a selector</i>
+  kind:  'fixture' | 'step' | 'goal'
+  state: 'unverified' | 'verified' | 'unresolved'
+  lastSeenLabel?   <i>// what the control read last time it resolved; a hint, not a bypass</i>
+}</pre>
+
+    <div class="col">
+      <p><code>state</code> is <strong>tree health, not run outcome</strong>. <code>unresolved</code> means the wording matched nothing on the page — a bug in the tree. A path that resolves fine and then lands on an error screen is a bug in the app, and that shows up in the run, not here.</p>
+      <h3>Run &amp; results</h3>
+    </div>
+
+<pre><b>Run</b> {
+  id, suiteId, ref
+  startedAt, finishedAt
+  fixtureSnapshotId
+  results:    NodeResult[]
+  discovered: Node[]   <i>// options seen during the run that the tree did not have</i>
+  costUsd, wallClockMs, sequentialEstimateMs
+}
+
+<b>NodeResult</b> {
+  nodeId
+  status: 'pass' | 'fail'          <i>// the only two the tree is coloured by</i>
+  note?:  'ui-changed' | 'new-path'
+  failReason?: 'unresolved' | 'error-screen' | 'timeout'
+  resolvedTo?  <i>// human description of what it matched, e.g. '"Use a starter" card'</i>
+  screenshotId
+  devboxId
+  log: { t: number, text: string, level: 'info'|'warn'|'error' }[]
+}</pre>
+
+    <div class="col">
+      <h3>Agent calls</h3>
+      <p>Two, with deliberately different budgets. Element picking runs on every step and must be a <strong>narrow classification</strong> — hand it the candidates and make it choose one. Screen judging runs only at leaves and gets the open-ended question.</p>
+    </div>
+
+<pre><b>resolveIntent</b>({
+  candidates: { ref, role, name, text }[],   <i>// from the accessibility tree</i>
+  intent:     string,
+  hint?:      string                          <i>// node.lastSeenLabel</i>
+}) → { ref, confidence } | { ref: null, reason }
+   <i>cheap model, temperature 0, structured output</i>
+
+<b>judgeScreen</b>({
+  title, visibleText, url, expected: string
+}) → { ok: boolean, reason: string }
+   <i>capable model, leaves only</i></pre>
+
+    <div class="col">
+      <h3>Setup</h3>
+    </div>
+
+<pre><b>prepareRepo</b>({ url, ref, buildCmd, startCmd, port, testAccount? })
+  → { blueprintId, fixture: { snapshotId, screenshotId } }</pre>
+
+    <div class="col">
+      <h3>HTTP surface</h3>
+      <p>Small on purpose. The UI polls; no socket layer for v1.</p>
+    </div>
+
+<pre>POST /suites            { repo }              → Suite
+PATCH /suites/:id       { tree }               → Suite
+POST /runs              { suiteId, ref }       → { runId }
+GET  /runs/:id                                 → Run
+GET  /runs?suiteId=                            → Run[]   <i>// the left rail</i>
+GET  /screenshots/:id                          → image/png</pre>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section id="streams">
+    <h2>Workstreams</h2>
+    <div class="col">
+      <p>Six pieces. Once the two schemas above are written down, five of them have no dependency on each other at all.</p>
+    </div>
+
+    <div class="streams">
+      <div class="stream">
+        <div class="stream-head"><span class="stream-id">A</span><h4>Fork orchestrator</h4></div>
+        <p>The walk algorithm: snapshot at fork points, spawn a devbox per branch, restart the app, restore session, collect results. The hard one.</p>
+        <dl>
+          <dt>needs</dt><dd>Suite + Node schema</dd>
+          <dt>blocks</dt><dd>nothing</dd>
+          <dt>start from</dt><dd>branch_race.py</dd>
+        </dl>
+      </div>
+
+      <div class="stream">
+        <div class="stream-head"><span class="stream-id">B</span><h4>Intent resolver</h4></div>
+        <p>Accessibility tree in, one element out. Testable against saved HTML with no devbox at all — write the eval set first.</p>
+        <dl>
+          <dt>needs</dt><dd class="free">nothing</dd>
+          <dt>blocks</dt><dd>nothing</dd>
+          <dt>start from</dt><dd>static page fixtures</dd>
+        </dl>
+      </div>
+
+      <div class="stream">
+        <div class="stream-head"><span class="stream-id">C</span><h4>Repo → fixture</h4></div>
+        <p>Clone, install, build, boot, sign in, snapshot. Bake the result as a Blueprint so later runs skip the 41-second install.</p>
+        <dl>
+          <dt>needs</dt><dd class="free">nothing</dd>
+          <dt>blocks</dt><dd>A, at demo time only</dd>
+          <dt>start from</dt><dd>capture_shots.py</dd>
+        </dl>
+      </div>
+
+      <div class="stream">
+        <div class="stream-head"><span class="stream-id">D</span><h4>Build route UI</h4></div>
+        <p>Chat panel plus the intent tree. Three node states, and the adopt / reword / drop actions on an unresolved card.</p>
+        <dl>
+          <dt>needs</dt><dd>Node schema</dd>
+          <dt>blocks</dt><dd>nothing</dd>
+          <dt>start from</dt><dd>Builder artboard</dd>
+        </dl>
+      </div>
+
+      <div class="stream">
+        <div class="stream-head"><span class="stream-id">E</span><h4>Run route UI</h4></div>
+        <p>One page, three states: idle with the trigger, the tree filling in, then results with screenshot diffs and the verdict buttons.</p>
+        <dl>
+          <dt>needs</dt><dd>Run schema</dd>
+          <dt>blocks</dt><dd>nothing</dd>
+          <dt>start from</dt><dd>RunnerIdle + Main artboards</dd>
+        </dl>
+      </div>
+
+      <div class="stream">
+        <div class="stream-head"><span class="stream-id">F</span><h4>Nimbus, the demo repo</h4></div>
+        <p>The app under test. Two commits: one where the flow is whole, one where a control is renamed, two paths error out and a new option appears.</p>
+        <dl>
+          <dt>needs</dt><dd class="free">nothing</dd>
+          <dt>blocks</dt><dd>the demo</dd>
+          <dt>start from</dt><dd>capture_shots.py APP</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section id="order">
+    <h2>Order of operations</h2>
+    <div class="col">
+      <p>Only the first item is genuinely blocking. After it, work in parallel and integrate against mocks.</p>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <b>Write the two schemas into a file</b>
+        <span>Suite/Node and Run/NodeResult, committed. Thirty minutes, and it unblocks four people. <span class="pill bad">blocking</span></span>
+      </li>
+      <li>
+        <b>Build the Blueprint</b>
+        <span>Chromium, Playwright and the app's deps baked into an image. Removes 41 seconds from every experiment for the rest of the night. <span class="pill warn">do early</span></span>
+      </li>
+      <li>
+        <b>A and B in parallel, against mocks</b>
+        <span>The orchestrator can run with a stub resolver that returns the first candidate; the resolver can be scored on saved pages with no devbox.</span>
+      </li>
+      <li>
+        <b>D and E against fixture JSON</b>
+        <span>Hand-write one Suite and one Run as JSON files. Both UIs can be finished before the engine returns anything real.</span>
+      </li>
+      <li>
+        <b>Join A and B, run against F</b>
+        <span>First real end-to-end. Expect the first run to be mostly red — that is the system working, not failing.</span>
+      </li>
+      <li>
+        <b>Two commits, two runs</b>
+        <span>Run against the whole commit, then the broken one. This is the demo. <span class="pill ok">the payoff</span></span>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section id="demo">
+    <h2>Demo script</h2>
+    <div class="col">
+      <p>Three minutes, four beats. The app lives inside the devbox, so the second commit can be checked out live on stage.</p>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <b>Paste a GitHub URL</b>
+        <span>Clone, build, sign in, fixture captured. One field, and the audience sees where every branch will start from.</span>
+      </li>
+      <li>
+        <b>Say what to cover, in a sentence</b>
+        <span>"Cover signup and onboarding, skip anything that charges a card." Eight grey cards appear. Nothing has run.</span>
+      </li>
+      <li>
+        <b>Run against the first commit</b>
+        <span>One snapshot, eight devboxes, sixteen seconds. Point at the wall-clock bars: three and a half minutes of sign-ins collapsed into one.</span>
+      </li>
+      <li>
+        <b>Run against the second commit</b>
+        <span>Two reds where paths broke. One green that says <em>passed · UI changed</em> — a renamed button the agent followed anyway. One green that says <em>new path</em>, which the tree never knew about. Then the closing line: <strong>a stored selector would have failed all four.</strong></span>
+      </li>
+    </ol>
+
+    <div class="callout">
+      <p class="lede">If something has to be cut</p>
+      <p>Cut the Build route before anything else and hand-write the tree JSON. The run against two commits is the demo; everything else is framing.</p>
+    </div>
+  </section>
+
+  <footer class="end">
+    Branchpoint · implementation spec v1 · design canvas and measured scripts live alongside this document
+  </footer>
+</div>
