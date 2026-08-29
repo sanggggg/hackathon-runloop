@@ -68,6 +68,7 @@ export class BranchpointEngine {
     const discovered = new Map<string, Node>();
     let costUsd = 0;
     let modelCalls = 0;
+    let progressTail = Promise.resolve();
 
     const makeRun = (finished: boolean): Run => {
       const ordered = tree.nodes.flatMap((node) => {
@@ -107,6 +108,26 @@ export class BranchpointEngine {
         wallClockMs: Math.max(0, this.#clock.now() - startedAtMs),
         sequentialEstimateMs,
       };
+    };
+
+    const notifyProgress = async (): Promise<void> => {
+      const onProgress = input.onProgress;
+      if (!onProgress) return;
+
+      // Branches can finish nodes concurrently. Capture the snapshot at commit
+      // time, then serialize delivery so a slower, older persistence write
+      // cannot land after a newer one. Keep the queue usable after rejection;
+      // the branch awaiting `notification` still promotes that rejection to the
+      // normal EngineRunError + cleanup path.
+      // The callback owns its snapshot and cannot mutate NodeResult/Node values
+      // retained by the engine for later notifications or the final Run.
+      const partialRun = structuredClone(makeRun(false));
+      const notification = progressTail.then(() => onProgress(partialRun));
+      progressTail = notification.then(
+        () => undefined,
+        () => undefined,
+      );
+      await notification;
     };
 
     const throwIfAborted = (): void => {
@@ -174,12 +195,12 @@ export class BranchpointEngine {
       }
     };
 
-    const recordResult = (
+    const recordResult = async (
       node: Node,
       managed: ManagedContainer,
       agent: AgentNodeResult,
       nodeStartedAt: number,
-    ): void => {
+    ): Promise<void> => {
       if (agent.status === "fail" && !agent.failReason) {
         throw new Error(`agent failed node '${node.id}' without failReason`);
       }
@@ -239,6 +260,7 @@ export class BranchpointEngine {
       for (const nodeValue of agent.discovered ?? []) discovered.set(nodeValue.id, nodeValue);
       costUsd += agent.costUsd ?? 0;
       modelCalls += agent.modelCalls ?? 0;
+      await notifyProgress();
     };
 
     const settleAll = async (tasks: Array<Promise<void>>): Promise<void> => {
@@ -268,7 +290,7 @@ export class BranchpointEngine {
       };
       const nodeStartedAt = this.#clock.now();
       const agentResult = await this.#runtime.executeNode(managed.ref, request, managed.context);
-      recordResult(node, managed, agentResult, nodeStartedAt);
+      await recordResult(node, managed, agentResult, nodeStartedAt);
       if (agentResult.status === "fail") return;
 
       const children = tree.activeChildrenOf(node.id);

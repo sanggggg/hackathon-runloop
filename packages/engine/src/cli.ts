@@ -2,13 +2,9 @@
 
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import type { Suite } from "@branchpoint/schema";
-import { LocalArtifactStore } from "./artifact-store.js";
-import { BranchpointEngine } from "./engine.js";
 import { EngineRunError } from "./errors.js";
-import { RunloopClient } from "./runloop-client.js";
-import { RunloopRuntime } from "./runloop-runtime.js";
+import { createRunloopEngine } from "./runloop-engine-factory.js";
 
 interface CliOptions {
   suitePath: string;
@@ -138,31 +134,15 @@ async function main(): Promise<void> {
 
   const suiteSource = await readFile(path.resolve(options.suitePath), "utf8");
   const suite = parseSuite(JSON.parse(suiteSource) as unknown, options.suitePath);
-  const runnerPath = fileURLToPath(new URL("../../runner/browser-agent.py", import.meta.url));
-  const runnerSource = await readFile(runnerPath, "utf8");
-
-  const client = new RunloopClient({
-    ...(process.env.RUNLOOP_API_URL ? { baseUrl: process.env.RUNLOOP_API_URL } : {}),
-  });
-  const runtime = new RunloopRuntime({
-    client,
-    artifactStore: new LocalArtifactStore(options.artifactDir),
+  const { engine } = await createRunloopEngine({
+    ...(process.env.RUNLOOP_API_URL ? { runloopBaseUrl: process.env.RUNLOOP_API_URL } : {}),
+    maxConcurrency: options.maxConcurrency,
     workDir: options.workDir,
     agentCommand: options.agentCommand,
     healthPath: options.healthPath,
-    bootstrapFiles: {
-      ".branchpoint/browser-agent.py": runnerSource,
-    },
-    ...(options.openrouterModel
-      ? { environmentVariables: { BRANCHPOINT_OPENROUTER_MODEL: options.openrouterModel } }
-      : {}),
-    ...(options.openrouterSecret
-      ? { secrets: { OPENROUTER_API_KEY: options.openrouterSecret } }
-      : {}),
-  });
-  const engine = new BranchpointEngine({
-    runtime,
-    maxConcurrency: options.maxConcurrency,
+    artifactDir: options.artifactDir,
+    ...(options.openrouterModel ? { openrouterModel: options.openrouterModel } : {}),
+    ...(options.openrouterSecret ? { openrouterSecret: options.openrouterSecret } : {}),
   });
   const controller = new AbortController();
   let signalCount = 0;

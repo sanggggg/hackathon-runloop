@@ -1,0 +1,17 @@
+{
+  "name": "branchpoint",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.24.0",
+  "engines": {
+    "node": ">=22.15.0"
+  },
+  "scripts": {
+    "build:server": "pnpm --filter @branchpoint/server... build",
+    "dev:server": "pnpm --filter @branchpoint/server dev",
+    "test:server": "pnpm --filter @branchpoint/server test"
+  },
+  "devDependencies": {
+    "railway": "^3.11.0"
+  }
+}
