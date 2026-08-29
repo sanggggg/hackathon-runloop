@@ -101,6 +101,21 @@ Colours come from [Kumo](https://kumo-ui.com) light-mode tokens, lifted from the
 live site — no invented values. Status colours are Kumo's `success` and
 `danger`.
 
+## Running the web app
+
+```bash
+pnpm install
+pnpm --dir apps/web dev     # http://localhost:3000
+```
+
+Both routes render from `apps/web/lib/fixtures.ts` — a hand-written `Suite` and
+`Run` typed against `packages/schema`. No engine required. When `POST /runs`
+starts returning something real, swap the fixture import for a fetch and the
+components do not change.
+
+UI is [Kumo](https://kumo-ui.com) (`@cloudflare/kumo`), light mode, with its
+semantic tokens rather than raw colours.
+
 ## Order of work
 
 Only the first item blocks anyone.
