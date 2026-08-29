@@ -2,9 +2,11 @@
 .env.*
 *.local
 node_modules/
+dist/
 __pycache__/
 *.pyc
 .DS_Store
+.branchpoint-artifacts/
 
 # Seeded canvas output is regenerable from design/*.dc.html
 design/branchpoint-qa-tree.html

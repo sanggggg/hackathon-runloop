@@ -1,0 +1,113 @@
+{
+  "id": "nimbus-onboarding",
+  "name": "Nimbus onboarding",
+  "repo": {
+    "url": "https://github.com/sanggggg/hackathon-runloop-demo",
+    "ref": "b36666c0351c94e5074e532f88cf8e70695549ea",
+    "buildCmd": "npm ci && npm run build",
+    "startCmd": "QA_PROFILE=demo-head npm start",
+    "port": 3000
+  },
+  "blueprintId": "REPLACE_WITH_RUNLOOP_BLUEPRINT_ID",
+  "fixture": {
+    "snapshotId": "REPLACE_WITH_RUNLOOP_SNAPSHOT_ID",
+    "ref": "b36666c0351c94e5074e532f88cf8e70695549ea",
+    "description": "demo-head profile, signed in at /onboarding/use-case"
+  },
+  "tree": [
+    {
+      "id": "root",
+      "parentId": null,
+      "label": "Signed-in onboarding",
+      "intent": "Start from the signed-in onboarding screen",
+      "kind": "fixture",
+      "state": "verified"
+    },
+    {
+      "id": "team",
+      "parentId": "root",
+      "label": "Team plan",
+      "intent": "Choose the team workspace option",
+      "kind": "step",
+      "state": "verified",
+      "lastSeenLabel": "Team plan"
+    },
+    {
+      "id": "invite",
+      "parentId": "team",
+      "label": "Invite teammates",
+      "intent": "Invite teammates",
+      "kind": "step",
+      "state": "verified",
+      "lastSeenLabel": "Invite teammates"
+    },
+    {
+      "id": "send-invites",
+      "parentId": "invite",
+      "label": "Send invitations",
+      "intent": "Send the invitations",
+      "expectedOutcome": "Invitations sent",
+      "kind": "goal",
+      "state": "verified",
+      "lastSeenLabel": "Send invitations"
+    },
+    {
+      "id": "skip-invites",
+      "parentId": "team",
+      "label": "Skip invites",
+      "intent": "Skip inviting teammates",
+      "expectedOutcome": "Team workspace ready",
+      "kind": "goal",
+      "state": "verified",
+      "lastSeenLabel": "Skip invites"
+    },
+    {
+      "id": "solo",
+      "parentId": "root",
+      "label": "Solo plan",
+      "intent": "Choose the personal workspace option",
+      "kind": "step",
+      "state": "verified",
+      "lastSeenLabel": "Solo plan"
+    },
+    {
+      "id": "starter",
+      "parentId": "solo",
+      "label": "Starter template",
+      "intent": "Start with the prepared template",
+      "expectedOutcome": "Starter project created",
+      "kind": "goal",
+      "state": "verified",
+      "lastSeenLabel": "Starter template"
+    },
+    {
+      "id": "blank",
+      "parentId": "solo",
+      "label": "Blank workspace",
+      "intent": "Start from a blank workspace",
+      "expectedOutcome": "Empty workspace ready",
+      "kind": "goal",
+      "state": "verified",
+      "lastSeenLabel": "Blank workspace"
+    },
+    {
+      "id": "import",
+      "parentId": "solo",
+      "label": "Import from CSV",
+      "intent": "Import the workspace from CSV",
+      "expectedOutcome": "Records imported",
+      "kind": "goal",
+      "state": "unverified"
+    },
+    {
+      "id": "later",
+      "parentId": "root",
+      "label": "Decide later",
+      "intent": "Defer onboarding for now",
+      "expectedOutcome": "Progress saved for later",
+      "kind": "goal",
+      "state": "verified",
+      "lastSeenLabel": "Decide later"
+    }
+  ]
+}

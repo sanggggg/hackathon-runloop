@@ -63,6 +63,12 @@ export interface Node {
    * not "#solo".
    */
   intent: string;
+  /**
+   * What a successful terminal screen should prove. Goal nodes use this for
+   * judgement after `intent` has selected the control. Kept optional so the
+   * existing click-only suites continue to use `intent` as the fallback.
+   */
+  expectedOutcome?: string;
   kind: NodeKind;
   state: NodeState;
   /**
@@ -119,8 +125,10 @@ export interface NodeResult {
   /** Human description of what it matched, e.g. `"Use a starter" card`. */
   resolvedTo?: string;
   screenshotId?: string;
+  /** Successful structured-output model calls made while resolving this node. */
+  modelCalls?: number;
   devboxId: string;
-  /** Milliseconds this branch took, from fork to verdict. */
+  /** Cumulative time on this devbox after creation, including prepare and prior straight-path nodes. */
   elapsedMs: number;
   log: LogLine[];
 }
@@ -139,10 +147,12 @@ export interface Run {
    * in Build so a human can adopt them into the plan.
    */
   discovered: Node[];
+  /** Successful structured-output calls; independent of BYOK/cache billing. */
+  modelCalls?: number;
   costUsd: number;
-  /** Actual: tracks tree depth. */
+  /** End-to-end engine time, including container preparation. */
   wallClockMs: number;
-  /** What running every path from a cold sign-in would have cost. */
+  /** Max cumulative time per devbox segment, repeated over terminal paths; excludes devbox creation. */
   sequentialEstimateMs: number;
 }
 
@@ -178,7 +188,7 @@ export interface JudgeScreenInput {
   title: string;
   visibleText: string;
   url: string;
-  /** The goal node's intent. */
+  /** The goal's expectedOutcome, falling back to its intent for older Suites. */
   expected: string;
 }
 

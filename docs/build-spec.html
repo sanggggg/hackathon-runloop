@@ -546,6 +546,7 @@
   parentId    <i>// null = the fixture root</i>
   label       <i>// short human name on the card</i>
   intent      <i>// the sentence the agent resolves — never a selector</i>
+  expectedOutcome? <i>// what a healthy terminal screen should prove</i>
   kind:  'fixture' | 'step' | 'goal'
   state: 'unverified' | 'verified' | 'unresolved'
   lastSeenLabel?   <i>// what the control read last time it resolved; a hint, not a bypass</i>
@@ -562,6 +563,7 @@
   fixtureSnapshotId
   results:    NodeResult[]
   discovered: Node[]   <i>// options seen during the run that the tree did not have</i>
+  modelCalls?          <i>// successful structured model responses; independent of billing</i>
   costUsd, wallClockMs, sequentialEstimateMs
 }
 
@@ -572,7 +574,9 @@
   failReason?: 'unresolved' | 'error-screen' | 'timeout'
   resolvedTo?  <i>// human description of what it matched, e.g. '"Use a starter" card'</i>
   screenshotId
+  modelCalls?  <i>// successful structured model responses for this node</i>
   devboxId
+  elapsedMs    <i>// cumulative after devbox creation; includes prepare + straight-path work</i>
   log: { t: number, text: string, level: 'info'|'warn'|'error' }[]
 }</pre>
 
@@ -589,7 +593,7 @@
    <i>cheap model, temperature 0, structured output</i>
 
 <b>judgeScreen</b>({
-  title, visibleText, url, expected: string
+  title, visibleText, url, expected: string   <i>// expectedOutcome, or intent fallback</i>
 }) → { ok: boolean, reason: string }
    <i>capable model, leaves only</i></pre>
 

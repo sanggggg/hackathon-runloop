@@ -18,7 +18,9 @@ The pitch, in one line:
 | Path | |
 |---|---|
 | `docs/build-spec.html` | **Start here.** Measured numbers, the five traps, pinned contracts, and the six-way work split. Open it in a browser. |
+| [`docs/runs/2026-08-29-nimbus-live-e2e.md`](docs/runs/2026-08-29-nimbus-live-e2e.md) | Real Runloop + OpenRouter engine E2E: the exact QA tree, branch results, model-call receipt, timing caveat, screenshot audit, and cleanup record. |
 | `packages/schema/src/index.ts` | The pinned contracts as real types. Changing these stalls other people — raise it first. |
+| `packages/engine/` | Runloop QA-tree orchestrator, fork-aware browser runner, CLI, live Nimbus E2E, and cleanup/artifact adapters. |
 | `design/` | Design canvas source: four `.dc.html` artboards, `canvas.json`, and real screenshots captured from a devbox. |
 | `experiments/` | Standalone scripts that produced every number in the spec. Each one runs on its own. |
 | [`hackathon-runloop-demo`](https://github.com/sanggggg/hackathon-runloop-demo) | The companion Nimbus browser-QA fixture. Its profiles, actions, and expected outcomes live in [`qa/manifest.json`](https://github.com/sanggggg/hackathon-runloop-demo/blob/cb30fb3ed4aa2f1b30ca1180df82f3eef05313f3/qa/manifest.json). |
