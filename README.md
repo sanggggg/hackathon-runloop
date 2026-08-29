@@ -21,6 +21,7 @@ The pitch, in one line:
 | `packages/schema/src/index.ts` | The pinned contracts as real types. Changing these stalls other people — raise it first. |
 | `design/` | Design canvas source: four `.dc.html` artboards, `canvas.json`, and real screenshots captured from a devbox. |
 | `experiments/` | Standalone scripts that produced every number in the spec. Each one runs on its own. |
+| [`hackathon-runloop-demo`](https://github.com/sanggggg/hackathon-runloop-demo) | The companion Nimbus browser-QA fixture. Its profiles, actions, and expected outcomes live in [`qa/manifest.json`](https://github.com/sanggggg/hackathon-runloop-demo/blob/cb30fb3ed4aa2f1b30ca1180df82f3eef05313f3/qa/manifest.json). |
 
 ## The two routes
 
@@ -61,6 +62,72 @@ deploy; this is what makes it affordable.
 
 Proven working: fork inherits disk state, a browser login session survives a
 fork, screenshots capture in the box and download to the host.
+
+## Demo fixture and Runloop validation
+
+The real browser target is
+[`sanggggg/hackathon-runloop-demo`](https://github.com/sanggggg/hackathon-runloop-demo),
+a deterministic onboarding app called **Nimbus**. It has real authentication,
+persisted server state, semantic controls, branching journeys, and named
+failure profiles. It makes no third-party network calls at runtime, so the same
+ref and action sequence always produce the same oracle.
+
+The two-ref demo is deliberately small and immutable:
+
+| Ref | What Branchpoint should report |
+|---|---|
+| [`fixture-v1-baseline`](https://github.com/sanggggg/hackathon-runloop-demo/tree/fixture-v1-baseline) · `cb30fb3` | Five original journeys pass; CSV import does not exist. |
+| [`fixture-demo-head`](https://github.com/sanggggg/hackathon-runloop-demo/tree/fixture-demo-head) · `db1f49e` | A renamed starter control still passes as `UI changed`; blank and decide-later fail on deterministic error screens; a working CSV-import path is discovered. |
+
+Pin the peeled commit SHAs, not `main`. Do not set `QA_PROFILE` or `QA_VARIANT`
+for this comparison: each ref's committed `fixture.config.json` selects its
+behavior.
+The pinned commits are `cb30fb3ed4aa2f1b30ca1180df82f3eef05313f3`
+and `db1f49ee2431ae89761c9621a56ac8795f7d4b3a`, respectively.
+Additional published refs isolate DOM refactors, copy changes, regressions,
+removed controls, discovery, and timeouts; the
+[fixture README](https://github.com/sanggggg/hackathon-runloop-demo#profiles)
+lists the full matrix.
+
+The repo contract is intentionally conventional:
+
+```bash
+npm ci && npm run build
+npm start                    # terminal 1, port 3000
+```
+
+Then, in another terminal:
+
+```bash
+curl http://127.0.0.1:3000/__qa/health
+```
+
+Agents should read
+[`qa/manifest.json`](https://github.com/sanggggg/hackathon-runloop-demo/blob/cb30fb3ed4aa2f1b30ca1180df82f3eef05313f3/qa/manifest.json)
+rather than duplicate credentials, accessible labels, action IDs, or outcomes.
+`POST /__qa/reset` isolates flows, `GET /__qa/state` is the server oracle, and
+`GET /__qa/events` explains how the browser got there. Assert terminal `stage`
+and `outcome`, not presentation copy.
+
+On 2026-08-29 the fixture was exercised against the real Runloop API, not a
+mock. These artifacts are account-scoped and can be rebuilt from the pinned SHA
+if they are removed:
+
+| Artifact | Verified value |
+|---|---|
+| Runtime Blueprint | `branchpoint-node22-playwright-1.62.0` · `bpt_34FmWfEvKypQOyjrC7LVA` · Node 22.15.0, npm 10.9.2, Chromium |
+| Signed-in fixture snapshot | `branchpoint-nimbus-baseline-v1` · `snp_34FmaUWcfqTTEIq3t9k9K` · baseline `cb30fb3` parked at `/onboarding/use-case` |
+| Fork smoke | Session restored, `Solo plan → Starter template` reached `done / solo-starter`; server and browser state agreed |
+| Blueprint lookup → fork assertion | 48.75s with the built Blueprint reused; every Devbox created by the smoke test was shut down afterward |
+
+The snapshot contains the persisted server state and Playwright
+`storage_state`. It does **not** contain a running process, so every fork must
+restart `npm start` and restore the browser state before continuing. The
+validation uploaded an archive of the pinned private ref.
+
+This validates the Runloop primitive and the Nimbus target. The product UI in
+`apps/web` still renders the hand-written data in `apps/web/lib/fixtures.ts`;
+wiring the orchestrator to this fixture is the next engine step.
 
 ## Running the experiments
 
@@ -121,11 +188,14 @@ semantic tokens rather than raw colours.
 Only the first item blocks anyone.
 
 1. **Schemas committed** — done, in `packages/schema`.
-2. **Build the Blueprint** — removes 41s from every experiment. Do this early.
+2. **Blueprint built and validated** — Node 22, Chromium, and Playwright are
+   baked once and reused by fixture Devboxes.
 3. **Orchestrator and intent resolver, in parallel** — the orchestrator runs
    against a stub resolver that returns the first candidate; the resolver is
    scored against saved HTML with no devbox at all.
 4. **Both UIs against fixture JSON** — hand-write one `Suite` and one `Run`.
-5. **Join them, run against the demo repo.** Expect the first run to be mostly
-   red. That is the system working.
+5. **Join them, run against the
+   [demo repo](https://github.com/sanggggg/hackathon-runloop-demo).** Expect the
+   first changed-ref run to include both red paths and resilient passes. That is
+   the system working.
 6. **Two commits, two runs.** That is the demo.
