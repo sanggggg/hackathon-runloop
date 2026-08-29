@@ -1,13 +1,12 @@
-import { defineRailway, empty, preserve, project, service, volume } from "railway/iac";
+import { defineRailway, preserve, project, service, volume } from "railway/iac";
 
 export default defineRailway(() => {
   const data = volume("branchpoint-data", {
     region: "us-west2",
-    sizeMB: 1024,
+    sizeMB: 500,
   });
 
   const server = service("branchpoint-server", {
-    source: empty(),
     build: "pnpm --filter @branchpoint/server... build",
     start: "node apps/server/dist/src/index.js",
     healthcheck: "/readyz",
