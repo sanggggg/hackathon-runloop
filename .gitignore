@@ -11,3 +11,7 @@ design/branchpoint-qa-tree.html
 
 # Local reference material, not ours to version
 vendor/
+
+# Next.js
+.next/
+next-env.d.ts
