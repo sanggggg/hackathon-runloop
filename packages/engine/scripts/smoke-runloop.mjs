@@ -2,7 +2,7 @@
 
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
-import { RunloopClient } from "../dist/src/runloop-client.js";
+import { RunloopApiError, RunloopClient } from "../dist/src/runloop-client.js";
 
 const client = new RunloopClient();
 const token = randomUUID();
@@ -16,9 +16,38 @@ let primaryError;
 async function shutdown(id) {
   try {
     await client.shutdown(id, { force: true });
-  } finally {
     liveDevboxes.delete(id);
+  } catch (error) {
+    if (error instanceof RunloopApiError && error.status === 404) {
+      liveDevboxes.delete(id);
+      return;
+    }
+    throw error;
   }
+}
+
+async function deleteSnapshot(id) {
+  try {
+    await client.deleteSnapshot(id);
+    snapshots.delete(id);
+  } catch (error) {
+    if (error instanceof RunloopApiError && error.status === 404) {
+      snapshots.delete(id);
+      return;
+    }
+    throw error;
+  }
+}
+
+async function cleanupSet(resources, cleanupResource) {
+  let errors = [];
+  for (let attempt = 0; attempt < 2 && resources.size > 0; attempt += 1) {
+    const cleanup = await Promise.allSettled([...resources].map(cleanupResource));
+    errors = cleanup.flatMap((entry) =>
+      entry.status === "rejected" ? [entry.reason] : [],
+    );
+  }
+  return errors;
 }
 
 try {
@@ -59,16 +88,10 @@ try {
 } catch (error) {
   primaryError = error;
 } finally {
-  const cleanup = await Promise.allSettled([
-    ...[...liveDevboxes].map((id) => shutdown(id)),
-    ...[...snapshots].map(async (id) => {
-      await client.deleteSnapshot(id);
-      snapshots.delete(id);
-    }),
-  ]);
-  const cleanupErrors = cleanup.flatMap((entry) =>
-    entry.status === "rejected" ? [entry.reason] : [],
-  );
+  const cleanupErrors = [
+    ...await cleanupSet(liveDevboxes, shutdown),
+    ...await cleanupSet(snapshots, deleteSnapshot),
+  ];
   if (primaryError && cleanupErrors.length > 0) {
     throw new AggregateError([primaryError, ...cleanupErrors], "canary and cleanup failed");
   }

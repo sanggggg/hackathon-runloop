@@ -106,12 +106,18 @@ SHAs are strongly recommended for reproducible runs.
 
 ## Live Nimbus E2E
 
-The live harness packages a local clone of
-`sanggggg/hackathon-runloop-demo`, prepares a signed-in `demo-head` fixture,
-creates a Runloop disk snapshot, and verifies nested forks against the pinned
-commit in [`examples/nimbus-suite.json`](examples/nimbus-suite.json). It expects
-the renamed starter path and import path to pass, and the blank/later
-regressions to fail as `error-screen`.
+The first full real-API run and its exact tree, node verdicts, timing, model
+receipt, screenshot audit, and cleanup evidence are recorded in
+[`docs/runs/2026-08-29-nimbus-live-e2e.md`](../../docs/runs/2026-08-29-nimbus-live-e2e.md).
+
+The live harness creates a sanitized depth-one repository at the exact pinned
+commit from a local clone of `sanggggg/hackathon-runloop-demo`; the original
+repository history plus local dirty and untracked files are never uploaded. It
+prepares a signed-in `demo-head` fixture, creates a Runloop disk snapshot, and
+verifies nested forks against the pinned commit in
+[`examples/nimbus-suite.json`](examples/nimbus-suite.json). It expects the
+renamed starter path and import path to pass, and the blank/later regressions to
+fail as `error-screen`.
 
 ```bash
 BRANCHPOINT_DEMO_REPO_PATH=/absolute/path/to/hackathon-runloop-demo \

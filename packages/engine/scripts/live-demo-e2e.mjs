@@ -248,20 +248,61 @@ try {
 
   hostTempDirectory = await mkdtemp(path.join(tmpdir(), "branchpoint-demo-e2e-"));
   const artifactStore = new LocalArtifactStore(artifactDirectory);
+  const sourceDirectory = path.join(hostTempDirectory, "source");
   const archivePath = path.join(hostTempDirectory, "demo.tgz");
+  const { stdout: resolvedDemoRef } = await executeFile(
+    "git",
+    ["-C", demoPath, "rev-parse", "--verify", `${demoRef}^{commit}`],
+    { signal: controller.signal },
+  );
+  assert.equal(
+    resolvedDemoRef.trim(),
+    demoRef,
+    "BRANCHPOINT_DEMO_REF must resolve to the exact pinned commit",
+  );
+  await executeFile("git", ["init", "--quiet", sourceDirectory], {
+    signal: controller.signal,
+  });
+  await executeFile(
+    "git",
+    ["-C", sourceDirectory, "fetch", "--no-tags", "--depth=1", demoPath, demoRef],
+    { signal: controller.signal },
+  );
+  await executeFile(
+    "git",
+    ["-C", sourceDirectory, "checkout", "--quiet", "--detach", "FETCH_HEAD"],
+    { signal: controller.signal },
+  );
+  await executeFile(
+    "git",
+    [
+      "-C",
+      sourceDirectory,
+      "remote",
+      "add",
+      "origin",
+      "https://github.com/sanggggg/hackathon-runloop-demo",
+    ],
+    { signal: controller.signal },
+  );
+  await Promise.all([
+    rm(path.join(sourceDirectory, ".git", "FETCH_HEAD"), { force: true }),
+    rm(path.join(sourceDirectory, ".git", "ORIG_HEAD"), { force: true }),
+    rm(path.join(sourceDirectory, ".git", "logs"), { recursive: true, force: true }),
+  ]);
+  const [{ stdout: exportedRef }, { stdout: exportedStatus }] = await Promise.all([
+    executeFile("git", ["-C", sourceDirectory, "rev-parse", "HEAD"], {
+      signal: controller.signal,
+    }),
+    executeFile("git", ["-C", sourceDirectory, "status", "--porcelain"], {
+      signal: controller.signal,
+    }),
+  ]);
+  assert.equal(exportedRef.trim(), demoRef, "sanitized source clone must remain at the pinned commit");
+  assert.equal(exportedStatus, "", "sanitized source clone must not contain local changes");
   await executeFile(
     "tar",
-    [
-      "--exclude=./node_modules",
-      "--exclude=./dist",
-      "--exclude=./playwright-report",
-      "--exclude=./test-results",
-      "-czf",
-      archivePath,
-      "-C",
-      demoPath,
-      ".",
-    ],
+    ["-czf", archivePath, "-C", sourceDirectory, "."],
     { signal: controller.signal },
   );
   const archiveBase64 = (await readFile(archivePath)).toString("base64");
@@ -282,7 +323,6 @@ try {
       "mkdir -p /home/user/workspace",
       `base64 --decode /home/user/.branchpoint-demo-${token}.tgz.b64 | tar -xzf - -C /home/user/workspace`,
       "cd /home/user/workspace",
-      `test \"$(git rev-parse HEAD)\" = \"${demoRef}\"`,
       "npm ci",
       "npm run build",
       "sudo npx playwright install-deps chromium",

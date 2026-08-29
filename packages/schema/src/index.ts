@@ -128,7 +128,7 @@ export interface NodeResult {
   /** Successful structured-output model calls made while resolving this node. */
   modelCalls?: number;
   devboxId: string;
-  /** Milliseconds this branch took, from fork to verdict. */
+  /** Cumulative time on this devbox after creation, including prepare and prior straight-path nodes. */
   elapsedMs: number;
   log: LogLine[];
 }
@@ -150,9 +150,9 @@ export interface Run {
   /** Successful structured-output calls; independent of BYOK/cache billing. */
   modelCalls?: number;
   costUsd: number;
-  /** Actual: tracks tree depth. */
+  /** End-to-end engine time, including container preparation. */
   wallClockMs: number;
-  /** What running every path from a cold sign-in would have cost. */
+  /** Max cumulative time per devbox segment, repeated over terminal paths; excludes devbox creation. */
   sequentialEstimateMs: number;
 }
 
@@ -188,7 +188,7 @@ export interface JudgeScreenInput {
   title: string;
   visibleText: string;
   url: string;
-  /** The goal node's intent. */
+  /** The goal's expectedOutcome, falling back to its intent for older Suites. */
   expected: string;
 }
 

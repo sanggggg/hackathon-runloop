@@ -18,6 +18,7 @@ The pitch, in one line:
 | Path | |
 |---|---|
 | `docs/build-spec.html` | **Start here.** Measured numbers, the five traps, pinned contracts, and the six-way work split. Open it in a browser. |
+| [`docs/runs/2026-08-29-nimbus-live-e2e.md`](docs/runs/2026-08-29-nimbus-live-e2e.md) | Real Runloop + OpenRouter engine E2E: the exact QA tree, branch results, model-call receipt, timing caveat, screenshot audit, and cleanup record. |
 | `packages/schema/src/index.ts` | The pinned contracts as real types. Changing these stalls other people — raise it first. |
 | `packages/engine/` | Runloop QA-tree orchestrator, fork-aware browser runner, CLI, live Nimbus E2E, and cleanup/artifact adapters. |
 | `design/` | Design canvas source: four `.dc.html` artboards, `canvas.json`, and real screenshots captured from a devbox. |
