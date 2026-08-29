@@ -4,7 +4,7 @@ This project uses Railway's TypeScript Infrastructure as Code. The deprecated
 `railway.toml` / `railway.json` config format is intentionally not used.
 
 The service builds from the repository root because `apps/server` depends on
-the workspace packages in `packages/`. It runs as one replica with a 1 GiB
+the workspace packages in `packages/`. It runs as one replica with a 500 MiB
 Volume mounted at `/app/data`; the JSON state file and screenshots both live
 under that mount.
 
@@ -21,9 +21,9 @@ Optional variables:
 - `BRANCHPOINT_MAX_ACTIVE_RUNS` (default `1`)
 - `BRANCHPOINT_MAX_CONCURRENCY` (Devboxes per run, default `8`)
 
-The service intentionally starts with an empty source so it can be deployed
-from a dirty/local worktree without requiring Railway GitHub App access. Upload
-the repository root so all workspace packages are present:
+The service intentionally has no connected repository source so it can be
+deployed from a dirty/local worktree without requiring Railway GitHub App
+access. Upload the repository root so all workspace packages are present:
 
 ```bash
 pnpm install

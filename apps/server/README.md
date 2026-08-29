@@ -17,18 +17,46 @@ The API listens on `http://localhost:4000`. Liveness is always available at
 `GET /healthz`; readiness is `200` only when the engine is configured and the
 server is accepting runs.
 
+## Production integration
+
+The deployed API base URL is:
+
+```text
+https://branchpoint-server-production.up.railway.app
+```
+
+Its live, machine-readable contract is available at
+[`/openapi.json`](https://branchpoint-server-production.up.railway.app/openapi.json).
+`/`, `/healthz`, `/readyz`, and `/openapi.json` are public. Every Suite, Run,
+cancel, and screenshot endpoint requires the shared Bearer token:
+
+```bash
+export BRANCHPOINT_API_URL=https://branchpoint-server-production.up.railway.app
+export BRANCHPOINT_API_TOKEN=replace-me
+
+curl -fsS "$BRANCHPOINT_API_URL/suites" \
+  -H "Authorization: Bearer $BRANCHPOINT_API_TOKEN"
+```
+
+Missing or invalid credentials return `401` with a `WWW-Authenticate: Bearer`
+header. Requests carrying an `Origin` outside `BRANCHPOINT_CORS_ORIGINS` return
+`403`. The remote CLI should read both values from environment variables. The
+dashboard must keep the token server-side (for example, in a Next.js route
+handler or server action); never ship it in a `NEXT_PUBLIC_*` variable or
+browser bundle.
+
 Register a complete, already-prepared Suite and start a run:
 
 ```bash
-export BRANCHPOINT_TOKEN=replace-me
+export BRANCHPOINT_API_TOKEN=replace-me
 
 curl -fsS http://localhost:4000/suites \
-  -H "Authorization: Bearer $BRANCHPOINT_TOKEN" \
+  -H "Authorization: Bearer $BRANCHPOINT_API_TOKEN" \
   -H "Content-Type: application/json" \
   --data-binary @packages/engine/examples/nimbus-suite.json
 
 curl -fsS http://localhost:4000/runs \
-  -H "Authorization: Bearer $BRANCHPOINT_TOKEN" \
+  -H "Authorization: Bearer $BRANCHPOINT_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"suiteId":"nimbus-onboarding"}'
 ```
@@ -40,20 +68,20 @@ fixture IDs.
 
 ## HTTP contract
 
-| Method | Path | Purpose |
-|---|---|---|
-| `GET` | `/healthz` | Public liveness |
-| `GET` | `/readyz` | Public deployment readiness |
-| `GET` | `/openapi.json` | Public API description |
-| `GET` | `/suites` | List Suites |
-| `POST` | `/suites` | Register a complete Suite |
-| `GET` | `/suites/:id` | Read one Suite |
-| `PATCH` | `/suites/:id` | Validate and replace its tree |
-| `POST` | `/runs` | Queue a run; returns `202 { runId }` |
-| `GET` | `/runs?suiteId=` | List newest-first |
-| `GET` | `/runs/:id` | Poll lifecycle and partial results |
-| `POST` | `/runs/:id/cancel` | Cancel queued/running work |
-| `GET` | `/screenshots/*` | Read a persisted PNG |
+| Method | Path | Auth | Purpose |
+|---|---|---|---|
+| `GET` | `/healthz` | Public | Process liveness |
+| `GET` | `/readyz` | Public | Deployment readiness |
+| `GET` | `/openapi.json` | Public | OpenAPI 3.1 description |
+| `GET` | `/suites` | Bearer | List Suites |
+| `POST` | `/suites` | Bearer | Register a complete Suite |
+| `GET` | `/suites/:id` | Bearer | Read one Suite |
+| `PATCH` | `/suites/:id` | Bearer | Validate and replace its tree |
+| `POST` | `/runs` | Bearer | Queue a run; returns `202 { runId }` |
+| `GET` | `/runs?suiteId=` | Bearer | List newest-first |
+| `GET` | `/runs/:id` | Bearer | Poll lifecycle and partial results |
+| `POST` | `/runs/:id/cancel` | Bearer | Cancel queued/running work |
+| `GET` | `/screenshots/*` | Bearer | Read a persisted PNG |
 
 Every protected endpoint expects `Authorization: Bearer <token>` when
 `BRANCHPOINT_API_TOKEN` is configured. Production startup refuses to run

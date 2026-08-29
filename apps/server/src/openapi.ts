@@ -6,6 +6,7 @@ export const openApiDocument = {
     description:
       "Manage prepared QA suites and asynchronously execute them with the Branchpoint engine.",
   },
+  servers: [{ url: "/", description: "The server that published this document" }],
   security: [{ bearerAuth: [] }],
   paths: {
     "/healthz": {
@@ -142,7 +143,11 @@ export const openApiDocument = {
   },
   components: {
     securitySchemes: {
-      bearerAuth: { type: "http", scheme: "bearer" },
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+        description: "Shared server token from BRANCHPOINT_API_TOKEN.",
+      },
     },
     schemas: {
       Node: {
