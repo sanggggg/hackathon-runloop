@@ -10,6 +10,7 @@ import type { Node, NodeResult, Run, Suite } from "@branchpoint/schema";
 export const suite: Suite = {
   id: "nimbus-onboarding",
   name: "nimbus-onboarding",
+  treeVersion: 12,
   repo: {
     url: "https://github.com/nimbus-labs/nimbus",
     ref: "def456",
@@ -238,6 +239,7 @@ export const run: Run = {
   id: "run-42",
   suiteId: suite.id,
   ref: "def456",
+  treeVersion: 12,
   startedAt: "2026-08-29T21:04:00Z",
   finishedAt: "2026-08-29T21:04:16Z",
   fixtureSnapshotId: suite.fixture.snapshotId,

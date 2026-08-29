@@ -76,6 +76,13 @@ export interface Node {
 export interface Suite {
   id: string;
   name: string;
+  /**
+   * Bumped whenever the tree changes. The tree is server-owned because runs
+   * write back to it — self-healing updates `lastSeenLabel`, discovery appends
+   * nodes — so it is a living record, not a spec file that belongs in a repo.
+   * Pin this on a run to reproduce exactly what an older run checked.
+   */
+  treeVersion: number;
   repo: Repo;
   /** Image with dependencies and the browser baked in. */
   blueprintId: string;
@@ -130,6 +137,8 @@ export interface Run {
   suiteId: string;
   /** The commit this run targeted. */
   ref: string;
+  /** The tree version this run evaluated against. */
+  treeVersion: number;
   startedAt: string;
   finishedAt?: string;
   fixtureSnapshotId: string;

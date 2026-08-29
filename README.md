@@ -168,6 +168,32 @@ Colours come from [Kumo](https://kumo-ui.com) light-mode tokens, lifted from the
 live site — no invented values. Status colours are Kumo's `success` and
 `danger`.
 
+## Running it end to end
+
+The engine does not exist yet, so a mock stands in for it on the same HTTP
+routes. Nothing else is stubbed — the CLI and the web app talk to it exactly
+as they will talk to the real thing.
+
+```bash
+pnpm install
+pnpm --dir apps/mock-server dev      # http://localhost:4000
+```
+
+Then, in another shell:
+
+```bash
+cd apps/cli
+bp() { node --experimental-strip-types src/index.ts "$@"; }
+
+bp suite list
+bp suite show nimbus-onboarding      # the tree, with unresolved steps flagged
+bp run --suite nimbus-onboarding --wait
+bp runs --watch                      # in-flight runs, refreshed
+```
+
+Mock runs take about as long as real ones, so `--wait` and `--watch` exercise
+the paths they will use for real.
+
 ## Running the web app
 
 ```bash

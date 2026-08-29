@@ -1,0 +1,19 @@
+# Wiring Branchpoint into a pull request check.
+#
+# This is a template for the repository you want tested — copy it there as
+# .github/workflows/qa.yml. It is not a workflow of this repository.
+name: QA
+
+on:
+  pull_request:
+
+jobs:
+  branchpoint:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: sanggggg/hackathon-runloop/.github/actions/branchpoint@main
+        with:
+          suite: nimbus-onboarding
+          token: ${{ secrets.BRANCHPOINT_TOKEN }}
