@@ -2,6 +2,7 @@ export * from "./artifact-store.js";
 export * from "./engine.js";
 export * from "./errors.js";
 export * from "./runloop-client.js";
+export * from "./runloop-engine-factory.js";
 export * from "./runloop-runtime.js";
 export * from "./tree.js";
 export * from "./types.js";

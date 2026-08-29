@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import type { Node, Suite } from "@branchpoint/schema";
+import type { Node, Run, Suite } from "@branchpoint/schema";
 import {
   BranchpointEngine,
   EngineRunError,
+  type RunInput,
   RunInputValidationError,
   TreeValidationError,
 } from "../src/index.js";
@@ -117,6 +118,22 @@ test("invalid suite configuration fails before provisioning a container", async 
   assert.deepEqual(runtime.events, []);
 });
 
+test("an invalid onProgress callback fails before provisioning a container", async () => {
+  const runtime = new FakeRuntime();
+  const input = {
+    suite: suite([node("root", null, "fixture"), node("goal", "root", "goal")], runtime),
+    onProgress: "not-a-function",
+  } as unknown as RunInput;
+
+  await assert.rejects(
+    engine(runtime).run(input),
+    (error: unknown) =>
+      error instanceof RunInputValidationError &&
+      error.issues.includes("onProgress must be a function when provided"),
+  );
+  assert.deepEqual(runtime.events, []);
+});
+
 test("a straight chain reuses one prepared container and takes no snapshots", async () => {
   const runtime = new FakeRuntime();
   const tree = [
@@ -195,6 +212,125 @@ test("model call receipts aggregate independently from provider billing", async 
   assert.equal(run.modelCalls, 3);
   assert.equal(run.costUsd, 0, "BYOK may complete real model calls with zero reported cost");
   assert.deepEqual(run.results.map((result) => result.modelCalls), [1, 2]);
+  runtime.assertFullyCleaned();
+});
+
+test("onProgress receives an unfinished latest Run after every committed node result", async () => {
+  const runtime = new FakeRuntime();
+  const discovered = node("new-goal", "a", "goal", "unverified");
+  runtime.setOutcome("a", {
+    status: "pass",
+    modelCalls: 1,
+    costUsd: 0.25,
+    discovered: [discovered],
+  });
+  runtime.setOutcome("goal", {
+    status: "pass",
+    modelCalls: 2,
+    costUsd: 0.5,
+  });
+  const tree = [
+    node("root", null, "fixture"),
+    node("a", "root", "step"),
+    node("goal", "a", "goal"),
+  ];
+  const updates: Run[] = [];
+
+  const run = await engine(runtime).run({
+    suite: suite(tree, runtime),
+    onProgress: async (progress) => {
+      updates.push(structuredClone(progress));
+      if (updates.length === 1) {
+        progress.results[0]!.status = "fail";
+        progress.discovered[0]!.label = "mutated by callback";
+      }
+    },
+  });
+
+  assert.equal(updates.length, 2);
+  assert.deepEqual(updates.map((update) => update.results.map((result) => result.nodeId)), [
+    ["a"],
+    ["a", "goal"],
+  ]);
+  assert(updates.every((update) => update.finishedAt === undefined));
+  assert.deepEqual(updates[0]?.discovered, [discovered]);
+  assert.equal(updates[0]?.modelCalls, 1);
+  assert.equal(updates[0]?.costUsd, 0.25);
+  assert.equal(updates[1]?.modelCalls, 3);
+  assert.equal(updates[1]?.costUsd, 0.75);
+  assert.equal(updates[1]?.results[0]?.status, "pass");
+  assert.equal(updates[1]?.discovered[0]?.label, discovered.label);
+  assert.equal(run.results[0]?.status, "pass");
+  assert.equal(run.discovered[0]?.label, discovered.label);
+  assert(run.finishedAt);
+  runtime.assertFullyCleaned();
+});
+
+test("concurrent branches serialize onProgress delivery without losing newer snapshots", async () => {
+  const runtime = new FakeRuntime();
+  const tree = [
+    node("root", null, "fixture"),
+    node("a", "root", "goal"),
+    node("b", "root", "goal"),
+  ];
+  let releaseFirst: (() => void) | undefined;
+  const firstGate = new Promise<void>((resolve) => {
+    releaseFirst = resolve;
+  });
+  let calls = 0;
+  let active = 0;
+  let maxActive = 0;
+  const resultCounts: number[] = [];
+
+  const running = engine(runtime).run({
+    suite: suite(tree, runtime),
+    onProgress: async (progress) => {
+      calls += 1;
+      active += 1;
+      maxActive = Math.max(maxActive, active);
+      resultCounts.push(progress.results.length);
+      if (calls === 1) await firstGate;
+      active -= 1;
+    },
+  });
+  await waitUntil(() => calls === 1);
+  await waitUntil(() => runtime.finishedNodeIds().length === 2);
+  assert.equal(calls, 1, "the second notification must wait behind the first");
+  releaseFirst?.();
+  await running;
+
+  assert.equal(calls, 2);
+  assert.equal(maxActive, 1);
+  assert.deepEqual(resultCounts, [1, 2]);
+  runtime.assertFullyCleaned();
+});
+
+test("an onProgress failure becomes EngineRunError after cleanup", async () => {
+  const runtime = new FakeRuntime();
+  const tree = [
+    node("root", null, "fixture"),
+    node("a", "root", "step"),
+    node("goal", "a", "goal"),
+  ];
+  const progressError = new Error("progress store unavailable");
+  let caught: unknown;
+
+  try {
+    await engine(runtime).run({
+      suite: suite(tree, runtime),
+      onProgress: async () => {
+        throw progressError;
+      },
+    });
+  } catch (error) {
+    caught = error;
+  }
+
+  assert(caught instanceof EngineRunError);
+  assert.equal(caught.cause, progressError);
+  assert.deepEqual(caught.partialRun.results.map((result) => result.nodeId), ["a"]);
+  assert.equal(caught.partialRun.finishedAt, undefined);
+  assert.equal(runtime.executionFor("goal"), undefined);
   runtime.assertFullyCleaned();
 });
 

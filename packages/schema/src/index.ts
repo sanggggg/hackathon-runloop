@@ -133,13 +133,39 @@ export interface NodeResult {
   log: LogLine[];
 }
 
+/**
+ * Server-side lifecycle for a Run. Engine-only callers may omit this field;
+ * the HTTP service always sets it so polling clients can distinguish an
+ * infrastructure failure from a product verdict.
+ */
+export type RunExecutionStatus =
+  | "queued"
+  | "running"
+  | "succeeded"
+  | "failed"
+  | "cancelling"
+  | "cancelled";
+
+export interface RunExecutionError {
+  /** Stable, machine-readable reason suitable for CLI exit handling. */
+  code: string;
+  /** Safe message for an API consumer. Server stacks and secrets stay private. */
+  message: string;
+}
+
 export interface Run {
   id: string;
   suiteId: string;
   /** The commit this run targeted. */
   ref: string;
+  /** When the server accepted the run. Equal to startedAt for engine-only runs. */
+  createdAt?: string;
   startedAt: string;
   finishedAt?: string;
+  /** Present on every Run returned by the HTTP service. */
+  executionStatus?: RunExecutionStatus;
+  /** Present only when executionStatus is failed or cancelled. */
+  error?: RunExecutionError;
   fixtureSnapshotId: string;
   results: NodeResult[];
   /**
@@ -220,16 +246,22 @@ export interface PrepareRepoOutput {
 // ─────────────────────────────────────────────────────────────
 
 export interface Api {
+  /** GET /suites */
+  listSuites(): Promise<Suite[]>;
   /** POST /suites */
-  createSuite(body: { repo: Repo }): Promise<Suite>;
+  createSuite(body: Suite): Promise<Suite>;
+  /** GET /suites/:id */
+  getSuite(id: string): Promise<Suite>;
   /** PATCH /suites/:id */
   updateTree(id: string, body: { tree: Node[] }): Promise<Suite>;
   /** POST /runs */
-  startRun(body: { suiteId: string; ref: string }): Promise<{ runId: string }>;
+  startRun(body: { suiteId: string; ref?: string }): Promise<{ runId: string }>;
+  /** POST /runs/:id/cancel */
+  cancelRun(id: string): Promise<Run>;
   /** GET /runs/:id */
   getRun(id: string): Promise<Run>;
   /** GET /runs?suiteId= — powers the left rail */
-  listRuns(suiteId: string): Promise<Run[]>;
+  listRuns(suiteId?: string): Promise<Run[]>;
   /** GET /screenshots/:id → image/png */
   screenshotUrl(id: string): string;
 }

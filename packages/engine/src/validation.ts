@@ -20,6 +20,9 @@ export function validateRunInput(input: RunInput): void {
   if (value.ref !== undefined && !isNonEmptyString(value.ref)) {
     issues.push("ref must be a non-empty string when provided");
   }
+  if (value.onProgress !== undefined && typeof value.onProgress !== "function") {
+    issues.push("onProgress must be a function when provided");
+  }
 
   const suite = value.suite;
   if (!isRecord(suite)) throw new RunInputValidationError([...issues, "suite must be an object"]);

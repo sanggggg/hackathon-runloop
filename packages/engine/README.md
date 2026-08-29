@@ -22,6 +22,43 @@ and cleanup. It does not know how Playwright or an LLM works. Those live behind
 `ContainerRuntime`, whose `executeNode` method invokes a browser QA agent inside
 the devbox.
 
+HTTP and CLI entrypoints should share `createRunloopEngine` rather than assemble
+the Runloop client, runtime, screenshot store, and Python bootstrap separately:
+
+```ts
+import { createRunloopEngine } from "@branchpoint/engine";
+
+const { engine, artifactStore } = await createRunloopEngine({
+  runloopBaseUrl: process.env.RUNLOOP_API_URL,
+  artifactDir: process.env.BRANCHPOINT_ARTIFACT_DIR,
+  openrouterModel: process.env.BRANCHPOINT_OPENROUTER_MODEL,
+  openrouterSecret: process.env.BRANCHPOINT_OPENROUTER_SECRET,
+});
+
+const run = await engine.run({
+  suite,
+  ref,
+  runId,
+  signal: controller.signal,
+  onProgress: async (partialRun) => {
+    await runStore.save(partialRun);
+  },
+});
+```
+
+`onProgress` captures a new unfinished `Run` snapshot immediately after every
+committed node result, then delivers snapshots serially across concurrent
+branches. The callback cannot mutate engine-owned result state. If a callback
+rejects, the run follows the same resource-cleanup path as another infrastructure
+failure and rejects with `EngineRunError`; its `partialRun` includes the node
+result that triggered the callback. The final returned `Run` is still the
+authoritative finished value. A branch keeps its devbox permit while its callback
+is pending, so persistence callbacks should be bounded and return promptly.
+
+The factory locates `runner/browser-agent.py` correctly when invoked from either
+the TypeScript source layout or compiled `dist/src` output. Deployments must
+therefore retain the package-level `runner` directory alongside `dist`.
+
 Runloop disk snapshots do **not** preserve browser or application processes.
 The in-container agent must write its logical browser state to disk after every
 node. At minimum that checkpoint contains:

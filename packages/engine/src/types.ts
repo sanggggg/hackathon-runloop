@@ -91,6 +91,12 @@ export interface RunInput {
   ref?: string;
   runId?: string;
   signal?: AbortSignal;
+  /**
+   * Receives an unfinished Run snapshot immediately after each node result is
+   * committed. Notifications are awaited and delivered serially so a durable
+   * store cannot be overwritten by an older concurrent branch snapshot.
+   */
+  onProgress?: (run: Run) => void | Promise<void>;
 }
 
 export interface EngineOptions {
