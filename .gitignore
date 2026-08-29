@@ -8,3 +8,6 @@ __pycache__/
 
 # Seeded canvas output is regenerable from design/*.dc.html
 design/branchpoint-qa-tree.html
+
+# Local reference material, not ours to version
+vendor/
