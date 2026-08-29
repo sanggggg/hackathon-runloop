@@ -2,7 +2,7 @@ import { defineRailway, preserve, project, service, volume } from "railway/iac";
 
 export default defineRailway(() => {
   const data = volume("branchpoint-data", {
-    region: "us-west2",
+    region: "sfo",
     sizeMB: 500,
   });
 
