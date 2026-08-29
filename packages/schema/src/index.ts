@@ -63,6 +63,12 @@ export interface Node {
    * not "#solo".
    */
   intent: string;
+  /**
+   * What a successful terminal screen should prove. Goal nodes use this for
+   * judgement after `intent` has selected the control. Kept optional so the
+   * existing click-only suites continue to use `intent` as the fallback.
+   */
+  expectedOutcome?: string;
   kind: NodeKind;
   state: NodeState;
   /**
@@ -119,6 +125,8 @@ export interface NodeResult {
   /** Human description of what it matched, e.g. `"Use a starter" card`. */
   resolvedTo?: string;
   screenshotId?: string;
+  /** Successful structured-output model calls made while resolving this node. */
+  modelCalls?: number;
   devboxId: string;
   /** Milliseconds this branch took, from fork to verdict. */
   elapsedMs: number;
@@ -139,6 +147,8 @@ export interface Run {
    * in Build so a human can adopt them into the plan.
    */
   discovered: Node[];
+  /** Successful structured-output calls; independent of BYOK/cache billing. */
+  modelCalls?: number;
   costUsd: number;
   /** Actual: tracks tree depth. */
   wallClockMs: number;
