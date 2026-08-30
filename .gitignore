@@ -21,3 +21,6 @@ next-env.d.ts
 
 # TypeScript incremental build cache
 *.tsbuildinfo
+
+# Local engine state written at runtime
+.branchpoint-data/
