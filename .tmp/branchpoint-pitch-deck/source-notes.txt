@@ -1,0 +1,23 @@
+Communication job: By the end, hackathon judges should believe Branchpoint makes scenario-based browser QA practical on every commit because Runloop snapshots turn repeated setup into fast parallel forks.
+
+Narrative: repeated setup cost -> measured speedup -> fork architecture -> intent resilience -> visual result tree -> verified primitives -> close.
+
+Primary source:
+- /Users/sangmin/Desktop/hackathon-runloop/README.md
+- /Users/sangmin/Desktop/hackathon-runloop/apps/web/lib/fixtures.ts
+- /Users/sangmin/Desktop/hackathon-runloop/apps/cli/README.md
+
+Visual assets:
+- /Users/sangmin/Desktop/hackathon-runloop/apps/web/public/shots/*.png
+
+Derived claim:
+- ~13x shorter wall clock = 210 seconds / 16 seconds, rounded from project README measurements.
+
+Measured three-way benchmark pitch view:
+- /Users/sangmin/Desktop/hackathon-runloop/experiments/three-way-benchmark-trials-1-3.json
+- First three consecutive controlled runs with a fresh provider-cache nonce before every method.
+- Branchpoint mean: 66.787s wall; 200 active sandbox-seconds; $0.150097 LLM cost.
+- One-box sequential mean: 171.573s wall; 200 active sandbox-seconds; $0.197894 LLM cost.
+- N-box fan-out mean: 76.079s wall; 220 active sandbox-seconds; $0.188262 LLM cost.
+- Every method passed all three 8-test branches in Trials 1–3.
+- LLM cost is OpenRouter-reported Anthropic upstream inference cost for BYOK, including cache read/write pricing.

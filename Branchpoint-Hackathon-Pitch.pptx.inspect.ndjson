@@ -1,0 +1,208 @@
+{"kind":"deck","id":"pr/rxy24h","name":"Deck"}
+{"kind":"layout","layoutId":"/ppt/slideMasters/slideMaster1.xml","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout1.xml","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/y90nupkv","slide":1,"title":"BRANCHPOINT","textShapes":4}
+{"kind":"textbox","id":"sh/432dwn6l","slide":1,"text":"BRANCHPOINT","textPreview":"BRANCHPOINT","textChars":11,"textLines":1,"bbox":[48,42,420,28]}
+{"kind":"textbox","id":"sh/547294r6","slide":1,"name":"cover-title","text":"Browser QA,\nbranched at runtime.","textPreview":"Browser QA, | branched at runtime.","textChars":32,"textLines":2,"bbox":[48,118,570,190]}
+{"kind":"textbox","id":"sh/k3yl0zql","slide":1,"text":"Run setup once. Fork every scenario\nfrom the exact same state.","textPreview":"Run setup once. Fork every scenario | from the exact same state.","textChars":62,"textLines":2,"bbox":[48,356,530,92]}
+{"kind":"textbox","id":"sh/7qp4be9c","slide":1,"text":"Powered by Runloop","textPreview":"Powered by Runloop","textChars":18,"textLines":1,"bbox":[48,608,300,32]}
+{"kind":"shape","id":"sh/uxgjq907","slide":1,"name":"app-screenshot-backing","bbox":[626,100,600,512]}
+{"kind":"image","id":"im/wfqhgri9","slide":1,"name":"","geometry":"roundRect","alt":"Branchpoint Run screen showing the nested visual QA execution tree and wall-clock comparison","bbox":[632,106,588,500]}
+{"kind":"notes","id":"nt/y90nupkv","slide":1,"text":"Opening claim: expensive browser setup should happen once; every scenario should inherit the same state.\nThe screenshot is the actual Branchpoint Run screen supplied by the presenter, including the nested result tree and measured wall-clock comparison.\n\n[Sources]\n- /Users/sangmin/Desktop/hackathon-runloop/README.md\n- /Users/sangmin/Desktop/Screenshot 2026-08-29 at 5.39.18 PM.png\n[/Sources]"}
+{"kind":"slide","id":"sl/hwbqtkby","slide":2,"title":"BRANCHPOINT","textShapes":25}
+{"kind":"textbox","id":"sh/ru5cbqd4","slide":2,"text":"BRANCHPOINT","textPreview":"BRANCHPOINT","textChars":11,"textLines":1,"bbox":[48,35,300,24]}
+{"kind":"textbox","id":"sh/9072xkry","slide":2,"name":"slide-7-title","text":"Fastest wall time. Lowest LLM cost.","textPreview":"Fastest wall time. Lowest LLM cost.","textChars":35,"textLines":1,"bbox":[48,78,1130,72]}
+{"kind":"textbox","id":"sh/ozy1ofad","slide":2,"text":"3 controlled runs · Trials 1–3 · cold cache before every method","textPreview":"3 controlled runs · Trials 1–3 · cold cache before every method","textChars":63,"textLines":1,"bbox":[48,159,1080,32]}
+{"kind":"textbox","id":"sh/b29kza94","slide":2,"text":"METHOD","textPreview":"METHOD","textChars":6,"textLines":1,"bbox":[48,218,340,20]}
+{"kind":"textbox","id":"sh/a10jqpsj","slide":2,"text":"ACTIVE SANDBOX","textPreview":"ACTIVE SANDBOX","textChars":14,"textLines":1,"bbox":[420,218,230,20]}
+{"kind":"textbox","id":"sh/x4r21kru","slide":2,"text":"WALL TIME","textPreview":"WALL TIME","textChars":9,"textLines":1,"bbox":[690,218,210,20]}
+{"kind":"textbox","id":"sh/w3i1sfa9","slide":2,"text":"LLM COST","textPreview":"LLM COST","textChars":8,"textLines":1,"bbox":[950,218,210,20]}
+{"kind":"shape","id":"sh/r65knqtk","slide":2,"bbox":[48,248,1136,0]}
+{"kind":"shape","id":"sh/q5wjelsz","slide":2,"bbox":[38,260,1156,88]}
+{"kind":"textbox","id":"sh/ove9o7yd","slide":2,"text":"Branchpoint","textPreview":"Branchpoint","textChars":11,"textLines":1,"bbox":[58,274,320,28]}
+{"kind":"textbox","id":"sh/9wnqhczy","slide":2,"text":"shared prefix · source box + N−1 forks","textPreview":"shared prefix · source box + N−1 forks","textChars":38,"textLines":1,"bbox":[58,310,335,20]}
+{"kind":"textbox","id":"sh/mtwrmxg7","slide":2,"text":"200s","textPreview":"200s","textChars":4,"textLines":1,"bbox":[420,284,230,42]}
+{"kind":"textbox","id":"sh/wjy9sry9","slide":2,"text":"66.8s","textPreview":"66.8s","textChars":5,"textLines":1,"bbox":[690,284,210,42]}
+{"kind":"textbox","id":"sh/ahwrqhgj","slide":2,"text":"$0.150","textPreview":"$0.150","textChars":6,"textLines":1,"bbox":[950,284,210,42]}
+{"kind":"shape","id":"sh/cnupgny5","slide":2,"bbox":[38,365,1156,88]}
+{"kind":"textbox","id":"sh/do3q9szq","slide":2,"text":"1 sandbox · sequential","textPreview":"1 sandbox · sequential","textChars":22,"textLines":1,"bbox":[58,379,320,28]}
+{"kind":"textbox","id":"sh/t8byxkn2","slide":2,"text":"one box · three complete trajectories","textPreview":"one box · three complete trajectories","textChars":37,"textLines":1,"bbox":[58,415,335,20]}
+{"kind":"textbox","id":"sh/s72xofmh","slide":2,"text":"200s","textPreview":"200s","textChars":4,"textLines":1,"bbox":[420,389,230,42]}
+{"kind":"textbox","id":"sh/65kfmpor","slide":2,"text":"171.6s","textPreview":"171.6s","textChars":6,"textLines":1,"bbox":[690,389,210,42]}
+{"kind":"textbox","id":"sh/gbmxszmt","slide":2,"text":"$0.198","textPreview":"$0.198","textChars":6,"textLines":1,"bbox":[950,389,210,42]}
+{"kind":"shape","id":"sh/u94fqp4n","slide":2,"bbox":[38,470,1156,88]}
+{"kind":"textbox","id":"sh/p0vy54na","slide":2,"text":"N sandboxes · fan-out","textPreview":"N sandboxes · fan-out","textChars":21,"textLines":1,"bbox":[58,484,320,28]}
+{"kind":"textbox","id":"sh/4zmxwzmp","slide":2,"text":"three boxes · three complete trajectories","textPreview":"three boxes · three complete trajectories","textChars":41,"textLines":1,"bbox":[58,520,335,20]}
+{"kind":"textbox","id":"sh/mlgvq147","slide":2,"text":"220s","textPreview":"220s","textChars":4,"textLines":1,"bbox":[420,494,230,42]}
+{"kind":"textbox","id":"sh/onydsbmd","slide":2,"text":"76.1s","textPreview":"76.1s","textChars":5,"textLines":1,"bbox":[690,494,210,42]}
+{"kind":"textbox","id":"sh/a9gvulkj","slide":2,"text":"$0.188","textPreview":"$0.188","textChars":6,"textLines":1,"bbox":[950,494,210,42]}
+{"kind":"textbox","id":"sh/wbidwb29","slide":2,"text":"vs sequential · wall −61.1% · LLM −24.2% · sandbox equal","textPreview":"vs sequential · wall −61.1% · LLM −24.2% · sandbox equal","textChars":56,"textLines":1,"bbox":[48,579,550,24]}
+{"kind":"textbox","id":"sh/xcrupg3u","slide":2,"text":"vs fan-out · wall −12.2% · sandbox −9.1% · LLM −20.3%","textPreview":"vs fan-out · wall −12.2% · sandbox −9.1% · LLM −20.3%","textChars":53,"textLines":1,"bbox":[640,579,544,24]}
+{"kind":"textbox","id":"sh/je9crql0","slide":2,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[1182,620,50,24]}
+{"kind":"notes","id":"nt/hwbqtkby","slide":2,"text":"This pitch view uses the first three consecutive controlled trials (Trials 1–3) and excludes Trials 4–5 from the slide's calculations. The three included trials compared the same Claude Sonnet 5 model, tools, task, three strategy prompts, and task-ready Runloop fixture. Immediately before every method in every trial, a unique nonce invalidated earlier provider prompt-cache entries; within that method, Anthropic's 5-minute ephemeral prompt cache remained enabled. OpenRouter whole-response caching was disabled and a sticky session kept requests on one provider endpoint. Branchpoint explored once, snapshotted, continued on the source devbox for one branch, and created only N-1 forks; sequential reset the task and ran all three complete trajectories on one devbox; fan-out ran three complete trajectories on three devboxes. Primary wall time is start-to-final-verdict. Sandbox time is the sum of Runloop /usage total_active_seconds after shutdown. LLM cost is the actual Anthropic upstream inference cost returned by OpenRouter for this BYOK account, including cache read/write pricing. Three-run means: Branchpoint 66.787s wall, 200 active sandbox-seconds, $0.150097 LLM cost; sequential 171.573s, 200s, $0.197894; fan-out 76.079s, 220s, $0.188262. Every method passed all three 8-test branches in all three included trials. Observed cache-read ratios were 77.99%, 77.39%, and 74.30% respectively.\n\n[Sources]\n- /Users/sangmin/Desktop/hackathon-runloop/experiments/three-way-benchmark.py\n- /Users/sangmin/Desktop/hackathon-runloop/experiments/three-way-benchmark-trials-1-3.json\n- https://docs.runloop.ai/api-reference/devbox/get-resource-usage-for-a-devbox\n- https://openrouter.ai/docs/guides/best-practices/prompt-caching\n- https://openrouter.ai/docs/cookbook/administration/usage-accounting\n[/Sources]"}
+{"kind":"slide","id":"sl/ofy9wn61","slide":3,"title":"BRANCHPOINT","textShapes":25}
+{"kind":"textbox","id":"sh/3qxwfilo","slide":3,"text":"BRANCHPOINT","textPreview":"BRANCHPOINT","textChars":11,"textLines":1,"bbox":[48,35,300,24]}
+{"kind":"textbox","id":"sh/cza94vmx","slide":3,"name":"slide-2-title","text":"The tree keeps branching as the agent discovers it.","textPreview":"The tree keeps branching as the agent discovers it.","textChars":51,"textLines":1,"bbox":[48,72,1130,72]}
+{"kind":"textbox","id":"sh/d0jax03i","slide":3,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[1182,42,50,24]}
+{"kind":"shape","id":"sh/298ryl4v","slide":3,"bbox":[48,654,1184,0]}
+{"kind":"textbox","id":"sh/3ah8rqlg","slide":3,"text":"Fork is a runtime event—not a one-shot fan-out.","textPreview":"Fork is a runtime event—not a one-shot fan-out.","textChars":47,"textLines":1,"bbox":[48,151,700,34]}
+{"kind":"shape","id":"sh/or6x8329","slide":3,"bbox":[228,379,31,0]}
+{"kind":"shape","id":"sh/psfeh83u","slide":3,"bbox":[329,379,26,0]}
+{"kind":"shape","id":"sh/qtofadkf","slide":3,"bbox":[355,249,0,260]}
+{"kind":"shape","id":"sh/bexwjil0","slide":3,"bbox":[355,249,35,0]}
+{"kind":"shape","id":"sh/cf6xcn2l","slide":3,"bbox":[355,379,35,0]}
+{"kind":"shape","id":"sh/dgfyls3q","slide":3,"bbox":[355,509,35,0]}
+{"kind":"shape","id":"sh/6xkvytkb","slide":3,"bbox":[580,249,43,0]}
+{"kind":"shape","id":"sh/7idw7ylg","slide":3,"bbox":[689,249,31,0]}
+{"kind":"shape","id":"sh/9cjidwny","slide":3,"bbox":[720,210,0,65]}
+{"kind":"shape","id":"sh/8bahkrmt","slide":3,"bbox":[720,210,35,0]}
+{"kind":"shape","id":"sh/na10bm58","slide":3,"bbox":[720,275,35,0]}
+{"kind":"shape","id":"sh/m9szih4n","slide":3,"bbox":[580,379,43,0]}
+{"kind":"shape","id":"sh/xg3ihwna","slide":3,"bbox":[689,379,31,0]}
+{"kind":"shape","id":"sh/wfahormp","slide":3,"bbox":[720,340,0,130]}
+{"kind":"shape","id":"sh/ve10fm54","slide":3,"bbox":[720,340,35,0]}
+{"kind":"shape","id":"sh/adszm14j","slide":3,"bbox":[720,405,35,0]}
+{"kind":"shape","id":"sh/dkzy5cn6","slide":3,"bbox":[720,470,35,0]}
+{"kind":"shape","id":"sh/cjqhc7ml","slide":3,"bbox":[580,509,175,0]}
+{"kind":"shape","id":"sh/436lcve1","slide":3,"bbox":[1044,208,0,366]}
+{"kind":"shape","id":"sh/54fm50vm","slide":3,"bbox":[48,338,180,82]}
+{"kind":"textbox","id":"sh/ih43alwv","slide":3,"text":"SIGNED-IN\nFIXTURE","textPreview":"SIGNED-IN | FIXTURE","textChars":17,"textLines":2,"bbox":[66,356,144,48]}
+{"kind":"shape","id":"sh/3id43qdg","slide":3,"bbox":[250,335,88,88]}
+{"kind":"shape","id":"sh/gfml8ve5","slide":3,"bbox":[259,344,70,70]}
+{"kind":"textbox","id":"sh/hgvm1gvq","slide":3,"text":"FORK\n#1","textPreview":"FORK | #1","textChars":7,"textLines":2,"bbox":[259,355,70,42]}
+{"kind":"shape","id":"sh/ud436lwz","slide":3,"bbox":[614,205,88,88]}
+{"kind":"shape","id":"sh/ved4zqdk","slide":3,"bbox":[623,214,70,70]}
+{"kind":"textbox","id":"sh/0bq5kfu9","slide":3,"text":"FORK\n#2","textPreview":"FORK | #2","textChars":7,"textLines":2,"bbox":[623,225,70,42]}
+{"kind":"shape","id":"sh/1czmdkvu","slide":3,"bbox":[614,335,88,88]}
+{"kind":"shape","id":"sh/b61o3exw","slide":3,"bbox":[623,344,70,70]}
+{"kind":"textbox","id":"sh/a5s7a9gb","slide":3,"text":"FORK\n#3","textPreview":"FORK | #3","textChars":7,"textLines":2,"bbox":[623,355,70,42]}
+{"kind":"shape","id":"sh/x8jq5of2","slide":3,"bbox":[390,220,190,58]}
+{"kind":"textbox","id":"sh/w7apcjyh","slide":3,"text":"Team plan","textPreview":"Team plan","textChars":9,"textLines":1,"bbox":[408,237,154,26]}
+{"kind":"shape","id":"sh/jul87yx8","slide":3,"bbox":[390,350,190,58]}
+{"kind":"textbox","id":"sh/ytc7etwn","slide":3,"text":"Solo plan","textPreview":"Solo plan","textChars":9,"textLines":1,"bbox":[408,367,154,26]}
+{"kind":"shape","id":"sh/lw3q9ofy","slide":3,"bbox":[390,480,190,58]}
+{"kind":"textbox","id":"sh/kvupg3ed","slide":3,"text":"Decide later","textPreview":"Decide later","textChars":12,"textLines":1,"bbox":[408,497,154,26]}
+{"kind":"shape","id":"sh/fyhovuxo","slide":3,"bbox":[755,185,270,50]}
+{"kind":"textbox","id":"sh/ex872pg3","slide":3,"text":"Invite teammates","textPreview":"Invite teammates","textChars":16,"textLines":1,"bbox":[773,199,234,24]}
+{"kind":"shape","id":"sh/fuhcnq50","slide":3,"bbox":[755,250,270,50]}
+{"kind":"textbox","id":"sh/et8vel4f","slide":3,"text":"Skip invites","textPreview":"Skip invites","textChars":12,"textLines":1,"bbox":[773,264,234,24]}
+{"kind":"shape","id":"sh/1wzup0nq","slide":3,"bbox":[755,315,270,50]}
+{"kind":"textbox","id":"sh/0vqdgvml","slide":3,"text":"Starter template","textPreview":"Starter template","textChars":16,"textLines":1,"bbox":[773,329,234,24]}
+{"kind":"shape","id":"sh/r6xcjq5o","slide":3,"bbox":[755,380,270,50]}
+{"kind":"textbox","id":"sh/q5oval43","slide":3,"text":"Blank workspace","textPreview":"Blank workspace","textChars":15,"textLines":1,"bbox":[773,394,234,24]}
+{"kind":"shape","id":"sh/d8zul0nu","slide":3,"bbox":[755,445,270,50]}
+{"kind":"textbox","id":"sh/s7qdcvm9","slide":3,"text":"Import from CSV","textPreview":"Import from CSV","textChars":15,"textLines":1,"bbox":[773,459,234,24]}
+{"kind":"shape","id":"sh/b21wva58","slide":3,"bbox":[755,484,270,50]}
+{"kind":"textbox","id":"sh/a1svm54n","slide":3,"text":"Skip onboarding","textPreview":"Skip onboarding","textChars":15,"textLines":1,"bbox":[773,498,234,24]}
+{"kind":"textbox","id":"sh/8v210nyt","slide":3,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[1080,238,80,48]}
+{"kind":"textbox","id":"sh/9wbitsze","slide":3,"text":"branchpoints","textPreview":"branchpoints","textChars":12,"textLines":1,"bbox":[1080,284,140,24]}
+{"kind":"textbox","id":"sh/mt0jydgn","slide":3,"text":"6","textPreview":"6","textChars":1,"textLines":1,"bbox":[1080,360,80,48]}
+{"kind":"textbox","id":"sh/7u90rih8","slide":3,"text":"terminal paths","textPreview":"terminal paths","textChars":14,"textLines":1,"bbox":[1080,406,150,24]}
+{"kind":"textbox","id":"sh/wz214nyp","slide":3,"text":"N−1","textPreview":"N−1","textChars":3,"textLines":1,"bbox":[1080,482,100,48]}
+{"kind":"textbox","id":"sh/h0bixsza","slide":3,"text":"new boxes\nat each fork","textPreview":"new boxes | at each fork","textChars":22,"textLines":2,"bbox":[1080,528,150,52]}
+{"kind":"shape","id":"sh/uxkj2xgz","slide":3,"bbox":[48,602,18,18]}
+{"kind":"textbox","id":"sh/vyt0vihk","slide":3,"text":"source box continues","textPreview":"source box continues","textChars":20,"textLines":1,"bbox":[76,601,210,24]}
+{"kind":"shape","id":"sh/43m187y1","slide":3,"bbox":[318,602,18,18]}
+{"kind":"textbox","id":"sh/5ov21czm","slide":3,"text":"new devbox from snapshot","textPreview":"new devbox from snapshot","textChars":24,"textLines":1,"bbox":[346,601,260,24]}
+{"kind":"notes","id":"nt/ofy9wn61","slide":3,"text":"The fixture used in the experiment has three branchpoints: the signed-in root, Team plan, and Solo plan. Those branchpoints resolve into six terminal paths.\nAt every branchpoint, the current devbox continues as one child and only N−1 sibling devboxes are created from the snapshot.\nNested snapshots also preserve nested LLM transcript prefixes for prompt-cache reuse.\n\n[Sources]\n- /Users/sangmin/Desktop/hackathon-runloop/apps/web/lib/fixtures.ts\n- /Users/sangmin/Desktop/hackathon-runloop/experiments/three-way-benchmark.py\n[/Sources]"}
+{"kind":"slide","id":"sl/jyx0ra1s","slide":4,"title":"BRANCHPOINT","textShapes":22}
+{"kind":"textbox","id":"sh/6x8rahk3","slide":4,"text":"BRANCHPOINT","textPreview":"BRANCHPOINT","textChars":11,"textLines":1,"bbox":[48,35,300,24]}
+{"kind":"textbox","id":"sh/1cj2d8b6","slide":4,"name":"slide-4-title","text":"Snapshot only at real fork points.","textPreview":"Snapshot only at real fork points.","textChars":34,"textLines":1,"bbox":[48,72,1130,72]}
+{"kind":"textbox","id":"sh/0ba143al","slide":4,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1182,42,50,24]}
+{"kind":"shape","id":"sh/rm1k7yt4","slide":4,"bbox":[48,654,1184,0]}
+{"kind":"textbox","id":"sh/ql8jytsj","slide":4,"text":"Reuse the current box until a node actually fans out.","textPreview":"Reuse the current box until a node actually fans out.","textChars":53,"textLines":1,"bbox":[48,151,860,32]}
+{"kind":"shape","id":"sh/doj29oba","slide":4,"bbox":[228,390,42,0]}
+{"kind":"shape","id":"sh/sna103ap","slide":4,"bbox":[270,246,0,305]}
+{"kind":"shape","id":"sh/3ihk3et8","slide":4,"bbox":[270,246,60,0]}
+{"kind":"shape","id":"sh/ih8ju9sn","slide":4,"bbox":[270,391,60,0]}
+{"kind":"shape","id":"sh/kbm987y5","slide":4,"bbox":[270,551,60,0]}
+{"kind":"shape","id":"sh/5cva1cfq","slide":4,"bbox":[510,246,140,0]}
+{"kind":"shape","id":"sh/i94r6xgz","slide":4,"bbox":[650,212,0,65]}
+{"kind":"shape","id":"sh/jadsz2xk","slide":4,"bbox":[650,212,130,0]}
+{"kind":"shape","id":"sh/w72947yt","slide":4,"bbox":[650,277,130,0]}
+{"kind":"shape","id":"sh/x8vaxsfe","slide":4,"bbox":[510,391,140,0]}
+{"kind":"shape","id":"sh/a5kr2xg3","slide":4,"bbox":[650,352,0,130]}
+{"kind":"shape","id":"sh/v6tsv2xo","slide":4,"bbox":[650,352,130,0]}
+{"kind":"shape","id":"sh/g36tgryd","slide":4,"bbox":[650,417,130,0]}
+{"kind":"shape","id":"sh/h4fa9wfy","slide":4,"bbox":[650,482,130,0]}
+{"kind":"shape","id":"sh/p0batw72","slide":4,"bbox":[510,551,270,0]}
+{"kind":"shape","id":"sh/oz29krqh","slide":4,"bbox":[48,345,180,90]}
+{"kind":"textbox","id":"sh/3ytsrmpw","slide":4,"text":"SIGNED-IN\nFIXTURE","textPreview":"SIGNED-IN | FIXTURE","textChars":17,"textLines":2,"bbox":[66,366,144,50]}
+{"kind":"shape","id":"sh/2xkrih8b","slide":4,"bbox":[330,215,180,62]}
+{"kind":"textbox","id":"sh/1wbapc7q","slide":4,"text":"Team plan","textPreview":"Team plan","textChars":9,"textLines":1,"bbox":[348,233,144,26]}
+{"kind":"shape","id":"sh/gv29g7q5","slide":4,"bbox":[330,360,180,62]}
+{"kind":"textbox","id":"sh/fu9sn2p0","slide":4,"text":"Solo plan","textPreview":"Solo plan","textChars":9,"textLines":1,"bbox":[348,378,144,26]}
+{"kind":"shape","id":"sh/et0reh8f","slide":4,"bbox":[330,520,180,62]}
+{"kind":"textbox","id":"sh/tsrqlc7u","slide":4,"text":"Decide later","textPreview":"Decide later","textChars":12,"textLines":1,"bbox":[348,538,144,26]}
+{"kind":"shape","id":"sh/sri9s7q9","slide":4,"bbox":[780,185,260,54]}
+{"kind":"textbox","id":"sh/ilwf69kv","slide":4,"text":"Invite teammates","textPreview":"Invite teammates","textChars":16,"textLines":1,"bbox":[798,200,224,24]}
+{"kind":"shape","id":"sh/jm5gze1g","slide":4,"bbox":[780,250,260,54]}
+{"kind":"textbox","id":"sh/knex8j21","slide":4,"text":"Skip invites","textPreview":"Skip invites","textChars":12,"textLines":1,"bbox":[798,265,224,24]}
+{"kind":"shape","id":"sh/5ony1oj6","slide":4,"bbox":[780,325,260,54]}
+{"kind":"textbox","id":"sh/axcf29kj","slide":4,"text":"Starter template","textPreview":"Starter template","textChars":16,"textLines":1,"bbox":[798,340,224,24]}
+{"kind":"shape","id":"sh/vy5gbe14","slide":4,"bbox":[780,390,260,54]}
+{"kind":"textbox","id":"sh/wzex4z2p","slide":4,"text":"Blank workspace","textPreview":"Blank workspace","textChars":15,"textLines":1,"bbox":[798,405,224,24]}
+{"kind":"shape","id":"sh/xknyx4ja","slide":4,"bbox":[780,455,260,54]}
+{"kind":"textbox","id":"sh/mtcfypkn","slide":4,"text":"Import from CSV","textPreview":"Import from CSV","textChars":15,"textLines":1,"bbox":[798,470,224,24]}
+{"kind":"shape","id":"sh/nulw7u18","slide":4,"bbox":[780,525,260,54]}
+{"kind":"textbox","id":"sh/fm5c3q54","slide":4,"text":"Skip onboarding","textPreview":"Skip onboarding","textChars":15,"textLines":1,"bbox":[798,540,224,24]}
+{"kind":"shape","id":"sh/elwba54j","slide":4,"bbox":[235,373,70,34]}
+{"kind":"textbox","id":"sh/18nu50nu","slide":4,"text":"SNAP","textPreview":"SNAP","textChars":4,"textLines":1,"bbox":[235,373,70,34]}
+{"kind":"shape","id":"sh/0netcvm9","slide":4,"bbox":[615,229,70,34]}
+{"kind":"textbox","id":"sh/rilczq5s","slide":4,"text":"SNAP","textPreview":"SNAP","textChars":4,"textLines":1,"bbox":[615,229,70,34]}
+{"kind":"shape","id":"sh/qhcb6l47","slide":4,"bbox":[615,374,70,34]}
+{"kind":"textbox","id":"sh/dknu10ny","slide":4,"text":"SNAP","textPreview":"SNAP","textChars":4,"textLines":1,"bbox":[615,374,70,34]}
+{"kind":"textbox","id":"sh/sjut8vmd","slide":4,"text":"2+ children","textPreview":"2+ children","textChars":11,"textLines":1,"bbox":[1070,202,150,24]}
+{"kind":"textbox","id":"sh/3elcv65w","slide":4,"text":"snapshot here","textPreview":"snapshot here","textChars":13,"textLines":1,"bbox":[1070,236,150,28]}
+{"kind":"textbox","id":"sh/idcb2lob","slide":4,"text":"1 child","textPreview":"1 child","textChars":7,"textLines":1,"bbox":[1070,332,150,24]}
+{"kind":"textbox","id":"sh/8jq9c72t","slide":4,"text":"stay on same box","textPreview":"stay on same box","textChars":16,"textLines":1,"bbox":[1070,366,160,28]}
+{"kind":"textbox","id":"sh/tkjq5c3e","slide":4,"text":"shared LLM prefix\n→ cache reuse","textPreview":"shared LLM prefix | → cache reuse","textChars":31,"textLines":2,"bbox":[1070,512,160,54]}
+{"kind":"notes","id":"nt/jyx0ra1s","slide":4,"text":"The executor is recursive: snapshot only when the current node has two or more children; a single-child chain stays on the same devbox.\nNested forks create nested cacheable transcript prefixes, so the infrastructure and LLM optimization follow the same execution tree.\n\n[Sources]\n- /Users/sangmin/Desktop/hackathon-runloop/docs/build-spec.html — Engine: how a run walks the tree\n- /Users/sangmin/Desktop/hackathon-runloop/apps/web/lib/fixtures.ts\n[/Sources]"}
+{"kind":"slide","id":"sl/i107q5of","slide":5,"title":"BRANCHPOINT","textShapes":18}
+{"kind":"textbox","id":"sh/yp4z69or","slide":5,"text":"BRANCHPOINT","textPreview":"BRANCHPOINT","textChars":11,"textLines":1,"bbox":[48,35,300,24]}
+{"kind":"textbox","id":"sh/dgbulwnm","slide":5,"name":"slide-6-title","text":"Every commit returns a visual QA tree.","textPreview":"Every commit returns a visual QA tree.","textChars":38,"textLines":1,"bbox":[48,72,1130,72]}
+{"kind":"textbox","id":"sh/cf2tcr61","slide":5,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[1182,42,50,24]}
+{"kind":"shape","id":"sh/z2tcnm5s","slide":5,"bbox":[48,654,1184,0]}
+{"kind":"textbox","id":"sh/yhkbe1o7","slide":5,"text":"Green = intact · Red = regression · Blue = new path","textPreview":"Green = intact · Red = regression · Blue = new path","textChars":51,"textLines":1,"bbox":[48,151,930,30]}
+{"kind":"shape","id":"sh/l4bupwny","slide":5,"bbox":[208,392,32,0]}
+{"kind":"shape","id":"sh/032tgr6d","slide":5,"bbox":[240,239,0,310]}
+{"kind":"shape","id":"sh/n6dcr65o","slide":5,"bbox":[240,239,40,0]}
+{"kind":"shape","id":"sh/m5kbi1oj","slide":5,"bbox":[240,394,40,0]}
+{"kind":"shape","id":"sh/w32dkbuh","slide":5,"bbox":[240,549,40,0]}
+{"kind":"shape","id":"sh/x4vedgvm","slide":5,"bbox":[450,239,40,0]}
+{"kind":"shape","id":"sh/ahkvi1cb","slide":5,"bbox":[490,217,0,60]}
+{"kind":"shape","id":"sh/v2twb6dw","slide":5,"bbox":[490,217,50,0]}
+{"kind":"shape","id":"sh/k7mxovud","slide":5,"bbox":[490,277,50,0]}
+{"kind":"shape","id":"sh/58vehgvy","slide":5,"bbox":[450,394,40,0]}
+{"kind":"shape","id":"sh/i54fmlc7","slide":5,"bbox":[490,352,0,120]}
+{"kind":"shape","id":"sh/j6dwfqds","slide":5,"bbox":[490,352,50,0]}
+{"kind":"shape","id":"sh/sb6xsvu9","slide":5,"bbox":[490,412,50,0]}
+{"kind":"shape","id":"sh/tcfel0vu","slide":5,"bbox":[490,472,50,0]}
+{"kind":"shape","id":"sh/hgrmpwj2","slide":5,"bbox":[450,549,90,0]}
+{"kind":"shape","id":"sh/gfi5grih","slide":5,"bbox":[48,351,160,82]}
+{"kind":"textbox","id":"sh/fe94nm1w","slide":5,"text":"SIGNED-IN\nFIXTURE","textPreview":"SIGNED-IN | FIXTURE","textChars":17,"textLines":2,"bbox":[61,370,134,46]}
+{"kind":"shape","id":"sh/ud0ne10b","slide":5,"bbox":[280,210,170,58]}
+{"kind":"textbox","id":"sh/pkr6tgjy","slide":5,"text":"Team plan ✓","textPreview":"Team plan ✓","textChars":11,"textLines":1,"bbox":[295,227,140,25]}
+{"kind":"shape","id":"sh/3i94r61s","slide":5,"bbox":[280,365,170,58]}
+{"kind":"textbox","id":"sh/2h0ni107","slide":5,"text":"Solo plan ✓","textPreview":"Solo plan ✓","textChars":11,"textLines":1,"bbox":[295,382,140,25]}
+{"kind":"shape","id":"sh/kny587i9","slide":5,"bbox":[280,520,170,58]}
+{"kind":"textbox","id":"sh/atcjidg7","slide":5,"text":"Decide later ✕","textPreview":"Decide later ✕","textChars":14,"textLines":1,"bbox":[295,537,140,25]}
+{"kind":"shape","id":"sh/wve1knyx","slide":5,"bbox":[540,190,235,54]}
+{"kind":"textbox","id":"sh/xwn2dszi","slide":5,"text":"Invite teammates ✓","textPreview":"Invite teammates ✓","textChars":18,"textLines":1,"bbox":[555,206,205,25]}
+{"kind":"shape","id":"sh/ji5kf2ho","slide":5,"bbox":[540,250,235,54]}
+{"kind":"textbox","id":"sh/kjelony9","slide":5,"text":"Skip invites ✓","textPreview":"Skip invites ✓","textChars":14,"textLines":1,"bbox":[555,266,205,25]}
+{"kind":"shape","id":"sh/e1sjatgz","slide":5,"bbox":[540,325,235,54]}
+{"kind":"textbox","id":"sh/zmlk3yhk","slide":5,"text":"Starter · UI changed","textPreview":"Starter · UI changed","textChars":20,"textLines":1,"bbox":[555,341,205,25]}
+{"kind":"shape","id":"sh/ehkzepsn","slide":5,"bbox":[540,385,235,54]}
+{"kind":"textbox","id":"sh/1kvi94re","slide":5,"text":"Blank workspace ✕","textPreview":"Blank workspace ✕","textChars":17,"textLines":1,"bbox":[555,401,205,25]}
+{"kind":"shape","id":"sh/3md0bu94","slide":5,"bbox":[540,445,235,54]}
+{"kind":"textbox","id":"sh/2l4zip8j","slide":5,"text":"Import CSV · NEW","textPreview":"Import CSV · NEW","textChars":16,"textLines":1,"bbox":[555,461,205,25]}
+{"kind":"shape","id":"sh/onmhkzqp","slide":5,"bbox":[540,520,235,54]}
+{"kind":"textbox","id":"sh/bqx0fe9g","slide":5,"text":"Skip onboarding · TBD","textPreview":"Skip onboarding · TBD","textChars":21,"textLines":1,"bbox":[555,536,205,25]}
+{"kind":"shape","id":"sh/zqxgzupc","slide":5,"bbox":[804,202,0,408]}
+{"kind":"textbox","id":"sh/cnmh4z61","slide":5,"text":"Stop resetting.\nStart branching.","textPreview":"Stop resetting. | Start branching.","textChars":32,"textLines":2,"bbox":[840,226,360,100]}
+{"kind":"textbox","id":"sh/dovyx476","slide":5,"text":"One prepared state.\nEvery scenario.","textPreview":"One prepared state. | Every scenario.","textChars":35,"textLines":2,"bbox":[842,350,330,66]}
+{"kind":"shape","id":"sh/t8n6lwvy","slide":5,"bbox":[842,460,350,92]}
+{"kind":"textbox","id":"sh/s7u5crud","slide":5,"text":"$ branchpoint run\n  --suite nimbus-onboarding","textPreview":"$ branchpoint run |   --suite nimbus-onboarding","textChars":45,"textLines":2,"bbox":[866,482,306,54]}
+{"kind":"textbox","id":"sh/r6lojmds","slide":5,"text":"Powered by Runloop","textPreview":"Powered by Runloop","textChars":18,"textLines":1,"bbox":[842,588,300,28]}
+{"kind":"notes","id":"nt/i107q5of","slide":5,"text":"The result tree maps the actual fixture hierarchy and reports intact journeys, app regressions, newly discovered paths, and unresolved branches.\nClose on the execution model: stop recreating state for every scenario; branch from one prepared state instead.\n\n[Sources]\n- /Users/sangmin/Desktop/hackathon-runloop/apps/web/lib/fixtures.ts\n- /Users/sangmin/Desktop/hackathon-runloop/apps/cli/README.md\n[/Sources]"}

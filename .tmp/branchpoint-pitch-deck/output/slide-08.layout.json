@@ -1,0 +1,691 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/8yq4ej",
+    "id": "8yq4ej",
+    "slide": 8,
+    "layoutId": "f3f74d30-cde2-495f-bf1a-f3808de737b2",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "03b68ca2-1c20-409a-aa8c-091f68b5af7d",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Courier New",
+      "Helvetica Neue"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "f3f74d30-cde2-495f-bf1a-f3808de737b2",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "03b68ca2-1c20-409a-aa8c-091f68b5af7d",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "03b68ca2-1c20-409a-aa8c-091f68b5af7d",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pwvyl0bi",
+      "id": "1",
+      "bbox": [
+        48,
+        42,
+        300,
+        28
+      ],
+      "geometry": "rect",
+      "text": "BRANCHPOINT",
+      "textPreview": "BRANCHPOINT",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 16,
+        "typeface": "Helvetica Neue",
+        "color": "#0A8F79",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "BRANCHPOINT"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "BRANCHPOINT",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Helvetica Neue",
+            "color": "#0A8F79",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "BRANCHPOINT",
+              "fontSize": 16,
+              "typeface": "Helvetica Neue",
+              "color": "#0A8F79",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2t4falcr",
+      "id": "2",
+      "name": "closing-title",
+      "bbox": [
+        48,
+        128,
+        720,
+        170
+      ],
+      "geometry": "rect",
+      "text": "Stop resetting.\nStart branching.",
+      "textPreview": "Stop resetting. | Start branching.",
+      "resolvedFontSize": 64,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 64,
+        "typeface": "Helvetica Neue",
+        "color": "#101315",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Stop resetting."
+          },
+          {
+            "index": 2,
+            "text": "Start branching."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Stop resetting.",
+          "resolvedTextStyle": {
+            "fontSize": 64,
+            "typeface": "Helvetica Neue",
+            "color": "#101315",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Stop resetting.",
+              "fontSize": 64,
+              "typeface": "Helvetica Neue",
+              "color": "#101315",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "Start branching.",
+          "resolvedTextStyle": {
+            "fontSize": 64,
+            "typeface": "Helvetica Neue",
+            "color": "#101315",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Start branching.",
+              "fontSize": 64,
+              "typeface": "Helvetica Neue",
+              "color": "#101315",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3udgjqtc",
+      "id": "3",
+      "bbox": [
+        48,
+        345,
+        760,
+        68
+      ],
+      "geometry": "rect",
+      "text": "Scenario-based Browser QA that is fast enough to run on every commit.",
+      "textPreview": "Scenario-based Browser QA that is fast enough to run on every commit.",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 25,
+        "typeface": "Helvetica Neue",
+        "color": "#5F676D",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Scenario-based Browser QA that is fast enough to run on every"
+          },
+          {
+            "index": 2,
+            "text": "commit."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Scenario-based Browser QA that is fast enough to run on every commit.",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "typeface": "Helvetica Neue",
+            "color": "#5F676D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Scenario-based Browser QA that is fast enough to run on every commit.",
+              "fontSize": 25,
+              "typeface": "Helvetica Neue",
+              "color": "#5F676D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/grmx8bul",
+      "id": "4",
+      "bbox": [
+        48,
+        485,
+        860,
+        92
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#101315",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1svehgb6",
+      "id": "5",
+      "bbox": [
+        74,
+        517,
+        808,
+        30
+      ],
+      "geometry": "rect",
+      "text": "$ branchpoint run --suite nimbus-onboarding --wait",
+      "textPreview": "$ branchpoint run --suite nimbus-onboarding --wait",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 22,
+        "typeface": "Courier New",
+        "color": "#78E4D0",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "$ branchpoint run --suite nimbus-onboarding --wait"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "$ branchpoint run --suite nimbus-onboarding --wait",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Courier New",
+            "color": "#78E4D0",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "$ branchpoint run --suite nimbus-onboarding --wait",
+              "fontSize": 22,
+              "typeface": "Courier New",
+              "color": "#78E4D0",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u5kf6lcv",
+      "id": "6",
+      "bbox": [
+        978,
+        164,
+        204,
+        204
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#E5F5F1",
+      "lineColor": "#0A8F79",
+      "lineWidth": 2
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/f6dwf6t0",
+      "id": "7",
+      "bbox": [
+        1006,
+        224,
+        148,
+        64
+      ],
+      "geometry": "rect",
+      "text": "1 → N",
+      "textPreview": "1 → N",
+      "resolvedFontSize": 42,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 42,
+        "typeface": "Helvetica Neue",
+        "color": "#076B5C",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "1 → N"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "1 → N",
+          "resolvedTextStyle": {
+            "fontSize": 42,
+            "typeface": "Helvetica Neue",
+            "color": "#076B5C",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "1 → N",
+              "fontSize": 42,
+              "typeface": "Helvetica Neue",
+              "color": "#076B5C",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/s32x4bup",
+      "id": "8",
+      "bbox": [
+        1006,
+        296,
+        148,
+        52
+      ],
+      "geometry": "rect",
+      "text": "one state\nevery path",
+      "textPreview": "one state | every path",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 17,
+        "typeface": "Helvetica Neue",
+        "color": "#076B5C",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "one state"
+          },
+          {
+            "index": 2,
+            "text": "every path"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "one state",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Helvetica Neue",
+            "color": "#076B5C",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "one state",
+              "fontSize": 17,
+              "typeface": "Helvetica Neue",
+              "color": "#076B5C",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "every path",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Helvetica Neue",
+            "color": "#076B5C",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "every path",
+              "fontSize": 17,
+              "typeface": "Helvetica Neue",
+              "color": "#076B5C",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t4bedgba",
+      "id": "9",
+      "bbox": [
+        978,
+        432,
+        204,
+        28
+      ],
+      "geometry": "rect",
+      "text": "Powered by Runloop",
+      "textPreview": "Powered by Runloop",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "Helvetica Neue",
+        "color": "#076B5C",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Powered by Runloop"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Powered by Runloop",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Helvetica Neue",
+            "color": "#076B5C",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Powered by Runloop",
+              "fontSize": 18,
+              "typeface": "Helvetica Neue",
+              "color": "#076B5C",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5o36t0je",
+      "id": "10",
+      "bbox": [
+        48,
+        627,
+        500,
+        22
+      ],
+      "geometry": "rect",
+      "text": "github.com/sanggggg/hackathon-runloop",
+      "textPreview": "github.com/sanggggg/hackathon-runloop",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "Helvetica Neue",
+        "color": "#959DA3",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "autoFit": "none",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "github.com/sanggggg/hackathon-runloop"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "github.com/sanggggg/hackathon-runloop",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Helvetica Neue",
+            "color": "#959DA3",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "github.com/sanggggg/hackathon-runloop",
+              "fontSize": 15,
+              "typeface": "Helvetica Neue",
+              "color": "#959DA3",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

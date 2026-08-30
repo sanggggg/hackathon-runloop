@@ -1,0 +1,167 @@
+{
+  "model": "anthropic/claude-sonnet-5",
+  "started_at": "2026-08-29T16:27:24-0700",
+  "shared": {
+    "prefix_usage": {
+      "requests": 6,
+      "prompt_tokens": 14594,
+      "completion_tokens": 839,
+      "total_tokens": 15433,
+      "estimated_cost_usd": 0.037578
+    },
+    "branches": [
+      {
+        "label": "A · 최소수정",
+        "usage": {
+          "requests": 3,
+          "prompt_tokens": 15143,
+          "completion_tokens": 2053,
+          "total_tokens": 17196,
+          "estimated_cost_usd": 0.050816
+        },
+        "passed": 8,
+        "total": 8,
+        "result": "8 passed in 0.01s",
+        "seconds": 28.485710859298706
+      },
+      {
+        "label": "B · 엣지케이스",
+        "usage": {
+          "requests": 3,
+          "prompt_tokens": 18187,
+          "completion_tokens": 3864,
+          "total_tokens": 22051,
+          "estimated_cost_usd": 0.075014
+        },
+        "passed": 8,
+        "total": 8,
+        "result": "8 passed in 0.01s",
+        "seconds": 44.73229002952576
+      },
+      {
+        "label": "C · 전면재작성",
+        "usage": {
+          "requests": 3,
+          "prompt_tokens": 16051,
+          "completion_tokens": 2802,
+          "total_tokens": 18853,
+          "estimated_cost_usd": 0.060122
+        },
+        "passed": 8,
+        "total": 8,
+        "result": "8 passed in 0.02s",
+        "seconds": 32.32668900489807
+      }
+    ],
+    "total_usage": {
+      "requests": 15,
+      "prompt_tokens": 63975,
+      "completion_tokens": 9558,
+      "total_tokens": 73533,
+      "estimated_cost_usd": 0.22353
+    },
+    "wall_seconds": 75.21524810791016
+  },
+  "independent": {
+    "branches": [
+      {
+        "label": "A · 최소수정",
+        "prefix_usage": {
+          "requests": 4,
+          "prompt_tokens": 9703,
+          "completion_tokens": 944,
+          "total_tokens": 10647,
+          "estimated_cost_usd": 0.028846000000000004
+        },
+        "continuation_usage": {
+          "requests": 3,
+          "prompt_tokens": 14663,
+          "completion_tokens": 1297,
+          "total_tokens": 15960,
+          "estimated_cost_usd": 0.042296
+        },
+        "usage": {
+          "requests": 7,
+          "prompt_tokens": 24366,
+          "completion_tokens": 2241,
+          "total_tokens": 26607,
+          "estimated_cost_usd": 0.07114200000000001
+        },
+        "passed": 8,
+        "total": 8,
+        "result": "8 passed in 0.01s",
+        "seconds": 41.418834924697876
+      },
+      {
+        "label": "B · 엣지케이스",
+        "prefix_usage": {
+          "requests": 5,
+          "prompt_tokens": 11806,
+          "completion_tokens": 1172,
+          "total_tokens": 12978,
+          "estimated_cost_usd": 0.035332
+        },
+        "continuation_usage": {
+          "requests": 7,
+          "prompt_tokens": 57133,
+          "completion_tokens": 4139,
+          "total_tokens": 61272,
+          "estimated_cost_usd": 0.155656
+        },
+        "usage": {
+          "requests": 12,
+          "prompt_tokens": 68939,
+          "completion_tokens": 5311,
+          "total_tokens": 74250,
+          "estimated_cost_usd": 0.190988
+        },
+        "passed": 8,
+        "total": 8,
+        "result": "8 passed in 0.02s",
+        "seconds": 76.24347186088562
+      },
+      {
+        "label": "C · 전면재작성",
+        "prefix_usage": {
+          "requests": 3,
+          "prompt_tokens": 4537,
+          "completion_tokens": 972,
+          "total_tokens": 5509,
+          "estimated_cost_usd": 0.018793999999999998
+        },
+        "continuation_usage": {
+          "requests": 3,
+          "prompt_tokens": 16428,
+          "completion_tokens": 3468,
+          "total_tokens": 19896,
+          "estimated_cost_usd": 0.067536
+        },
+        "usage": {
+          "requests": 6,
+          "prompt_tokens": 20965,
+          "completion_tokens": 4440,
+          "total_tokens": 25405,
+          "estimated_cost_usd": 0.08632999999999999
+        },
+        "passed": 8,
+        "total": 8,
+        "result": "8 passed in 0.01s",
+        "seconds": 56.35080814361572
+      }
+    ],
+    "total_usage": {
+      "requests": 25,
+      "prompt_tokens": 114270,
+      "completion_tokens": 11992,
+      "total_tokens": 126262,
+      "estimated_cost_usd": 0.34846
+    },
+    "wall_seconds": 78.92729115486145
+  },
+  "comparison": {
+    "tokens_saved": 52729,
+    "token_reduction_pct": 41.76,
+    "estimated_cost_saved_usd": 0.12493,
+    "estimated_cost_reduction_pct": 35.85
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "measured_at": "2026-08-29",
+  "model": "anthropic/claude-sonnet-5",
+  "sample": {
+    "trial_ids": [1, 2, 3],
+    "count": 3,
+    "selection": "The first three consecutive controlled trials, in chronological order. Trials 4 and 5 are excluded from this pitch view.",
+    "controls": "Same model, task, tools, three strategies, and task-ready Runloop fixture. A fresh cache nonce was used immediately before every method in every trial.",
+    "outcomes": "Every method passed all three 8-test branches in every included trial."
+  },
+  "aggregate": {
+    "branchpoint_shared_prefix": {
+      "wall_seconds": {"mean": 66.787, "min": 57.076, "max": 84.691},
+      "aggregate_active_sandbox_seconds": {"mean": 200.0, "min": 180.0, "max": 240.0},
+      "effective_llm_cost_usd": {"mean": 0.150097, "min": 0.115049, "max": 0.195584},
+      "mean_requests": 13.667,
+      "cache_read_ratio_pct": 77.99
+    },
+    "one_sandbox_sequential": {
+      "wall_seconds": {"mean": 171.573, "min": 141.753, "max": 226.141},
+      "aggregate_active_sandbox_seconds": {"mean": 200.0, "min": 180.0, "max": 240.0},
+      "effective_llm_cost_usd": {"mean": 0.197894, "min": 0.160012, "max": 0.259556},
+      "mean_requests": 25.333,
+      "cache_read_ratio_pct": 77.39
+    },
+    "n_sandboxes_fanout": {
+      "wall_seconds": {"mean": 76.079, "min": 50.920, "max": 111.765},
+      "aggregate_active_sandbox_seconds": {"mean": 220.0, "min": 180.0, "max": 240.0},
+      "effective_llm_cost_usd": {"mean": 0.188262, "min": 0.151985, "max": 0.242517},
+      "mean_requests": 22.333,
+      "cache_read_ratio_pct": 74.30
+    }
+  },
+  "comparison": {
+    "branchpoint_vs_sequential": {
+      "wall_time_reduction_pct": 61.07,
+      "active_sandbox_time_reduction_pct": 0.0,
+      "llm_cost_reduction_pct": 24.15
+    },
+    "branchpoint_vs_fanout": {
+      "wall_time_reduction_pct": 12.21,
+      "active_sandbox_time_reduction_pct": 9.09,
+      "llm_cost_reduction_pct": 20.27
+    }
+  },
+  "measurement": {
+    "wall_time": "Condition start to final test verdict.",
+    "sandbox_time": "Sum of Runloop /devboxes/{id}/usage total_active_seconds after shutdown.",
+    "llm_cost": "Anthropic upstream inference cost returned by OpenRouter for the BYOK account, including cache read/write pricing."
+  },
+  "sources": [
+    "/Users/sangmin/Desktop/hackathon-runloop/experiments/three-way-benchmark-result.json",
+    "https://docs.runloop.ai/api-reference/devbox/get-resource-usage-for-a-devbox",
+    "https://openrouter.ai/docs/guides/best-practices/prompt-caching",
+    "https://openrouter.ai/docs/cookbook/administration/usage-accounting"
+  ]
+}

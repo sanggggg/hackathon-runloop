@@ -1,0 +1,14 @@
+Source deck: /Users/sangmin/Desktop/hackathon-runloop/Branchpoint-Hackathon-Pitch.pptx
+
+Preserved:
+- 8-slide narrative, typography, palette, margins, footer system, and all unaffected slides.
+- Slide 4 and slide 6 titles remain in their original title frames.
+
+Edited:
+- Slide 4: replaced flat one-level fan-out with the recursive fixture hierarchy and explicit snapshot-at-fork-point markers.
+- Slide 6: replaced flat result branches with the full nested result tree and two supporting fixture screenshots.
+- Slide 7: replaced the old proof-point cards with a three-method, three-axis comparison calculated from the first three consecutive trials; Trials 4–5 are excluded from the pitch view and retained only in the full raw benchmark record.
+
+Intentional deviation:
+- Added denser tree detail to slides 4 and 6 because the prior abstraction hid the product's key nested-execution behavior.
+- Reframed the cache claim: sequential execution still receives prefix-cache hits; Branchpoint wins by eliminating repeated exploration and exactly reusing the full shared execution prefix.

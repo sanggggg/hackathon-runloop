@@ -1,0 +1,38 @@
+{
+  "measured_at": "2026-08-29T16:27:24-0700",
+  "model": "anthropic/claude-sonnet-5",
+  "method": {
+    "shared": "Explore once, snapshot the shared state, then continue with three strategy branches.",
+    "independent": "Start three branches from the same task-ready snapshot; each repeats exploration before its strategy continuation.",
+    "controls": "Same model, task, tools, strategy prompts, and Runloop starting disk state.",
+    "sample_size": "One controlled run with three strategies per condition."
+  },
+  "shared": {
+    "requests": 15,
+    "prompt_tokens": 63975,
+    "completion_tokens": 9558,
+    "total_tokens": 73533,
+    "estimated_cost_usd": 0.22353,
+    "wall_seconds": 75.215,
+    "test_outcomes": ["8/8", "8/8", "8/8"]
+  },
+  "independent": {
+    "requests": 25,
+    "prompt_tokens": 114270,
+    "completion_tokens": 11992,
+    "total_tokens": 126262,
+    "estimated_cost_usd": 0.34846,
+    "wall_seconds": 78.927,
+    "test_outcomes": ["8/8", "8/8", "8/8"]
+  },
+  "comparison": {
+    "tokens_saved": 52729,
+    "token_reduction_pct": 41.76,
+    "estimated_cost_saved_usd": 0.12493,
+    "estimated_cost_reduction_pct": 35.85
+  },
+  "pricing_assumption": {
+    "prompt_usd_per_million_tokens": 2.0,
+    "completion_usd_per_million_tokens": 10.0
+  }
+}

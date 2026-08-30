@@ -1,0 +1,13 @@
+{
+  "outputSlides": [
+    {"outputSlide": 1, "sourceSlide": 1, "narrativeRole": "opening thesis", "reuseMode": "preserve", "editTargets": []},
+    {"outputSlide": 2, "sourceSlide": 2, "narrativeRole": "problem", "reuseMode": "preserve", "editTargets": []},
+    {"outputSlide": 3, "sourceSlide": 3, "narrativeRole": "measured speed", "reuseMode": "preserve", "editTargets": []},
+    {"outputSlide": 4, "sourceSlide": 4, "narrativeRole": "recursive execution model", "reuseMode": "rebuild-from-canonical-source", "editTargets": [{"action": "replace", "reason": "show nested snapshot and fork behavior"}]},
+    {"outputSlide": 5, "sourceSlide": 5, "narrativeRole": "intent resilience", "reuseMode": "preserve", "editTargets": []},
+    {"outputSlide": 6, "sourceSlide": 6, "narrativeRole": "nested result tree", "reuseMode": "rebuild-from-canonical-source", "editTargets": [{"action": "replace", "reason": "show actual fixture hierarchy and result semantics"}]},
+    {"outputSlide": 7, "sourceSlide": 7, "narrativeRole": "three-way measured comparison", "reuseMode": "rebuild-from-canonical-source", "editTargets": [{"action": "replace", "reason": "compare Branchpoint, sequential, and N-box fan-out across sandbox time, wall time, and LLM cost"}]},
+    {"outputSlide": 8, "sourceSlide": 8, "narrativeRole": "closing", "reuseMode": "preserve", "editTargets": []}
+  ],
+  "omittedSourceSlides": []
+}

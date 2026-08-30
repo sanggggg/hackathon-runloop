@@ -1,0 +1,68 @@
+{
+  "sourcePptx": "/Users/sangmin/Desktop/hackathon-runloop/Branchpoint-Hackathon-Pitch.pptx",
+  "mapPath": "/Users/sangmin/Desktop/hackathon-runloop/.tmp/branchpoint-pitch-deck/template-short-inspect/template-frame-map.json",
+  "output": "/Users/sangmin/Desktop/hackathon-runloop/.tmp/branchpoint-pitch-deck/template-short-inspect/template-starter.pptx",
+  "outputBytes": 66702,
+  "sourceSlideCount": 8,
+  "slideCount": 5,
+  "previewDir": "/Users/sangmin/Desktop/hackathon-runloop/.tmp/branchpoint-pitch-deck/template-short-inspect/template-starter-preview",
+  "layoutDir": "/Users/sangmin/Desktop/hackathon-runloop/.tmp/branchpoint-pitch-deck/template-short-inspect/template-starter-layout",
+  "contactSheet": "/Users/sangmin/Desktop/hackathon-runloop/.tmp/branchpoint-pitch-deck/template-short-inspect/template-starter-contact-sheet.png",
+  "slides": [
+    {
+      "outputSlide": 1,
+      "sourceSlide": 1,
+      "narrativeRole": "opening thesis with editable app screenshot replacement zone",
+      "reuseMode": "duplicate-slide",
+      "editTargetCount": 3,
+      "previewPath": "/Users/sangmin/Desktop/hackathon-runloop/.tmp/branchpoint-pitch-deck/template-short-inspect/template-starter-preview/starter-slide-01.png",
+      "previewRelativePath": "template-starter-preview/starter-slide-01.png",
+      "layoutPath": "/Users/sangmin/Desktop/hackathon-runloop/.tmp/branchpoint-pitch-deck/template-short-inspect/template-starter-layout/starter-slide-01.layout.json",
+      "layoutRelativePath": "template-starter-layout/starter-slide-01.layout.json"
+    },
+    {
+      "outputSlide": 2,
+      "sourceSlide": 7,
+      "narrativeRole": "measured three-way benchmark evidence",
+      "reuseMode": "duplicate-slide",
+      "editTargetCount": 2,
+      "previewPath": "/Users/sangmin/Desktop/hackathon-runloop/.tmp/branchpoint-pitch-deck/template-short-inspect/template-starter-preview/starter-slide-02.png",
+      "previewRelativePath": "template-starter-preview/starter-slide-02.png",
+      "layoutPath": "/Users/sangmin/Desktop/hackathon-runloop/.tmp/branchpoint-pitch-deck/template-short-inspect/template-starter-layout/starter-slide-02.layout.json",
+      "layoutRelativePath": "template-starter-layout/starter-slide-02.layout.json"
+    },
+    {
+      "outputSlide": 3,
+      "sourceSlide": 2,
+      "narrativeRole": "runtime execution flow from shared setup to branches",
+      "reuseMode": "duplicate-slide",
+      "editTargetCount": 3,
+      "previewPath": "/Users/sangmin/Desktop/hackathon-runloop/.tmp/branchpoint-pitch-deck/template-short-inspect/template-starter-preview/starter-slide-03.png",
+      "previewRelativePath": "template-starter-preview/starter-slide-03.png",
+      "layoutPath": "/Users/sangmin/Desktop/hackathon-runloop/.tmp/branchpoint-pitch-deck/template-short-inspect/template-starter-layout/starter-slide-03.layout.json",
+      "layoutRelativePath": "template-starter-layout/starter-slide-03.layout.json"
+    },
+    {
+      "outputSlide": 4,
+      "sourceSlide": 4,
+      "narrativeRole": "recursive branchpoint optimization",
+      "reuseMode": "duplicate-slide",
+      "editTargetCount": 1,
+      "previewPath": "/Users/sangmin/Desktop/hackathon-runloop/.tmp/branchpoint-pitch-deck/template-short-inspect/template-starter-preview/starter-slide-04.png",
+      "previewRelativePath": "template-starter-preview/starter-slide-04.png",
+      "layoutPath": "/Users/sangmin/Desktop/hackathon-runloop/.tmp/branchpoint-pitch-deck/template-short-inspect/template-starter-layout/starter-slide-04.layout.json",
+      "layoutRelativePath": "template-starter-layout/starter-slide-04.layout.json"
+    },
+    {
+      "outputSlide": 5,
+      "sourceSlide": 6,
+      "narrativeRole": "visual result tree and closing call to action",
+      "reuseMode": "duplicate-slide",
+      "editTargetCount": 3,
+      "previewPath": "/Users/sangmin/Desktop/hackathon-runloop/.tmp/branchpoint-pitch-deck/template-short-inspect/template-starter-preview/starter-slide-05.png",
+      "previewRelativePath": "template-starter-preview/starter-slide-05.png",
+      "layoutPath": "/Users/sangmin/Desktop/hackathon-runloop/.tmp/branchpoint-pitch-deck/template-short-inspect/template-starter-layout/starter-slide-05.layout.json",
+      "layoutRelativePath": "template-starter-layout/starter-slide-05.layout.json"
+    }
+  ]
+}

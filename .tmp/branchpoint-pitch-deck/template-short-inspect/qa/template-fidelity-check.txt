@@ -1,0 +1,8 @@
+Template fidelity check: fail
+FAIL missing-starter-import-evidence: Could not find evidence that final authoring imports template-starter.pptx with PresentationFile.importPptx.
+FAIL missing-artifact-export-evidence: Could not find evidence that final authoring exports with PresentationFile.exportPptx.
+FAIL mask-cover-overlay: Large new opaque shape appears to cover inherited template content. slide=1
+FAIL mask-cover-overlay: Large new opaque shape appears to cover inherited template content. slide=3
+FAIL mask-cover-overlay: Large new opaque shape appears to cover inherited template content. slide=3
+FAIL mask-cover-overlay: Large new opaque shape appears to cover inherited template content. slide=3
+FAIL mask-cover-overlay: Large new opaque shape appears to cover inherited template content. slide=5
