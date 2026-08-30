@@ -7,8 +7,10 @@
     "node": ">=22.15.0"
   },
   "scripts": {
+    "build:cli": "pnpm --filter @branchpoint/cli... build",
     "build:server": "pnpm --filter @branchpoint/server... build",
     "dev:server": "pnpm --filter @branchpoint/server dev",
+    "test:cli": "pnpm --filter @branchpoint/cli test",
     "test:server": "pnpm --filter @branchpoint/server test"
   },
   "devDependencies": {

@@ -290,7 +290,7 @@ test("root prepare checks out/builds and injects bootstrap files; fork prepare r
       "execute",
     ]);
     assert.equal(client.executeCalls.length, 3);
-    assert.match(client.executeCalls[0]?.command ?? "", /git fetch --depth=1 origin/);
+    assert.match(client.executeCalls[0]?.command ?? "", /git fetch --depth=1 origin --/);
     assert.match(client.executeCalls[0]?.command ?? "", /pnpm build/);
     assert.match(client.executeCalls[1]?.command ?? "", /\/home\/user\/workspace\/agent-assets/);
     assert.deepEqual(client.writeCalls.map((call) => call.filePath), [
