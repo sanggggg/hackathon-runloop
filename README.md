@@ -22,6 +22,7 @@ The pitch, in one line:
 | `packages/schema/src/index.ts` | The pinned contracts as real types. Changing these stalls other people — raise it first. |
 | `packages/engine/` | Runloop QA-tree orchestrator, fork-aware browser runner, CLI, live Nimbus E2E, and cleanup/artifact adapters. |
 | `apps/server/` | Persistent HTTP wrapper: Suite management, queued engine runs, polling/cancellation, and screenshot serving. |
+| `apps/cli/` | Remote JSON CLI for the deployed server, including CI-safe polling, cancellation, and verdict exit codes. |
 | `design/` | Design canvas source: four `.dc.html` artboards, `canvas.json`, and real screenshots captured from a devbox. |
 | `experiments/` | Standalone scripts that produced every number in the spec. Each one runs on its own. |
 | [`hackathon-runloop-demo`](https://github.com/sanggggg/hackathon-runloop-demo) | The companion Nimbus browser-QA fixture. Its profiles, actions, and expected outcomes live in [`qa/manifest.json`](https://github.com/sanggggg/hackathon-runloop-demo/blob/cb30fb3ed4aa2f1b30ca1180df82f3eef05313f3/qa/manifest.json). |
@@ -201,6 +202,39 @@ pnpm dev:server              # http://localhost:4000
 
 See [`apps/server/README.md`](apps/server/README.md) for the HTTP contract,
 authentication, configuration, persistence boundary, and Railway deployment.
+
+## Running QA from the remote CLI or GitHub Actions
+
+The remote CLI and GitHub Actions use the same bearer token as the server. Keep
+it in `BRANCHPOINT_API_TOKEN`; there is intentionally no command-line token
+flag. The target repository is public, so its selected ref is fetched without a
+second credential.
+
+```bash
+export BRANCHPOINT_API_TOKEN=...
+pnpm build:cli
+node apps/cli/dist/src/cli.js run \
+  --suite nimbus-action-baseline \
+  --ref "$GITHUB_SHA"
+```
+
+`run` starts one server-side run and waits for a terminal lifecycle state. Its
+JSON result goes to stdout, progress goes to stderr, and timeout or process
+signals attempt to cancel the remote run. See
+[`apps/cli/README.md`](apps/cli/README.md) for commands and exit codes.
+
+The reusable workflow at
+[`branchpoint-qa.yml`](.github/workflows/branchpoint-qa.yml) is reusable-only.
+The target repository owns its pull-request and manual `workflow_dispatch`
+triggers. Store the same server bearer token as that repository's Actions
+secret `BRANCHPOINT_API_TOKEN`; the Railway API URL is non-secret configuration.
+The public source ref is fetched without another credential.
+[`docs/ci-example.yml`](docs/ci-example.yml) is the reusable caller template;
+the real consumer is installed in the
+[`hackathon-runloop-demo` Actions workflow](https://github.com/sanggggg/hackathon-runloop-demo/blob/main/.github/workflows/branchpoint-qa.yml).
+Both use the pull-request head SHA and exclude forks and Dependabot. The
+production Suite registered for that workflow is checked in at
+[`docs/suites/nimbus-action-baseline.json`](docs/suites/nimbus-action-baseline.json).
 
 ## Order of work
 
