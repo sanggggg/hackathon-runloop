@@ -61,8 +61,12 @@ export const updateTree = (id: string, tree: Suite["tree"]) =>
 export const listRuns = (suiteId?: string) =>
   call<Run[]>(`/runs${suiteId ? `?suiteId=${encodeURIComponent(suiteId)}` : ""}`);
 export const getRun = (id: string) => call<Run>(`/runs/${encodeURIComponent(id)}`);
+/** Returns only the id — the run itself is polled afterwards. */
 export const startRun = (suiteId: string, ref?: string) =>
-  call<Run>("/runs", { method: "POST", body: JSON.stringify({ suiteId, ref }) });
+  call<{ runId: string }>("/runs", {
+    method: "POST",
+    body: JSON.stringify({ suiteId, ref }),
+  });
 export const cancelRun = (id: string) =>
   call<Run>(`/runs/${encodeURIComponent(id)}/cancel`, { method: "POST" });
 

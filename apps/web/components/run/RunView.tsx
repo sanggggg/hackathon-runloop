@@ -52,9 +52,12 @@ export function RunView({ suite, initialRuns }: { suite: Suite; initialRuns: Run
     setBusy(true);
     setError(undefined);
     try {
-      const run = await startRun(suite.id);
+      const { runId } = await startRun(suite.id);
+      // The engine answers 202 with an id only, so read the run itself before
+      // showing it; polling takes over from there.
+      const run = await fetchRun(runId);
       setRuns((prev) => [run, ...prev.filter((r) => r.id !== run.id)]);
-      setActiveId(run.id);
+      setActiveId(runId);
       setSelected(undefined);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not start the run");
