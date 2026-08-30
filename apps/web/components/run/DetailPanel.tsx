@@ -1,70 +1,48 @@
 "use client";
 
-import Image from "next/image";
-import { Button } from "@cloudflare/kumo/components/button";
 import type { Node, NodeResult } from "@branchpoint/schema";
-import { StatusBadge } from "@/components/tree/Cards";
-import { diffs } from "@/lib/fixtures";
+import { Badge } from "@cloudflare/kumo/components/badge";
+import { shotUrl } from "@/lib/client";
 
-const LEVEL_TEXT = {
+const LEVEL = {
   info: "text-kumo-subtle",
   warn: "text-kumo-warning",
   error: "text-kumo-danger",
 } as const;
 
-function Shot({
-  id,
-  caption,
-  tone,
+const FAIL_REASON = {
+  unresolved: "Nothing on the page matched this step's wording. That is a stale tree, not a broken app.",
+  "error-screen": "The control resolved, but the screen it led to was not the expected one.",
+  timeout: "The branch ran out of time before reaching a verdict.",
+} as const;
+
+export function DetailPanel({
+  node,
+  result,
+  previousShotId,
 }: {
-  id: string;
-  caption: string;
-  tone: "neutral" | "warn" | "bad" | "info";
+  node: Node;
+  result?: NodeResult;
+  /** Same node's capture from the run before, when there is one. */
+  previousShotId?: string;
 }) {
-  const ring = {
-    neutral: "border-kumo-hairline",
-    warn: "border-kumo-warning ring-3 ring-kumo-warning-tint",
-    bad: "border-kumo-danger ring-3 ring-kumo-danger-tint",
-    info: "border-kumo-info ring-3 ring-kumo-info-tint",
-  }[tone];
-  const label = {
-    neutral: "text-kumo-placeholder",
-    warn: "text-kumo-warning",
-    bad: "text-kumo-danger",
-    info: "text-kumo-info",
-  }[tone];
+  const failed = result?.status === "fail";
 
   return (
-    <figure className="min-w-0 flex-1">
-      <div className={`h-[106px] overflow-hidden rounded-md border ${ring}`}>
-        <Image
-          src={`/shots/${id}.png`}
-          alt={caption}
-          width={264}
-          height={165}
-          className="h-full w-full object-cover object-top"
-        />
-      </div>
-      <figcaption className={`mt-1.5 text-xs ${label}`}>{caption}</figcaption>
-    </figure>
-  );
-}
-
-export function DetailPanel({ node, result }: { node: Node; result?: NodeResult }) {
-  const diff = diffs[node.id];
-  const needsVerdict = Boolean(diff);
-  const acceptLabel = result?.note === "new-path" ? "Keep in suite" : "Accept as baseline";
-
-  return (
-    <aside className="flex w-[384px] shrink-0 flex-col overflow-y-auto border-l border-kumo-hairline bg-kumo-base">
+    <aside className="flex w-96 shrink-0 flex-col overflow-y-auto border-l border-kumo-hairline bg-kumo-base">
       <div className="border-b border-kumo-hairline p-4">
-        <StatusBadge result={result} />
+        {result ? (
+          failed ? <Badge variant="error">Failed</Badge> : <Badge variant="success">Passed</Badge>
+        ) : (
+          <Badge variant="secondary">Not run</Badge>
+        )}
         <h2 className="mt-2.5 text-xl font-semibold tracking-tight text-kumo-strong">
           {node.label}
         </h2>
-        {result?.devboxId && (
+        {result && (
           <code className="mt-1 block font-mono text-[11px] text-kumo-placeholder">
             {result.devboxId} · {(result.elapsedMs / 1000).toFixed(1)}s
+            {result.modelCalls ? ` · ${result.modelCalls} model calls` : ""}
           </code>
         )}
       </div>
@@ -76,14 +54,17 @@ export function DetailPanel({ node, result }: { node: Node; result?: NodeResult 
         <p className="rounded-md border border-kumo-hairline bg-kumo-recessed px-3 py-2.5 text-[13px] leading-normal text-kumo-default">
           {node.intent}
         </p>
+        {node.expectedOutcome && (
+          <p className="mt-2 text-xs leading-normal text-kumo-placeholder">
+            Expected outcome: <span className="text-kumo-subtle">{node.expectedOutcome}</span>
+          </p>
+        )}
         {result?.resolvedTo && (
-          <p className="mt-2 flex items-center gap-2 text-xs text-kumo-placeholder">
+          <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-kumo-placeholder">
             resolved to
             <span
               className={`rounded px-2 py-0.5 ${
-                result.status === "fail"
-                  ? "bg-kumo-danger-tint text-kumo-danger"
-                  : "bg-kumo-success-tint text-kumo-success"
+                failed ? "bg-kumo-danger-tint text-kumo-danger" : "bg-kumo-success-tint text-kumo-success"
               }`}
             >
               {result.resolvedTo}
@@ -92,67 +73,75 @@ export function DetailPanel({ node, result }: { node: Node; result?: NodeResult 
         )}
       </div>
 
-      <div className="border-b border-kumo-hairline p-4">
-        <div className="mb-2.5 flex items-baseline justify-between">
-          <h3 className="text-[11px] font-semibold uppercase tracking-[0.04em] text-kumo-placeholder">
-            {diff ? diff.title : "Screenshot"}
-          </h3>
-          <span className="text-xs text-kumo-placeholder">{diff ? diff.meta : "unchanged"}</span>
-        </div>
-
-        {diff ? (
-          <div className="flex gap-2.5">
-            <Shot id={diff.before} caption={diff.beforeCaption} tone={node.id === "import" ? "info" : "neutral"} />
-            <Shot
-              id={diff.after}
-              caption={diff.afterCaption}
-              tone={
-                result?.status === "fail" ? "bad" : result?.note === "ui-changed" ? "warn" : "neutral"
-              }
-            />
-          </div>
-        ) : (
-          <p className="rounded-md border border-kumo-hairline bg-kumo-recessed px-3.5 py-3.5 text-[13px] leading-normal text-kumo-subtle">
-            Pixel-identical to run 41. Nothing to review here.
+      {result?.failReason && (
+        <div className="border-b border-kumo-hairline p-4">
+          <p className="rounded-md border border-kumo-danger bg-kumo-danger-tint px-3 py-2.5 text-[13px] leading-normal text-kumo-danger">
+            {FAIL_REASON[result.failReason]}
           </p>
-        )}
-      </div>
+        </div>
+      )}
+
+      {result?.screenshotId && (
+        <div className="border-b border-kumo-hairline p-4">
+          <h3 className="mb-2.5 text-[11px] font-semibold uppercase tracking-[0.04em] text-kumo-placeholder">
+            {previousShotId ? "This run, and the one before" : "Capture"}
+          </h3>
+          <div className="flex gap-2.5">
+            {previousShotId && (
+              <figure className="min-w-0 flex-1">
+                <div className="overflow-hidden rounded-md border border-kumo-hairline">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={shotUrl(previousShotId)} alt="previous run" className="w-full" />
+                </div>
+                <figcaption className="mt-1.5 text-xs text-kumo-placeholder">previous run</figcaption>
+              </figure>
+            )}
+            <figure className="min-w-0 flex-1">
+              <div
+                className={`overflow-hidden rounded-md border ${
+                  failed
+                    ? "border-kumo-danger ring-3 ring-kumo-danger-tint"
+                    : result.note === "ui-changed"
+                      ? "border-kumo-warning ring-3 ring-kumo-warning-tint"
+                      : "border-kumo-hairline"
+                }`}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={shotUrl(result.screenshotId)} alt="this run" className="w-full" />
+              </div>
+              <figcaption
+                className={`mt-1.5 text-xs ${
+                  failed
+                    ? "text-kumo-danger"
+                    : result.note === "ui-changed"
+                      ? "text-kumo-warning"
+                      : "text-kumo-placeholder"
+                }`}
+              >
+                {result.note === "ui-changed" ? "this run · UI changed" : "this run"}
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      )}
 
       <div className="flex-1 p-4">
         <h3 className="mb-2.5 text-[11px] font-semibold uppercase tracking-[0.04em] text-kumo-placeholder">
           Agent log
         </h3>
-        <ol className="flex flex-col gap-2">
-          {(result?.log ?? []).map((l, i) => (
-            <li key={i} className="flex gap-2.5">
-              <code className="w-9 shrink-0 pt-px font-mono text-[11px] text-kumo-inactive">
-                +{(l.t / 1000).toFixed(1)}s
-              </code>
-              <span className={`text-[13px] leading-snug ${LEVEL_TEXT[l.level]}`}>{l.text}</span>
-            </li>
-          ))}
-        </ol>
-      </div>
-
-      <div className="flex gap-2 border-t border-kumo-hairline p-3">
-        {needsVerdict ? (
-          <>
-            <Button className="flex-1" variant="primary">
-              {acceptLabel}
-            </Button>
-            <Button className="flex-1" variant="secondary">
-              Report as bug
-            </Button>
-          </>
+        {result?.log?.length ? (
+          <ol className="flex flex-col gap-2">
+            {result.log.map((l, i) => (
+              <li key={i} className="flex gap-2.5">
+                <code className="w-10 shrink-0 pt-px font-mono text-[11px] text-kumo-inactive">
+                  +{(l.t / 1000).toFixed(1)}s
+                </code>
+                <span className={`text-[13px] leading-snug ${LEVEL[l.level]}`}>{l.text}</span>
+              </li>
+            ))}
+          </ol>
         ) : (
-          <>
-            <Button className="flex-1" variant="secondary">
-              Fork from here
-            </Button>
-            <Button className="flex-1" variant="secondary">
-              Prune branch
-            </Button>
-          </>
+          <p className="text-[13px] text-kumo-placeholder">No log for this step yet.</p>
         )}
       </div>
     </aside>
