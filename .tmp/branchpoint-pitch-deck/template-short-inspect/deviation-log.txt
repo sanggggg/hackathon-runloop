@@ -1,5 +1,0 @@
-Slide 1: removed the three-browser fork illustration and replaced it in the same right-side region with the real Branchpoint Run screenshot supplied by the user.
-Slide 2: removed min-max ranges, request counts and the visible methodology footnote; exact methodology remains in speaker notes.
-Slide 3: replaced three repeated baseline rows with a single Branchpoint execution flow in the cleared body zone.
-Slide 4: preserved the recursive tree; tightened the right-side optimization rules and enlarged SNAP labels.
-Slide 5: removed evidence screenshots, folded the closing CTA into their cleared right-side region, and promoted status meaning into node labels.

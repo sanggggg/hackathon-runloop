@@ -24,3 +24,7 @@ next-env.d.ts
 
 # Local engine state written at runtime
 .branchpoint-data/
+
+# Scratch space for deck builds and inspections
+.tmp/
+*.inspect.ndjson

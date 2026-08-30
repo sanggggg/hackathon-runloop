@@ -1,6 +1,0 @@
-Source deck: Branchpoint-Hackathon-Pitch.pptx, 8 slides, 1280x720.
-Reusable patterns: white cover, white technical diagram, dark benchmark table, white result tree.
-Typography: Helvetica Neue; 40px slide titles; 14px teal eyebrow; white or #101315 primary text.
-Brand chrome: BRANCHPOINT eyebrow, thin bottom rule and two-digit page number on content slides.
-Output contract: duplicate source slides 1, 7, 2, 4 and 6 in that order; edit inherited objects in place; only add primitives inside explicitly cleared zones.
-Placeholder audit: source inspection found no visible default PowerPoint prompt text. Final OOXML placeholder check remains required.
