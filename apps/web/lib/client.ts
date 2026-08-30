@@ -20,7 +20,10 @@ export const fetchRuns = (suiteId: string) =>
 export const fetchRun = (runId: string) => json<Run>(`/api/runs/${encodeURIComponent(runId)}`);
 
 export const startRun = (suiteId: string, ref?: string) =>
-  json<Run>("/api/runs", { method: "POST", body: JSON.stringify({ suiteId, ref }) });
+  json<{ runId: string }>("/api/runs", {
+    method: "POST",
+    body: JSON.stringify({ suiteId, ref }),
+  });
 
 export const cancelRun = (runId: string) =>
   json<Run>(`/api/runs/${encodeURIComponent(runId)}/cancel`, { method: "POST" });
