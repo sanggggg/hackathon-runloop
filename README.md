@@ -22,6 +22,30 @@ shows passes, failures, and UI changes on the complete execution tree.
 
 [![Branchpoint Run UI showing recursive browser QA results](docs/images/branchpoint-run.png)](docs/images/branchpoint-run.png)
 
+```shell
+branchpoint run .
+  ✔  Team plan                                     passed                              16.7s
+  ✔  Team plan → Invite teammates                  passed                               7.4s
+  ✔  Team plan → Invite teammates → Send invitationspassed                              13.6s
+  ✔  Team plan → Skip invites                      passed                               9.3s
+  ✔  Solo plan                                     passed                              16.8s
+  ⚠  Solo plan → Starter template                  UI changed, followed anyway          8.3s
+  ✖  Solo plan → Blank workspace                   landed on an error screen            7.5s
+  ✔  Solo plan → Import from CSV                   passed                               8.7s
+  ✖  Decide later                                  nothing on the page matched         16.0s
+
+  7 passed   2 failed   1 healed
+
+  Failed paths
+    Solo plan → Blank workspace
+      "Blank workspace" button resolved, but the next screen was not the expected one.
+    Decide later
+      The stored intent "Defer onboarding for now" matched nothing on the page. This is a stale step, not a broken app — reword or drop it in Build.
+
+  42.9s wall clock · 9 branches from one snapshot · 2m 27s if run one at a time
+  $0.00 · 13 model calls
+```
+
 ## Measured across three controlled runs
 
 Each strategy ran the same eight-test agent workload with the same model,
