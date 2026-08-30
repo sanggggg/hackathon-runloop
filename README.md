@@ -260,7 +260,7 @@ second credential.
 export BRANCHPOINT_API_TOKEN=...
 pnpm build:cli
 node apps/cli/dist/src/cli.js run \
-  --suite nimbus-action-baseline \
+  --suite nimbus-action-baseline-v3 \
   --ref "$GITHUB_SHA"
 ```
 
@@ -280,7 +280,7 @@ the real consumer is installed in the
 [`hackathon-runloop-demo` Actions workflow](https://github.com/sanggggg/hackathon-runloop-demo/blob/main/.github/workflows/branchpoint-qa.yml).
 Both use the pull-request head SHA and exclude forks and Dependabot. The
 production Suite registered for that workflow is checked in at
-[`docs/suites/nimbus-action-baseline.json`](docs/suites/nimbus-action-baseline.json).
+[`docs/suites/nimbus-action-baseline-v3.json`](docs/suites/nimbus-action-baseline-v3.json).
 
 ## Order of work
 

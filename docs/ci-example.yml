@@ -39,7 +39,7 @@ jobs:
         github.event.pull_request.head.repo.full_name == github.repository))
     uses: sanggggg/hackathon-runloop/.github/workflows/branchpoint-qa.yml@REPLACE_WITH_40_CHARACTER_ENGINE_COMMIT_SHA
     with:
-      suite: nimbus-action-baseline
+      suite: nimbus-action-baseline-v3
       # github.sha is a synthetic merge commit for pull_request. The explicit
       # PR head SHA is the ref the Suite repository can resolve and evaluate.
       ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || inputs.ref }}

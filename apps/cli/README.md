@@ -10,7 +10,7 @@ export BRANCHPOINT_API_TOKEN=...
 export BRANCHPOINT_API_URL=https://branchpoint-server-production.up.railway.app
 
 pnpm --filter @branchpoint/cli build
-node apps/cli/dist/src/cli.js run --suite nimbus-action-baseline --ref "$GITHUB_SHA"
+node apps/cli/dist/src/cli.js run --suite nimbus-action-baseline-v3 --ref "$GITHUB_SHA"
 ```
 
 ## Commands

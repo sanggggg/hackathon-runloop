@@ -1,18 +1,18 @@
 {
-  "id": "nimbus-action-baseline",
-  "name": "Nimbus Actions baseline",
+  "id": "nimbus-action-baseline-v3",
+  "name": "nimbus-action-baseline-v3",
   "repo": {
     "url": "https://github.com/sanggggg/hackathon-runloop-demo",
-    "ref": "b36666c0351c94e5074e532f88cf8e70695549ea",
+    "ref": "49229f26fdf99278b867668f0630c30b040512f4",
     "buildCmd": "npm ci && npm run build",
-    "startCmd": "npm start",
+    "startCmd": "QA_PROFILE=baseline npm start",
     "port": 3000
   },
-  "blueprintId": "bpt_34FmWfEvKypQOyjrC7LVA",
+  "blueprintId": "runloop-default",
   "fixture": {
-    "snapshotId": "snp_34FmaUWcfqTTEIq3t9k9K",
-    "ref": "cb30fb3ed4aa2f1b30ca1180df82f3eef05313f3",
-    "description": "Signed in at /onboarding/use-case on the baseline fixture"
+    "snapshotId": "snp_34FqsvgR6SHGXpxpGUrqk",
+    "ref": "49229f26fdf99278b867668f0630c30b040512f4",
+    "description": "baseline profile, signed in at /onboarding/use-case"
   },
   "tree": [
     {
