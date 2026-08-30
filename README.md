@@ -1,17 +1,90 @@
 # Branchpoint
 
-Agent-driven QA scenario trees on [Runloop](https://runloop.ai). Write the flows
-you care about in plain words, fork one snapshot into every branch, and re-run
-the whole tree against each commit.
+**Scenario-based browser QA that runs the shared path once, snapshots the exact
+browser and sandbox state at each branchpoint, carries forward the shared
+model-session prefix, then recursively forks every remaining path.**
 
-The pitch, in one line:
+Selectors remember *where* a control was. Branchpoint remembers *what the user
+intended*, so the same QA tree can survive UI changes and run again on every
+commit.
 
-> Conventional regression tests store a **selector**, so they die when the UI
-> moves. We store an **intent**, so the agent follows it.
-> `#solo` breaks on the next deploy. *"Choose the solo option"* still holds in
-> five years.
+## Build the intent tree
 
----
+Describe goals and actions in plain language. Build stores intent—not
+selectors—and lets one fixture split repeatedly into nested execution paths.
+
+[![Branchpoint Build UI showing a nested intent tree](docs/images/branchpoint-build.png)](docs/images/branchpoint-build.png)
+
+## Run every path
+
+Branchpoint restores the shared fixture, recursively forks at each split, and
+shows passes, failures, and UI changes on the complete execution tree.
+
+[![Branchpoint Run UI showing recursive browser QA results](docs/images/branchpoint-run.png)](docs/images/branchpoint-run.png)
+
+```shell
+branchpoint run .
+  ✔  Team plan                                     passed                              16.7s
+  ✔  Team plan → Invite teammates                  passed                               7.4s
+  ✔  Team plan → Invite teammates → Send invitationspassed                              13.6s
+  ✔  Team plan → Skip invites                      passed                               9.3s
+  ✔  Solo plan                                     passed                              16.8s
+  ⚠  Solo plan → Starter template                  UI changed, followed anyway          8.3s
+  ✖  Solo plan → Blank workspace                   landed on an error screen            7.5s
+  ✔  Solo plan → Import from CSV                   passed                               8.7s
+  ✖  Decide later                                  nothing on the page matched         16.0s
+
+  7 passed   2 failed   1 healed
+
+  Failed paths
+    Solo plan → Blank workspace
+      "Blank workspace" button resolved, but the next screen was not the expected one.
+    Decide later
+      The stored intent "Defer onboarding for now" matched nothing on the page. This is a stale step, not a broken app — reword or drop it in Build.
+
+  42.9s wall clock · 9 branches from one snapshot · 2m 27s if run one at a time
+  $0.00 · 13 model calls
+```
+
+## Measured across three controlled runs
+
+Each strategy ran the same eight-test agent workload with the same model,
+tools, and task-ready Runloop fixture. Every included run passed its assertions.
+
+| Strategy | Mean wall time ↓ | Mean LLM cost ↓ |
+|---|---:|---:|
+| **Branchpoint — shared prefix + snapshot fork** | **66.8s** | **$0.150** |
+| One sandbox — complete trajectories sequentially | 171.6s | $0.198 |
+| N sandboxes — complete trajectories in parallel | 76.1s | $0.188 |
+
+Against sequential execution, Branchpoint was **61.1% faster** and used
+**24.2% less LLM cost**. Against full N-sandbox fan-out, it was **12.2% faster**
+and used **20.3% less LLM cost**.
+
+These are the means of Trials 1–3, the first three consecutive controlled
+trials. A fresh cache nonce was added before every strategy, preventing cache
+reuse from earlier strategies or trials while preserving the cache behavior
+naturally available within that strategy. LLM cost is Anthropic upstream
+inference cost reported by OpenRouter for the BYOK run, including prompt-cache
+read and write pricing.
+
+[See the aggregate results](experiments/three-way-benchmark-trials-1-3.json) or
+[re-run the benchmark](experiments/three-way-benchmark.py).
+
+## Why it is efficient
+
+1. **Execute the common path once.** Authentication, setup, and navigation
+   before a split are not repeated for every leaf.
+2. **Share the model-session prefix.** Every continuation inherits the exact
+   transcript and tool history up to its branchpoint, making prompt-prefix
+   caching useful.
+3. **Fork only where the tree splits.** The source sandbox continues one path
+   while only the remaining `N - 1` siblings are forked. The same rule is
+   applied again when any child reaches another branchpoint.
+
+Repeated recursively, wall time approaches the longest execution path plus
+fork overhead instead of the sum of every path, while shared setup and session
+state are paid for once.
 
 ## What is here
 
@@ -22,36 +95,10 @@ The pitch, in one line:
 | `packages/schema/src/index.ts` | The pinned contracts as real types. Changing these stalls other people — raise it first. |
 | `packages/engine/` | Runloop QA-tree orchestrator, fork-aware browser runner, CLI, live Nimbus E2E, and cleanup/artifact adapters. |
 | `apps/server/` | Persistent HTTP wrapper: Suite management, queued engine runs, polling/cancellation, and screenshot serving. |
+| `apps/cli/` | Remote JSON CLI for the deployed server, including CI-safe polling, cancellation, and verdict exit codes. |
 | `design/` | Design canvas source: four `.dc.html` artboards, `canvas.json`, and real screenshots captured from a devbox. |
 | `experiments/` | Standalone scripts that produced every number in the spec. Each one runs on its own. |
 | [`hackathon-runloop-demo`](https://github.com/sanggggg/hackathon-runloop-demo) | The companion Nimbus browser-QA fixture. Its profiles, actions, and expected outcomes live in [`qa/manifest.json`](https://github.com/sanggggg/hackathon-runloop-demo/blob/cb30fb3ed4aa2f1b30ca1180df82f3eef05313f3/qa/manifest.json). |
-
-## The two routes
-
-**Build** — chat only. No browser, no screenshots, nothing executed. Each card
-stores an intent. Nodes are `unverified` until a run checks them, and go
-`unresolved` when the wording matched nothing on the page.
-
-**Run** — one page, three states: pick a trigger, watch the branches fork, read
-the results. Green means the path still works, red means it failed. That is the
-whole legend; nuance lives in words on the node (`passed · UI changed`) and in
-the detail panel.
-
-A red card in Build is a bug in the **tree**. A red node in Run is a bug in the
-**app**. Keeping those apart is why the routes are separate.
-
-## Why fork
-
-Wall clock tracks tree **depth**, not path count.
-
-```
-8 paths, one at a time, each re-signing in     ~3m 30s
-8 paths forked from one snapshot                ~16s
-```
-
-Measured on a real devbox: fork boots in **2.7s**, and three forks in parallel
-cost the same as one. Agent-driven QA has always been too slow to run on every
-deploy; this is what makes it affordable.
 
 ## Verified, so nobody re-derives it
 
@@ -61,7 +108,7 @@ deploy; this is what makes it affordable.
 | Snapshot (light / with Chromium) | 3.4s / 18.6s |
 | Fork boot from snapshot | 2.6–2.7s |
 | Chromium + Playwright install | 41s — bake into the Blueprint |
-| Branch & Race, end to end | 65s, ~$0.15 |
+| Controlled strategy benchmark (Branchpoint) | 66.8s, $0.150 mean (`n=3`) |
 
 Proven working: fork inherits disk state, a browser login session survives a
 fork, screenshots capture in the box and download to the host.
@@ -201,6 +248,39 @@ pnpm dev:server              # http://localhost:4000
 
 See [`apps/server/README.md`](apps/server/README.md) for the HTTP contract,
 authentication, configuration, persistence boundary, and Railway deployment.
+
+## Running QA from the remote CLI or GitHub Actions
+
+The remote CLI and GitHub Actions use the same bearer token as the server. Keep
+it in `BRANCHPOINT_API_TOKEN`; there is intentionally no command-line token
+flag. The target repository is public, so its selected ref is fetched without a
+second credential.
+
+```bash
+export BRANCHPOINT_API_TOKEN=...
+pnpm build:cli
+node apps/cli/dist/src/cli.js run \
+  --suite nimbus-action-baseline-v3 \
+  --ref "$GITHUB_SHA"
+```
+
+`run` starts one server-side run and waits for a terminal lifecycle state. Its
+JSON result goes to stdout, progress goes to stderr, and timeout or process
+signals attempt to cancel the remote run. See
+[`apps/cli/README.md`](apps/cli/README.md) for commands and exit codes.
+
+The reusable workflow at
+[`branchpoint-qa.yml`](.github/workflows/branchpoint-qa.yml) is reusable-only.
+The target repository owns its pull-request and manual `workflow_dispatch`
+triggers. Store the same server bearer token as that repository's Actions
+secret `BRANCHPOINT_API_TOKEN`; the Railway API URL is non-secret configuration.
+The public source ref is fetched without another credential.
+[`docs/ci-example.yml`](docs/ci-example.yml) is the reusable caller template;
+the real consumer is installed in the
+[`hackathon-runloop-demo` Actions workflow](https://github.com/sanggggg/hackathon-runloop-demo/blob/main/.github/workflows/branchpoint-qa.yml).
+Both use the pull-request head SHA and exclude forks and Dependabot. The
+production Suite registered for that workflow is checked in at
+[`docs/suites/nimbus-action-baseline-v3.json`](docs/suites/nimbus-action-baseline-v3.json).
 
 ## Order of work
 

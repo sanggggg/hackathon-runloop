@@ -469,7 +469,7 @@ export class RunloopRuntime implements ContainerRuntime {
       'if [[ "$target_ref" =~ ^[0-9a-fA-F]{40}$ ]] && git cat-file -e "$target_ref^{commit}" 2>/dev/null; then',
       '  target_commit="$(git rev-parse --verify "$target_ref^{commit}")"',
       "else",
-      '  git fetch --depth=1 origin "$target_ref"',
+      '  git fetch --depth=1 origin -- "$target_ref"',
       '  target_commit="$(git rev-parse --verify FETCH_HEAD^{commit})"',
       "fi",
       'current_commit="$(git rev-parse --verify HEAD^{commit})"',

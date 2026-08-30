@@ -1,19 +1,48 @@
-# Wiring Branchpoint into a pull request check.
+# Copy this file to `.github/workflows/branchpoint-qa.yml` in the repository
+# described by your prepared Branchpoint Suite.
 #
-# This is a template for the repository you want tested — copy it there as
-# .github/workflows/qa.yml. It is not a workflow of this repository.
-name: QA
+# Repository setup:
+#   1. Add BRANCHPOINT_API_TOKEN as an Actions secret. Use the same bearer token
+#      configured on the Branchpoint server; never store it as a variable.
+#   2. The source repository is public, so Branchpoint fetches the selected ref
+#      without a second credential.
+#   3. BRANCHPOINT_API_URL is non-secret configuration. The reusable workflow
+#      defaults to the production Railway URL, or you can pass a repository
+#      variable as shown below.
+#   4. Replace the reusable-workflow placeholder below with the full 40-character
+#      engine commit SHA. Do not use a floating branch for a credentialed job.
+name: Branchpoint QA
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Explicit SHA or ref in the Suite repository to evaluate.
+        required: true
+        type: string
+
+# Keep the caller's default token read-only. Branchpoint receives only the
+# separately configured BRANCHPOINT_API_TOKEN secret below.
+permissions:
+  contents: read
 
 jobs:
-  branchpoint:
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-    steps:
-      - uses: sanggggg/hackathon-runloop/.github/actions/branchpoint@main
-        with:
-          suite: nimbus-onboarding
-          token: ${{ secrets.BRANCHPOINT_TOKEN }}
+  qa:
+    # Fork and Dependabot pull requests are blocked because they do not receive
+    # the API secret. Do not switch this to pull_request_target to expose it.
+    if: >-
+      github.actor != 'dependabot[bot]' &&
+      (github.event_name != 'pull_request' ||
+       (github.event.pull_request.draft == false &&
+        github.event.pull_request.head.repo.full_name == github.repository))
+    uses: sanggggg/hackathon-runloop/.github/workflows/branchpoint-qa.yml@REPLACE_WITH_40_CHARACTER_ENGINE_COMMIT_SHA
+    with:
+      suite: nimbus-action-baseline-v3
+      # github.sha is a synthetic merge commit for pull_request. The explicit
+      # PR head SHA is the ref the Suite repository can resolve and evaluate.
+      ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || inputs.ref }}
+      api-url: ${{ vars.BRANCHPOINT_API_URL || 'https://branchpoint-server-production.up.railway.app' }}
+    secrets:
+      BRANCHPOINT_API_TOKEN: ${{ secrets.BRANCHPOINT_API_TOKEN }}

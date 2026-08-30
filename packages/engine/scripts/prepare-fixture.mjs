@@ -12,6 +12,8 @@
  *
  *   RUNLOOP_API_KEY=… OPENROUTER_API_KEY=… \
  *   BRANCHPOINT_DEMO_REPO_PATH=~/Desktop/hackathon-runloop-demo \
+ *   BRANCHPOINT_DEMO_PROFILE=baseline \
+ *   BRANCHPOINT_SUITE_OUTPUT=docs/suites/nimbus-action-baseline-v3.json \
  *   node packages/engine/scripts/prepare-fixture.mjs
  */
 import assert from "node:assert/strict";
@@ -39,6 +41,16 @@ const demoRemote =
 const secretName = process.env.BRANCHPOINT_OPENROUTER_SECRET ?? "BRANCHPOINT_OPENROUTER";
 const model = process.env.BRANCHPOINT_OPENROUTER_MODEL ?? "google/gemini-3.1-flash-lite";
 const suiteId = process.env.BRANCHPOINT_SUITE_ID ?? "nimbus-onboarding";
+const demoProfile = process.env.BRANCHPOINT_DEMO_PROFILE ?? "demo-head";
+const suiteOutput = process.env.BRANCHPOINT_SUITE_OUTPUT
+  ? path.resolve(process.env.BRANCHPOINT_SUITE_OUTPUT)
+  : path.join(engineRoot, "examples", "nimbus-suite.prepared.json");
+
+if (!/^[A-Za-z0-9][A-Za-z0-9_-]*$/.test(demoProfile)) {
+  throw new Error(
+    "BRANCHPOINT_DEMO_PROFILE must contain only letters, digits, underscores, or dashes",
+  );
+}
 
 function required(name) {
   const value = process.env[name];
@@ -159,7 +171,7 @@ try {
   );
   await client.start(
     devbox.id,
-    "cd /home/user/workspace && QA_PROFILE=demo-head PORT=3000 npm start",
+    `cd /home/user/workspace && QA_PROFILE=${demoProfile} PORT=3000 npm start`,
   );
   await client.execute(
     devbox.id,
@@ -173,9 +185,9 @@ try {
 
   log("snapshotting");
   const snapshot = await client.snapshotDisk(devbox.id, {
-    name: `branchpoint-demo-head-${token.slice(0, 8)}`,
-    metadata: { purpose: "fixture", profile: "demo-head", ref: demoRef, durable: "true" },
-    commit_message: "Signed-in Nimbus demo-head fixture",
+    name: `branchpoint-${demoProfile}-${token.slice(0, 8)}`,
+    metadata: { purpose: "fixture", profile: demoProfile, ref: demoRef, durable: "true" },
+    commit_message: `Signed-in Nimbus ${demoProfile} fixture`,
   });
 
   const example = JSON.parse(
@@ -185,15 +197,20 @@ try {
     ...example,
     id: suiteId,
     name: suiteId,
-    repo: { ...example.repo, ref: demoRef },
-    fixture: { ...example.fixture, snapshotId: snapshot.id, ref: demoRef },
+    blueprintId: snapshot.source_blueprint_id ?? "runloop-default",
+    repo: { ...example.repo, ref: demoRef, startCmd: `QA_PROFILE=${demoProfile} npm start` },
+    fixture: {
+      ...example.fixture,
+      snapshotId: snapshot.id,
+      ref: demoRef,
+      description: `${demoProfile} profile, signed in at /onboarding/use-case`,
+    },
   };
 
-  const out = path.join(engineRoot, "examples", "nimbus-suite.prepared.json");
-  await writeFile(out, `${JSON.stringify(suite, null, 2)}\n`);
+  await writeFile(suiteOutput, `${JSON.stringify(suite, null, 2)}\n`);
 
   log(`snapshot ${snapshot.id}`);
-  log(`suite written to ${path.relative(process.cwd(), out)}`);
+  log(`suite written to ${path.relative(process.cwd(), suiteOutput)}`);
   log("");
   log("Set these on the server, then register the suite:");
   log(`  BRANCHPOINT_OPENROUTER_MODEL=${model}`);

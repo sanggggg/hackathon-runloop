@@ -40,7 +40,8 @@ export default defineRailway(() => {
   const web = service("branchpoint-web", {
     build: "pnpm --filter @branchpoint/web build",
     start: "pnpm --filter @branchpoint/web start",
-    healthcheck: "/",
+    // Not "/": that redirects to a suite, and a 307 fails the probe.
+    healthcheck: "/healthz",
     healthcheckTimeout: 300,
     env: {
       NODE_ENV: "production",

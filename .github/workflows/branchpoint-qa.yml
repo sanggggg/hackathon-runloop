@@ -1,0 +1,273 @@
+name: Branchpoint QA
+
+on:
+  workflow_call:
+    inputs:
+      suite:
+        description: Prepared Branchpoint Suite id to run.
+        required: true
+        type: string
+      ref:
+        description: Explicit git SHA or ref in the Suite repository to evaluate.
+        required: true
+        type: string
+      api-url:
+        description: Branchpoint API base URL. This is configuration, not a secret.
+        required: false
+        type: string
+        default: https://branchpoint-server-production.up.railway.app
+      timeout-seconds:
+        description: Maximum time to wait for the remote run (1-1200 seconds).
+        required: false
+        type: number
+        default: 900
+      poll-interval-seconds:
+        description: Delay between remote run polls (1-60 seconds).
+        required: false
+        type: number
+        default: 2
+    secrets:
+      BRANCHPOINT_API_TOKEN:
+        description: Shared bearer token configured on the Branchpoint server.
+        required: true
+    outputs:
+      run-id:
+        description: Branchpoint run id, when the API accepted a run.
+        value: ${{ jobs.qa.outputs.run-id }}
+      outcome:
+        description: Branchpoint outcome reported by the CLI.
+        value: ${{ jobs.qa.outputs.outcome }}
+      exit-code:
+        description: Branchpoint CLI exit code.
+        value: ${{ jobs.qa.outputs.exit-code }}
+      artifact-id:
+        description: GitHub Actions artifact id containing the run result.
+        value: ${{ jobs.qa.outputs.artifact-id }}
+      artifact-url:
+        description: URL for the GitHub Actions result artifact.
+        value: ${{ jobs.qa.outputs.artifact-url }}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: branchpoint-${{ github.repository }}-${{ github.workflow }}-${{ inputs.suite }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qa:
+    name: Run ${{ inputs.suite }} at ${{ inputs.ref }}
+    # Defense in depth: never expose the API token to fork or Dependabot PRs,
+    # even if a caller omits the guard shown in docs/ci-example.yml.
+    if: >-
+      github.actor != 'dependabot[bot]' &&
+      (github.event_name != 'pull_request' ||
+       github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    # timeout-seconds is capped at 20 minutes below; ten more minutes are
+    # reserved for checkout, install, build, summary, and artifact upload.
+    timeout-minutes: 30
+    outputs:
+      run-id: ${{ steps.evaluate.outputs.run-id }}
+      outcome: ${{ steps.evaluate.outputs.outcome }}
+      exit-code: ${{ steps.evaluate.outputs.exit-code }}
+      artifact-id: ${{ steps.artifact.outputs.artifact-id }}
+      artifact-url: ${{ steps.artifact.outputs.artifact-url }}
+
+    steps:
+      # A reusable workflow normally checks out its caller. These job-scoped
+      # contexts instead select the exact Branchpoint revision that defined
+      # this job, so the CLI and workflow stay pinned together.
+      - name: Check out Branchpoint tooling
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: ${{ job.workflow_repository }}
+          ref: ${{ job.workflow_sha }}
+          path: branchpoint-tooling
+          persist-credentials: false
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          version: 11.24.0
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 22.15.0
+          cache: pnpm
+          cache-dependency-path: branchpoint-tooling/pnpm-lock.yaml
+
+      - name: Install Branchpoint dependencies
+        working-directory: branchpoint-tooling
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Branchpoint CLI
+        working-directory: branchpoint-tooling
+        run: pnpm --filter @branchpoint/cli build
+
+      - name: Run Branchpoint QA
+        id: evaluate
+        working-directory: branchpoint-tooling
+        shell: bash
+        env:
+          BRANCHPOINT_API_TOKEN: ${{ secrets.BRANCHPOINT_API_TOKEN }}
+          BRANCHPOINT_API_URL: ${{ inputs.api-url }}
+          SUITE_ID: ${{ inputs.suite }}
+          TARGET_REF: ${{ inputs.ref }}
+          TIMEOUT_SECONDS: ${{ inputs.timeout-seconds }}
+          POLL_INTERVAL_SECONDS: ${{ inputs.poll-interval-seconds }}
+          RESULT_DIR: ${{ runner.temp }}/branchpoint-result
+        run: |
+          mkdir -p "$RESULT_DIR"
+
+          if [[ ! "$TIMEOUT_SECONDS" =~ ^[0-9]+$ ]] ||
+             (( TIMEOUT_SECONDS < 1 || TIMEOUT_SECONDS > 1200 )); then
+            echo "timeout-seconds must be an integer between 1 and 1200" \
+              | tee "$RESULT_DIR/branchpoint.log" >&2
+            printf '%s\n' \
+              '{"error":{"code":"invalid_timeout","message":"timeout-seconds must be an integer between 1 and 1200"}}' \
+              > "$RESULT_DIR/run.json"
+            printf '%s\n' '## Branchpoint QA' '' \
+              '**failed** — timeout-seconds must be an integer between 1 and 1200.' \
+              >> "$GITHUB_STEP_SUMMARY"
+            echo "exit-code=3" >> "$GITHUB_OUTPUT"
+            echo "outcome=failed" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [[ ! "$POLL_INTERVAL_SECONDS" =~ ^[0-9]+$ ]] ||
+             (( POLL_INTERVAL_SECONDS < 1 || POLL_INTERVAL_SECONDS > 60 )); then
+            echo "poll-interval-seconds must be an integer between 1 and 60" \
+              | tee "$RESULT_DIR/branchpoint.log" >&2
+            printf '%s\n' \
+              '{"error":{"code":"invalid_poll_interval","message":"poll-interval-seconds must be an integer between 1 and 60"}}' \
+              > "$RESULT_DIR/run.json"
+            printf '%s\n' '## Branchpoint QA' '' \
+              '**failed** — poll-interval-seconds must be an integer between 1 and 60.' \
+              >> "$GITHUB_STEP_SUMMARY"
+            echo "exit-code=3" >> "$GITHUB_OUTPUT"
+            echo "outcome=failed" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          set +e
+          node apps/cli/dist/src/cli.js run \
+            --suite "$SUITE_ID" \
+            --ref "$TARGET_REF" \
+            --timeout "$TIMEOUT_SECONDS" \
+            --poll-interval "$POLL_INTERVAL_SECONDS" \
+            2> >(tee "$RESULT_DIR/branchpoint.log" >&2) \
+            | tee "$RESULT_DIR/cli-stdout.txt"
+          cli_exit=${PIPESTATUS[0]}
+          set -e
+
+          if node -e \
+            'JSON.parse(require("node:fs").readFileSync(process.argv[1], "utf8"))' \
+            "$RESULT_DIR/cli-stdout.txt" 2>/dev/null; then
+            cp "$RESULT_DIR/cli-stdout.txt" "$RESULT_DIR/run.json"
+          else
+            CLI_EXIT="$cli_exit" RESULT_FILE="$RESULT_DIR/run.json" node -e '
+              const fs = require("node:fs");
+              fs.writeFileSync(
+                process.env.RESULT_FILE,
+                JSON.stringify({
+                  error: {
+                    code: "invalid_cli_output",
+                    message: `Branchpoint CLI exited with code ${process.env.CLI_EXIT} without a JSON result`,
+                  },
+                }, null, 2) + "\n",
+              );
+            '
+          fi
+
+          run_id="$(node -e '
+            const value = JSON.parse(require("node:fs").readFileSync(process.argv[1], "utf8"));
+            const run = value.run ?? value;
+            const id = typeof value.runId === "string" ? value.runId : run.id;
+            if (typeof id === "string") process.stdout.write(id);
+          ' "$RESULT_DIR/run.json")"
+          reported_outcome="$(node -e '
+            const value = JSON.parse(require("node:fs").readFileSync(process.argv[1], "utf8"));
+            if (typeof value.outcome === "string") process.stdout.write(value.outcome);
+          ' "$RESULT_DIR/run.json")"
+
+          if [[ "$reported_outcome" =~ ^(passed|regression|stale|failed|cancelled|timeout|detached)$ ]]; then
+            outcome="$reported_outcome"
+          else
+            case "$cli_exit" in
+              0) outcome="passed" ;;
+              1) outcome="regression" ;;
+              2) outcome="stale" ;;
+              124) outcome="timeout" ;;
+              130|143) outcome="cancelled" ;;
+              *) outcome="failed" ;;
+            esac
+          fi
+
+          # Accepted runs already wrote sanitized run-id/outcome values through
+          # the CLI. Only pre-run failures need a workflow-owned fallback.
+          if [[ -z "$run_id" ]]; then
+            echo "outcome=$outcome" >> "$GITHUB_OUTPUT"
+          fi
+          echo "exit-code=$cli_exit" >> "$GITHUB_OUTPUT"
+          echo "result-file=$RESULT_DIR/run.json" >> "$GITHUB_OUTPUT"
+          echo "log-file=$RESULT_DIR/branchpoint.log" >> "$GITHUB_OUTPUT"
+
+          # The CLI writes the detailed summary after an accepted run. Keep a
+          # useful check summary even when authentication or startup fails
+          # before the server can allocate a run id.
+          if [[ ! -s "$GITHUB_STEP_SUMMARY" ]]; then
+            SUMMARY_FILE="$GITHUB_STEP_SUMMARY" \
+            SUMMARY_SUITE="$SUITE_ID" \
+            SUMMARY_REF="$TARGET_REF" \
+            SUMMARY_OUTCOME="$outcome" \
+            SUMMARY_RUN_ID="$run_id" \
+            node -e '
+              const fs = require("node:fs");
+              const safe = (value) => String(value || "—")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/`/g, "&#96;")
+                .replace(/\|/g, "\\|")
+                .replace(/[\r\n]+/g, " ");
+              fs.appendFileSync(
+                process.env.SUMMARY_FILE,
+                [
+                  "## Branchpoint QA",
+                  "",
+                  "| Run | Suite | Ref | Outcome |",
+                  "|---|---|---|---|",
+                  `| \`${safe(process.env.SUMMARY_RUN_ID)}\` | ${safe(process.env.SUMMARY_SUITE)} | \`${safe(process.env.SUMMARY_REF)}\` | **${safe(process.env.SUMMARY_OUTCOME)}** |`,
+                  "",
+                ].join("\n"),
+              );
+            '
+          fi
+
+          # Preserve the CLI verdict until after the result artifact uploads.
+          exit 0
+
+      - name: Upload Branchpoint result
+        id: artifact
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: branchpoint-${{ steps.evaluate.outputs.run-id || github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/branchpoint-result
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Propagate Branchpoint verdict
+        if: ${{ always() }}
+        shell: bash
+        env:
+          BRANCHPOINT_EXIT_CODE: ${{ steps.evaluate.outputs.exit-code }}
+        run: |
+          code="${BRANCHPOINT_EXIT_CODE:-3}"
+          if [[ ! "$code" =~ ^[0-9]+$ ]]; then
+            echo "::error::Branchpoint produced an invalid exit code: $code"
+            exit 3
+          fi
+          exit "$code"
